@@ -9,7 +9,7 @@ from .users import User
 class Role(BaseModel):
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(25), nullable=False)
+    name = db.Column(db.String(25), unique=True, nullable=False)
     users = db.relationship(
         'User', backref='role', lazy='dynamic', cascade='all')
     permissions = db.relationship(

@@ -7,31 +7,26 @@ from urllib.parse import quote
 from .base_model import db, BaseModel
 
 
-class File(BaseModel):
-    __tablename__ = 'files'
+class Image(BaseModel):
+    __tablename__ = 'images'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(256), nullable=False)
     ext = db.Column(db.String(256), nullable=False)
     mimetype = db.Column(db.String(256))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    product_id = db.Column(db.Integer, db.ForeignKey('products.id'))
 
     @staticmethod
-    def get(file_id):
+    def get(id):
         """根据文件ID返回文件对象"""
-        if not file_id:
+        if not id:
             return None
-        return File.query.filter_by(id=file_id).first()
+        return Image.query.filter_by(id=id).first()
 
     @property
     def save_name(self):
-        return 'File{id}{ext}'.format(id=self.id, ext=self.ext)
+        return 'Img{id}{ext}'.format(id=self.id, ext=self.ext)
 
     def response(self):
         response = send_from_directory(
             Setting.UPLOAD_FOLDER, self.save_name)
-        response.headers["Content-Disposition"] = \
-            "attachment;" \
-            "filename*=UTF-8''{utf_filename}".format(
-                utf_filename=quote(self.name.encode('utf-8'))
-        )
         return response

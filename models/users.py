@@ -12,20 +12,22 @@ from settings import Setting
 class User(BaseModel):
     __tablename__ = 'users'
 
-    id = db.Column(db.String(20), primary_key=True)
-    username = db.Column(db.String(20), nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(20), unique=True, nullable=False)
     nickname = db.Column(db.String(20), nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    role_id = db.Column(db.Integer, db.ForeignKey(
+        'roles.id'), nullable=False, default=2)
 
-    def __init__(self, username, nickname, password, id=None, role_id=2):
-        super(User, self).__init__()
+    def __init__(self, username, nickname, password, id=None, role_id=None):
+        super().__init__()
         self.username = username
         self.nickname = nickname
         self.password_hash = generate_password_hash(password)
-        self.role_id = role_id
         if id:
             self.id = id
+        if role_id:
+            self.role_id = role_id
 
     def __repr__(self):
         return '<User:{}>'.format(self.username)
