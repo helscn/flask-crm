@@ -22,4 +22,8 @@ def init_db():
     users = Role(id=2, name='普通用户')
     users.save()
 
+    admin = User(id=1, username='admin', nickname='Administrator',
+                 password='123456', role_id=admins.id)
+    admin.save()
+
     print("The database has been created.")

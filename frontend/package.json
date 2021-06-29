@@ -14,7 +14,8 @@
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "quasar": "^1.0.0",
-    "validators": "^0.3.1"
+    "validators": "^0.3.1",
+    "vue-cookies": "^1.7.4"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",

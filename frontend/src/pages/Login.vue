@@ -183,6 +183,7 @@ export default {
           .then(res => {
             _this.isLoading = false;
             // 将用户token保存到vuex中
+            _this.$cookies.set("Token", res.data.token);
             _this.$store.commit("auth/changeLogin", res.data);
             _this.$q.notify({
               type: "positive",
@@ -193,6 +194,7 @@ export default {
               progress: true
             });
             setTimeout(() => {
+              console.debug(_this.$cookies.keys());
               _this.$router.push("/");
             }, 1500);
           })
