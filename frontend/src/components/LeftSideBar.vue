@@ -14,8 +14,7 @@
       </q-item-section>
       <q-item-section>
         <q-item-label>{{ name }}</q-item-label>
-        <q-item-label caption>{{ title }}</q-item-label>
-        <q-item-label caption>{{ department }}</q-item-label>
+        <q-item-label caption>{{ role_name }}</q-item-label>
       </q-item-section>
     </q-item>
     <q-separator spaced inset />
@@ -56,15 +55,13 @@ export default {
   methods: {
     showIndex: function() {
       this.$router.push("/");
+      this.$store.dispatch("auth/refreshLogin");
     }
   },
   computed: {
     ...mapState({
-      name: state => state.auth.name,
-      title: state => state.auth.title,
-      department: state => state.auth.department,
-      phone: state => state.auth.phone,
-      email: state => state.auth.email
+      name: state => state.auth.nickname,
+      role_name: state => state.auth.role_name
     }),
     isShowLeft: {
       get: function() {
@@ -77,12 +74,7 @@ export default {
   },
 
   mounted: function() {
-    if (
-      this.$store.state.auth.name == "" &&
-      this.$store.state.auth.token != ""
-    ) {
-      this.$store.dispatch("auth/refreshLogin", this);
-    }
+    this.$store.dispatch("auth/refreshLogin");
   }
 };
 </script>

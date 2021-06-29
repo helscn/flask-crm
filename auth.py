@@ -120,7 +120,7 @@ class Login(Resource):
         if user and user.verify_password(args['password']):
             return user.generate_response()
         else:
-            abort(401, error='Username or passowrd is incorrect!')
+            abort(406, error='Username or passowrd is incorrect!')
 
 
 # 客户端请求获取新token

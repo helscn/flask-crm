@@ -1,6 +1,9 @@
 export default function() {
   return {
-    id: "",
-    username: ""
+    id: null,
+    username: "",
+    nickname: "",
+    role_id: null,
+    role_name: ""
   };
 }

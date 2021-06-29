@@ -22,12 +22,12 @@ export default function(/* { ssrContext } */) {
         isShowLeft: true
       };
     },
-    mutations:{
-      toggleLeftSideBar(state){
-        state.isShowLeft=!state.isShowLeft
+    mutations: {
+      toggleLeftSideBar(state) {
+        state.isShowLeft = !state.isShowLeft;
       },
-      setLeftSideBar(state,isShow){
-        state.isShowLeft=!!isShow
+      setLeftSideBar(state, isShow) {
+        state.isShowLeft = !!isShow;
       }
     },
 

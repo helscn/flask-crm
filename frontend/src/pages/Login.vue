@@ -168,23 +168,15 @@ export default {
     },
     login: function() {
       let _this = this;
-
-      if (_this.inputIsOk) {
+      if (this.inputIsOk) {
         _this.isLoading = true;
-        _this
-          .$axios({
-            method: "post",
-            url: "/auth/login",
-            data: {
-              username: _this.loginForm.username,
-              password: _this.loginForm.password
-            }
+        _this.$store
+          .dispatch("auth/login", {
+            username: _this.loginForm.username,
+            password: _this.loginForm.password
           })
           .then(res => {
             _this.isLoading = false;
-            // 将用户token保存到vuex中
-            _this.$cookies.set("Token", res.data.token);
-            _this.$store.commit("auth/changeLogin", res.data);
             _this.$q.notify({
               type: "positive",
               position: "center",
@@ -194,13 +186,12 @@ export default {
               progress: true
             });
             setTimeout(() => {
-              console.debug(_this.$cookies.keys());
               _this.$router.push("/");
             }, 1500);
           })
           .catch(error => {
             _this.isLoading = false;
-            _this.$store.commit("logout");
+            _this.$store.dispatch("auth/logout");
             _this.$q.notify({
               type: "negative",
               position: "center",

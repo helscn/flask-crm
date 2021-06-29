@@ -34,6 +34,7 @@ export default {
     },
     logout: function() {
       let _this = this;
+      _this.$store.commit("auth/logout");
       _this.$q.notify({
         type: "warning",
         position: "center",
@@ -43,7 +44,6 @@ export default {
         progress: true
       });
       setTimeout(() => {
-        _this.$store.commit("auth/logout");
         _this.$router.push("/login");
       }, 1500);
     }

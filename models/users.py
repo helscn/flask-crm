@@ -57,6 +57,7 @@ class User(BaseModel):
     def generate_response(self):
         response = self.to_dict()
         response['token'] = self.generate_token()
+        response['role_name'] = self.role.name
         return response
 
     @staticmethod

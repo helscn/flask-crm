@@ -26,7 +26,7 @@ export default {
   name: "Upload",
   methods: {
     upload: function(files) {
-      const token = localStorage.getItem("Token");
+      const token = this.$cookies.get("Token");
       return {
         url: "http://localhost:5000/api/files",
         method: "POST",
