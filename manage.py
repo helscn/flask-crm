@@ -35,4 +35,4 @@ if len(sys.argv) >= 2:
       serve   : Start the simple web server , the default address is localhost:5000.
         ''')
 elif __name__ == '__main__':
-    app.run('localhost', 5000)
+    app.run('0.0.0.0', 5000)
