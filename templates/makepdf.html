@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+  <head>
+    <meta charset="UTF-8" />
+    <title>NOP BOOK TEST</title>
+    <meta name="author" content="nop" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="screen-orientation" content="portrait" />
+    <meta name="x5-orientation" content="portrait" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="generator" content="wkhtmltopdf" />
+    <link
+      rel="shortcut icon"
+      href="./static/img/logo.jpg"
+      type="image/x-icon"
+    />
+    <meta name="description" content="" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"
+    />
+    <script src="/static/js/polyfill.min.js"></script>
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/lodash.min.js"></script>
+    <script src="/static/js/bookjs-eazy.min.js"></script>
+  </head>
+  <body>
+    <style>
+      body {
+        color: #000;
+        font-family: "Verdana", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
+          "Segoe UI Emoji", "Segoe UI Symbol";
+        font-weight: 400;
+        text-align: center;
+      }
+
+      table {
+        width: 100%;
+        border-spacing: 0;
+        border-collapse: unset;
+        border-top: #000 1px solid;
+        border-right: #000 1px solid;
+      }
+      thead > tr {
+        height: 5rem;
+        background-color: #eee;
+      }
+      tbody > tr {
+        height: 100px;
+      }
+      th td {
+        text-align: center;
+        vertical-align: middle !important;
+      }
+
+      table div {
+        text-align: center;
+      }
+      .tfoot {
+        height: 3rem;
+      }
+
+      .tfoot div {
+        margin-left: 1rem;
+        margin-right: 1rem;
+        text-align: left;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        padding-bottom: 0.5em;
+        padding-top: 0.5em;
+      }
+      h1 {
+        font-weight: 600;
+        font-size: 2rem;
+        text-align: center;
+      }
+      h2 {
+        font-size: 1.7rem;
+        text-align: center;
+      }
+      h3 {
+        font-size: 1.4rem;
+      }
+      h4 {
+        font-size: 1.2rem;
+      }
+
+      .bold {
+        font-weight: 600;
+        font-size: 1.4rem;
+      }
+
+      .thumbnail {
+        max-width: 160px;
+        max-height: 90px;
+      }
+
+      .logo {
+        max-height: 2rem;
+        vertical-align: text-bottom;
+      }
+
+      .header {
+        width: 100%;
+        padding-left: 1.5em;
+        padding-right: 1.5em;
+        padding-top: 1em;
+        padding-bottom: 1.5em;
+      }
+    </style>
+    <div id="content-box" style="display: none">
+      <h1 data-op-type="block">
+        <img class="logo" src="./static/img/logo.jpg" />&nbsp;Quotation List
+      </h1>
+      <h2 data-op-type="block">Datton Electronic Technology. Co.,Ltd</h2>
+      <div data-op-type="block" class="header bold">
+        <div style="float: left">TO: customer</div>
+        <div style="float: right">NO.: DT-210601</div>
+      </div>
+      <table data-op-type="block-box" border="1">
+        <thead>
+          <tr>
+            <th><div>Item No.</div></th>
+            <th><div>Description</div></th>
+            <th width="170px"><div>Picture</div></th>
+            <th><div>Unit</div></th>
+            <th><div>MOQ</div></th>
+            <th>
+              <div>Price<br />(USD)</div>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="nop-fill-box">
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td>
+              <div><img class="thumbnail" src="./static/img/image1.png" /></div>
+            </td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td>
+              <div><img class="thumbnail" src="./static/img/image2.png" /></div>
+            </td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td>
+              <div><img class="thumbnail" src="./static/img/image3.png" /></div>
+            </td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td>
+              <div><img class="thumbnail" src="./static/img/image4.png" /></div>
+            </td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td>
+              <div><img class="thumbnail" src="./static/img/image5.png" /></div>
+            </td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td>
+              <div><img class="thumbnail" src="./static/img/image6.png" /></div>
+            </td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td>
+              <div><img class="thumbnail" src="./static/img/image7.png" /></div>
+            </td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td>
+              <div><img class="thumbnail" src="./static/img/image8.png" /></div>
+            </td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td>
+              <div><img class="thumbnail" src="./static/img/image9.png" /></div>
+            </td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+          <tr>
+            <td><div>DT-BA004</div></td>
+            <td>
+              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+            </td>
+            <td><div>picture</div></td>
+            <td><div>pcs</div></td>
+            <td><div>100</div></td>
+            <td><div>$1.99</div></td>
+          </tr>
+
+          <tr class="tfoot">
+            <td colspan="6">
+              <div>
+                Payment Terms: T/T 100% ( 50% deposit on order+50% before
+                shipment)
+              </div>
+            </td>
+          </tr>
+          <tr class="tfoot">
+            <td colspan="6"><div>Delivery Terms: EXW</div></td>
+          </tr>
+          <tr class="tfoot">
+            <td colspan="6"><div>Lead Time: 7~15days</div></td>
+          </tr>
+          <tr class="tfoot">
+            <td colspan="6"><div>Note: Price valid in 30days</div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      bookConfig = {
+        /**  全部纸张类型，未全量测试，常用ISO_A4
+        ISO_A0、ISO_A1、ISO_A2、ISO_A3、ISO_A4、ISO_A5
+        ISO_B0、ISO_B1、ISO_B2、ISO_B3、ISO_B4、ISO_B5、ISO_B6、ISO_B7、ISO_B8、ISO_B9、ISO_B10
+        ISO_C0、ISO_C1、ISO_C2、ISO_C3、ISO_C4、ISO_C5、ISO_C6、ISO_C7、ISO_DL、ISO_C7_6
+        JIS_B0、JIS_B1、JIS_B2、JIS_B3、JIS_B4、JIS_B5、JIS_B6、JIS_B7、JIS_B8、JIS_B9
+        NA_LEGAL、NA_LETTER、NA_LEDGER、NA_EXECUTIVE、NA_INVOICE、
+        BIG_K32
+        **/
+        // 定义纸张大小,两种方式,可选，默认：ISO_A4
+        pageSize: "ISO_A4",
+        orientation: "portrait", // portrait/landscape 定义纸张是竖屏/横屏放置
+
+        /** 
+        //pageSizeConfig 和 pageSize/orientation组合 ，只选一即可
+        pageSizeOption : {
+            width : '15cm', // 自定义宽高
+            height : '20cm',
+        }
+        **/
+
+        // 可选，边距，所列选项为默认值
+        padding: "25.0mm 20.0mm 25.0mm 20.0mm",
+        // 可选，强制打印背景页，所列选项为默认值
+        forcePrintBackground: true,
+        // 可选，文本内容在跨页差分时，不会出现在段首的字符，所列选项为默认值
+        textNoBreakChars: [
+          "，",
+          "。",
+          "：",
+          "”",
+          "！",
+          "？",
+          "、",
+          "；",
+          "》",
+          "】",
+          "…",
+          ".",
+          ",",
+          "!",
+          "]",
+          "}",
+          "｝",
+        ],
+        // 简易页码插件，可选（默认未开启），所列选项为开启时的默认值
+        simplePageNum: {
+          // 从第几页开始编号，默认0为第一页开始，，没有页码,也可以为一个css选择器如：".first_page"，从包含选择器接点的页面开始编号
+          pageBegin: 1,
+          // 从第几页结束编号，默认-1为最后一页结束，，没有页码,也可以为一个css选择器如：".end_page"，到包含选择器接点的页面结束编号
+          pageEnd: -1,
+          // 页面部件， 可选
+          pendant:
+            '<div class="page-num-simple"><span style="">${PAGE} / ${TOTAL_PAGE}</span></div>',
+        },
+
+        // 目录插件，可选（默认未开启），所列选项为开启时的默认值
+        // simpleCatalog: {
+        //   titlesSelector: "h1,h2,h3,h4,h5,h6", // 可选，作为目录标题的选择器，按目录级别依次
+        //   showSlide: true, // 可选，是否显示侧边栏，目录导航，工具栏按钮顺序index: 200
+        //   slideOn: false, // 目录导航，默认是否打开状态
+
+        //   showOnPage: true, // 是否在页面中插入目录，默认，插入目录到页面
+        //   header: '<div class="catalog-title">目 录</div>', // 可选，目录页Header部分，放入你想加入的一切
+        //   itemFillChar: "…", // 可选，目录项填充字符, ""空字符串，不填充，使用自定义makeItem时，忽略该选项配置
+        //   positionSelector: ".nop-page-item-pagenum-1", //可选，目录位置会插入在匹配页的之前，默认为第一个编号页前
+        //   // 可选，自定义目录项。
+        //   makeItem: function (itemEl, itemInfo) {
+        //     /**
+        //      * @var itemEl jQuery Element
+        //      * @var object itemInfo PS: {title, pageNum, level,linkId}
+        //      **/
+        //     return "<div>自定义的目录项html内容，根据itemInfo自己构造</div>";
+        //   },
+        // },
+
+        // 工具栏插件，可选（默认开启），所列选项为开启时的默认值
+        toolBar: {
+          // Web打印按钮功能可选，默认true, 按钮顺序index: 100
+          webPrint: true,
+
+          /**
+           * HTML保存按钮，可选，bool|object，默认false:禁用保存HTML功能，true:启用并使用默认选项
+           * 按钮顺序index: 300
+           * saveHtml : {
+           *     // 可选，保存的文件名，默认值: document.title + '.html'
+           *     fileName : 'output.html',
+           *     // 可选，自定义下载保存。可用于混合APP内下载时用
+           *     save : function(getStaticHtmlPromiseFunc,fileName){
+           *         getStaticHtmlPromiseFunc().then(function(htmlBlob){
+           *             ...
+           *         })
+           *     }
+           * }
+           */
+          saveHtml: true,
+
+          /**
+           * 服务端打印下载按钮，按钮顺序index: 400
+           * 可选，bool|object，默认false:不启用,true:启用并使用默认选项,object:使用自定义的服务端打印
+           * true等效的object的配置：serverPrint : { serverUrl : '/' },
+           * 官网可用serverUrl : '//bookjs.zhouwuxue.com/'
+           * 要使用serverPrint,必须server能访问到你的网页。网页不要使用登录状态授权，建议通过URL参数传递临时授权
+           * 如果使用官方的server进行打印，则需公网上可正确访问你用bookjs-eazy构造的网页
+           *
+           * serverPrint : {
+           *     // 可选，打印服务器地址,按钮顺序index: 400
+           *     serverUrl : '/',
+           *     // 可选，保存的文件名，默认值 document.title + '.pdf'
+           *     fileName : 'output.pdf',
+           *     // 可选，打印附属参数
+           *     params : {
+           *         // 打印超时时间
+           *         timeout : 30000,
+           *         // 页面渲染完成后，打印前延时
+           *         delay : 1000,
+           *     },
+           *     // 可选，自定义下载。可用于混合APP内下载时用
+           *     save : function(pdfUrl, serverPrintOption){
+           *
+           *     }
+           * }
+           */
+          serverPrint: false,
+
+          buttons: [
+            // 这里可以自定义工具栏按钮
+            // {
+            //    id : 'cloudPrint',
+            //    index : 1, // 按钮位置顺序，小的显示在前面，系统内置按钮index值，见各配置项说明。
+            //    icon : 'https://xxxx.../aa.png'
+            //    onClick : function(){ console.log("...do some thing"); }
+            // }
+          ],
+        },
+
+        // 重要
+        // 当这个值为true时，页面才开始渲染。如果你的页面是动态的，
+        // 就先将默认值设为false,当下节所述中的#content-box节点内容准备好后，在将其设为true，
+        // bookConfig.start = true;
+        start: true,
+      };
+    </script>
+  </body>
+</html>

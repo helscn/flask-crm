@@ -24,7 +24,7 @@ class Setting:
     STATIC_FOLDER = os.path.join(BASE_DIR, 'static')
 
     # 自定义静态目录设置,设置为前端build目录，引用文件路径不需要增加任何前缀
-    CUSTOM_STATIC_FOLDER = os.path.join(BASE_DIR, 'frontend/dist/spa')
+    FRONTEND_FOLDER = os.path.join(BASE_DIR, 'frontend/dist/spa')
 
     # 文件上传的保存目录
     UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')

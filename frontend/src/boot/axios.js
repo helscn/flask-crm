@@ -2,16 +2,29 @@ import Vue from "vue";
 import axios from "axios";
 import VueCookies from "vue-cookies";
 
+// 载入 Vue-Cookies 插件
 Vue.use(VueCookies);
-Vue.$cookies.config("7d");
+Vue.$cookies.config("1h");
 
-axios.defaults.timeout = 5000;
-axios.defaults.headers.post["Content-Type"] =
-  "application/x-www-form-urlencoded;charset=UTF-8";
+// 配置 Axios 默认请求参数：
+// 开发环境请求API接口地址
 axios.defaults.baseURL = "http://localhost:5000";
 
+// 设置API跨域访问，同时需要在后端服务器做跨域配置
+axios.defaults.withCredentials = true;
+axios.defaults.crossDomain = true;
+
+// 默认请求超时时间，单位ms
+axios.defaults.timeout = 5000;
+
+// 设置请求 Content-Type 类型
+axios.defaults.headers.get["Content-Type"] =
+  "application/x-www-form-urlencoded;charset=UTF-8";
+axios.defaults.headers.post["Content-Type"] =
+  "application/x-www-form-urlencoded;charset=UTF-8";
+
+// 设置请求前置拦截器
 axios.interceptors.request.use(
-  //请求拦截器
   config => {
     if (Vue.$cookies.isKey("Token")) {
       config.headers.Token = Vue.$cookies.get("Token");
@@ -23,8 +36,8 @@ axios.interceptors.request.use(
   }
 );
 
+// // 设置请求响应拦截器
 // axios.interceptors.response.use(
-//   //响应拦截器
 //   data => {
 //     return data;
 //   },

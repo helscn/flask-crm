@@ -9,7 +9,7 @@
     <q-item clickable v-ripple @click="showIndex">
       <q-item-section top avatar>
         <q-avatar rounded size="48px">
-          <img src="/images/Avatar.png" />
+          <img src="images/Avatar.png" />
         </q-avatar>
       </q-item-section>
       <q-item-section>

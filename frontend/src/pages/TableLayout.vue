@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-page-container>
       <div class="flex flex-center container">
-        <table class="centerContent" cellspacing="0" border="1">
+        <table class="centerContent" cellspacing="0" border="0">
           <thead>
             <tr>
               <th>Title</th>
@@ -19,7 +19,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="link in links" :key="link">
+            <tr border="1" v-for="link in links" :key="link">
               <td width="5%">{{ link.title }}</td>
               <td width="30%">{{ link.caption }}</td>
               <td width="20%"><img :src="link.icon" /></td>
