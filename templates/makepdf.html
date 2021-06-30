@@ -141,7 +141,7 @@
           <tr>
             <td><div>DT-BA004</div></td>
             <td>
-              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+              <div>{{ info | text | safe}}</div>
             </td>
             <td>
               <div class="thumbnail"><img  src="./static/images/image1.png" /></div>
@@ -153,7 +153,7 @@
           <tr>
             <td><div>DT-BA004</div></td>
             <td>
-              <div>Fiber Glass Lipo<br />Charge Bag<br />(230x330mm)</div>
+              <div>{% autoescape false %}{{ info | text }}{% endautoescape %}</div>
             </td>
             <td>
               <div class="thumbnail"><img  src="./static/images/image2.png" /></div>

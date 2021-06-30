@@ -5,7 +5,7 @@ from main import app
 from auth import UserLogin
 from resources import Resources
 from flask import send_from_directory, render_template
-
+import html
 
 # 注册登录 login 蓝图
 app.register_blueprint(UserLogin, url_prefix='/auth')
@@ -27,10 +27,23 @@ def frontend(filename):
     return send_from_directory(app.config['FRONTEND_FOLDER'], filename)
 
 
+# 注册自定义模板过滤器
+@app.template_filter()
+def text(text):
+    safe_text = html.escape(str(text))
+    safe_text = safe_text.replace('\n', '<br />')
+    print(safe_text)
+    return safe_text
+
+
 # 注册显示PDF页面
 @app.route('/makepdf')
 def make_pdf():
-    return render_template('makepdf.html')
+    return render_template('makepdf.html', info='''abc
+axd
+  fdafdsa
+afdfa
+    ''')
 
 # # 默认的错误页面请求处理
 # @app.errorhandler(404)
