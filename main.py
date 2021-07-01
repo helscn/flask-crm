@@ -10,8 +10,11 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(BASE_DIR)
 
 # 初始化app,取消显示静态资源的 statice 路由
-app = Flask(__name__, static_url_path='/static',
-            static_folder=Setting.STATIC_FOLDER)
+app = Flask(__name__,
+            static_url_path='/static',
+            static_folder=Setting.STATIC_FOLDER,
+            template_folder=Setting.TEMPLATE_FOLDER
+            )
 
 # 载入配置
 app.config.from_object(Setting)

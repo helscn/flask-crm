@@ -26,6 +26,9 @@ class Setting:
     # 自定义静态目录设置,设置为前端build目录，引用文件路径不需要增加任何前缀
     FRONTEND_FOLDER = os.path.join(BASE_DIR, 'frontend/dist/spa')
 
+    # Flask 模板文件夹路径
+    TEMPLATE_FOLDER = os.path.join(BASE_DIR, 'templates')
+
     # 文件上传的保存目录
     UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
 
