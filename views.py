@@ -6,7 +6,7 @@ from auth import UserLogin
 from resources import Resources
 from utils import Utils
 from flask import send_from_directory, render_template
-import html
+
 
 # 注册登录 login 蓝图
 app.register_blueprint(UserLogin, url_prefix='/auth')

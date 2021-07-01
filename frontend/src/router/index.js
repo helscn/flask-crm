@@ -30,12 +30,12 @@ export default function(/* { store, ssrContext } */) {
   Router.beforeEach((to, from, next) => {
     if (to.path === "/login") {
       next();
+    }
+
+    if (Vue.$cookies.isKey("Token")) {
+      next();
     } else {
-      if (Vue.$cookies.isKey("Token")) {
-        next();
-      } else {
-        next("/login");
-      }
+      next("/login");
     }
   });
   return Router;

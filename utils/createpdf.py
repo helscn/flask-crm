@@ -4,8 +4,8 @@
 from flask import render_template
 
 
-def CreateQuotaPDF():
-    return render_template('create_quota_pdf.html', info='''abc
+def CreateQuotationPDF():
+    return render_template('create_quotation.html', info='''abc
 axd
   fdafdsa
 afdfa

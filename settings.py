@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import os
+from os import path
 
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+BASE_DIR = path.abspath(path.dirname(__file__))
 
 # 数据库连接配置
 DIALECT = 'mysql'
@@ -21,16 +21,16 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///{}/test_data.db'.format(BASE_DIR)
 
 class Setting:
     # Flask 静态资源文件目录，引用文件路径需要增加 /static 前缀
-    STATIC_FOLDER = os.path.join(BASE_DIR, 'static')
+    STATIC_FOLDER = path.join(BASE_DIR, 'static')
 
     # 自定义静态目录设置,设置为前端build目录，引用文件路径不需要增加任何前缀
-    FRONTEND_FOLDER = os.path.join(BASE_DIR, 'frontend/dist/spa')
+    FRONTEND_FOLDER = path.join(BASE_DIR, 'frontend/dist/spa')
 
     # Flask 模板文件夹路径
-    TEMPLATE_FOLDER = os.path.join(BASE_DIR, 'templates')
+    TEMPLATE_FOLDER = path.join(BASE_DIR, 'templates')
 
     # 文件上传的保存目录
-    UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
+    UPLOAD_FOLDER = path.join(BASE_DIR, 'uploads')
 
     # 文件上传最大文件大小
     MAX_CONTENT_LENGTH = 64 * 1024 * 1024

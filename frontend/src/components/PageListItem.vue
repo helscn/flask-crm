@@ -5,14 +5,13 @@
     </q-item-section>
     <q-item-section>
       <q-item-label :lines="1">{{ name }}</q-item-label>
-      <q-item-label :lines="3" caption>{{ description }}</q-item-label>
     </q-item-section>
   </q-item>
 </template>
 
 <script>
 export default {
-  name: "ProjectItem",
+  name: "PageListItem",
   props: {
     path: {
       type: String,
@@ -31,7 +30,7 @@ export default {
 
     icon: {
       type: String,
-      default: "pending_actions"
+      default: "description"
     }
   }
 };

@@ -14,8 +14,8 @@ const routes = [
         component: () => import("pages/ProjectsView.vue")
       },
       {
-        path: "table",
-        component: () => import("pages/TableLayout.vue")
+        path: "products",
+        component: () => import("layouts/ProductsLayout.vue")
       },
       {
         path: "upload",

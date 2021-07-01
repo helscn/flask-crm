@@ -227,7 +227,7 @@ export default {
             });
             setTimeout(() => {
               _this.$router.push("/");
-            }, 1500);
+            }, 1000);
           })
           .catch(error => {
             _this.isLoading = false;

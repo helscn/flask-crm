@@ -19,34 +19,53 @@
     </q-item>
     <q-separator spaced inset />
 
-    <ProjectItem v-for="item in projectsList" :key="item.name" v-bind="item" />
+    <PageListItem v-for="item in projectsList" :key="item.name" v-bind="item" />
   </q-drawer>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import ProjectItem from "components/ProjectItem.vue";
+import PageListItem from "components/PageListItem.vue";
 
 export default {
   name: "LeftSideBar",
-  components: { ProjectItem },
+  components: { PageListItem },
   data() {
     return {
       projectsList: [
         {
-          name: "测试项目",
-          description: "这是项目描述，说明项目的背景及制作要求。",
-          path: "/projects"
+          name: "客户管理",
+          icon: "people",
+          path: "/customers"
         },
         {
-          name: "Can you Mary me, my beautiful princess",
-          description:
-            "这是一个测试，用于展示显示测试内容震左吉大南校大方地说安抚加大开发地地载需要在地革震奈斯。",
-          path: "/table"
+          name: "产品管理",
+          icon: "business_center",
+          path: "/products"
+        },
+        {
+          name: "供应商管理",
+          icon: "support_agent",
+          path: "/suppliers"
+        },
+        {
+          name: "客户询价",
+          icon: "request_quote",
+          path: "/quotations"
+        },
+        {
+          name: "订单管理",
+          icon: "paid",
+          path: "/orders"
+        },
+        {
+          name: "用户管理",
+          icon: "manage_accounts",
+          path: "/orders"
         },
         {
           name: "文件上传",
-          description: "这是一个测试，用于展示文件上传组件。",
+          icon: "cloud_upload",
           path: "/upload"
         }
       ]

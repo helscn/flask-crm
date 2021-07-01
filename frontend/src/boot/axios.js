@@ -23,30 +23,30 @@ axios.defaults.headers.get["Content-Type"] =
 axios.defaults.headers.post["Content-Type"] =
   "application/x-www-form-urlencoded;charset=UTF-8";
 
-// 设置请求前置拦截器
-axios.interceptors.request.use(
-  config => {
-    if (Vue.$cookies.isKey("Token")) {
-      config.headers.Token = Vue.$cookies.get("Token");
-    }
-    return config;
-  },
-  error => {
-    return Promise.reject(error);
-  }
-);
-
-// // 设置请求响应拦截器
-// axios.interceptors.response.use(
-//   data => {
-//     return data;
+// 设置请求前置拦截器;
+// axios.interceptors.request.use(
+//   config => {
+//     if (Vue.$cookies.isKey("Token")) {
+//       config.headers.Token = Vue.$cookies.get("Token");
+//     }
+//     return config;
 //   },
 //   error => {
-//     if (error.status == 401) {
-//       alert("未认证用户，请重新登录！");
-//     }
 //     return Promise.reject(error);
 //   }
 // );
+
+// 设置请求响应拦截器
+axios.interceptors.response.use(
+  data => {
+    return data;
+  },
+  error => {
+    if (error.response.status == 401) {
+      Vue.$cookies.remove("Token");
+    }
+    return Promise.reject(error);
+  }
+);
 
 Vue.prototype.$axios = axios;

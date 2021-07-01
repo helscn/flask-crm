@@ -7,7 +7,7 @@ from flask import Blueprint
 # 从当前路径中导入需要加载的视图对象
 from .filters import text
 from .createqrcode import CreateQRCode
-from .createpdf import CreateQuotaPDF
+from .createpdf import CreateQuotationPDF
 
 CURRENT_FOLDER = path.abspath(path.dirname(__file__))
 
@@ -22,7 +22,7 @@ Utils.add_app_template_filter(text, name="text")
 
 # 将导入的函数注册到蓝图中
 Utils.add_url_rule('/qrcode', view_func=CreateQRCode, endpoint='qrcode')
-Utils.add_url_rule('/create_quota', view_func=CreateQuotaPDF,
-                   endpoint='create_quota')
+Utils.add_url_rule('/quotation', view_func=CreateQuotationPDF,
+                   endpoint='quotation')
 
 __all__ = ['Utils']
