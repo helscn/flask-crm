@@ -14,7 +14,7 @@ class ApiFile(Resource):
     def get(self, id):
         file = File.get(id)
         if file:
-            return file.response()
+            return file.download()
         else:
             abort(404, error='File not exist.')
 
@@ -22,16 +22,16 @@ class ApiFile(Resource):
     def delete(self, id):
         file = File.get(id)
         if file:
-            if file.user_id != g.current_user.id:
+            if (file.user_id != g.current_user.id) and (g.current_user.role_id != 1):
                 abort(401, error='Unauthorized access')
             try:
                 remove(path.join(Setting.UPLOAD_FOLDER, file.save_name))
             except:
                 abort(404, error='File not exist.')
             file.delete()
-            return '', 204
+            return 'File deleted.', 204
         else:
-            abort(404, error='File not exist.')
+            abort(404, error='Unknow file id.')
 
 
 class ApiFiles(Resource):
@@ -45,7 +45,6 @@ class ApiFiles(Resource):
         }
 
     @login_required
-    @permission_required
     def post(self):
         for name in request.files:
             file = request.files.get(name)

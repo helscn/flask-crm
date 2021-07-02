@@ -59,9 +59,14 @@ export default {
           path: "/orders"
         },
         {
+          name: "数据统计",
+          icon: "leaderboard",
+          path: "/stat"
+        },
+        {
           name: "用户管理",
           icon: "manage_accounts",
-          path: "/orders"
+          path: "/users"
         },
         {
           name: "文件上传",

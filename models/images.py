@@ -1,10 +1,12 @@
 #!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
 
+from os import path
 from flask import send_from_directory
 from settings import Setting
 from urllib.parse import quote
 from .base_model import db, BaseModel
+from settings import Setting
 
 
 class Image(BaseModel):
@@ -25,6 +27,10 @@ class Image(BaseModel):
     @property
     def save_name(self):
         return 'Img{id}{ext}'.format(id=self.id, ext=self.ext)
+
+    @property
+    def url(self):
+        return path.join('/', Setting.UPLOAD_IMAGE_FOLDER, self.save_name)
 
     def response(self):
         response = send_from_directory(

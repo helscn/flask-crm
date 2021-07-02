@@ -32,6 +32,9 @@ class Setting:
     # 文件上传的保存目录
     UPLOAD_FOLDER = path.join(BASE_DIR, 'uploads')
 
+    # 图片文件上传的保存目录
+    UPLOAD_IMAGE_FOLDER = path.join(BASE_DIR, 'uploads/images')
+
     # 文件上传最大文件大小
     MAX_CONTENT_LENGTH = 64 * 1024 * 1024
 

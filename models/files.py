@@ -27,6 +27,10 @@ class File(BaseModel):
         return 'File{id}{ext}'.format(id=self.id, ext=self.ext)
 
     def response(self):
+        return send_from_directory(
+            Setting.UPLOAD_FOLDER, self.save_name)
+
+    def download(self):
         response = send_from_directory(
             Setting.UPLOAD_FOLDER, self.save_name)
         response.headers["Content-Disposition"] = \
