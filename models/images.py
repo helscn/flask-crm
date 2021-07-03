@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from os import path
-from flask import send_from_directory
+from flask import send_from_directory, url_for
 from settings import Setting
 from urllib.parse import quote
 from .base_model import db, BaseModel
@@ -30,7 +30,7 @@ class Image(BaseModel):
 
     @property
     def url(self):
-        return path.join('/', Setting.UPLOAD_IMAGE_FOLDER, self.save_name)
+        return url_for('api.image', id=self.id)
 
     def response(self):
         response = send_from_directory(

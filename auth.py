@@ -9,6 +9,78 @@ from models import User
 from settings import Setting
 
 
+##################### 请求账号验证 #############################
+basic_auth = HTTPBasicAuth()
+token_auth = HTTPTokenAuth(scheme='')
+multi_auth = MultiAuth(token_auth, basic_auth)
+
+# 默认以 Token 验证，也可以使用 Basic Http 验证或多重验证
+login_required = token_auth.login_required
+
+tokenParse = reqparse.RequestParser()
+tokenParse.add_argument(Setting.TOKEN_KEY, dest='Token',
+                        type=str, location=Setting.TOKEN_LOCATION, required=False)
+
+
+# Token 验证函数
+@ token_auth.verify_token
+def verify_token(token):
+    print('用户登验证...')
+    g.current_user = None
+    args = tokenParse.parse_args()
+    token = args.get('Token')
+    if not token:
+        return False
+    else:
+        g.current_user = User.verify_token(token)
+        return g.current_user is not None
+
+
+# Basic Http 验证函数
+@ basic_auth.verify_password
+def verify_password(username, password):
+    g.current_user = None
+    user = User.query.filter(User.username == username).first()
+    if user and user.verify_password(password):
+        g.current_user = user
+        return True
+    else:
+        return False
+
+
+# Token 验证错误处理函数
+@ token_auth.error_handler
+def auth_error():
+    abort(401, error='Unauthorized access')
+
+
+# Basic Http 验证错误处理函数
+@ basic_auth.error_handler
+def auth_error():
+    abort(401, error='Unauthorized access')
+
+
+##################### 管理员权限验证 #############################
+
+def admin_required(func):
+    # 资源接口的角色权限检查函数，此装饰器必须放在登录auth 登录验证装饰器后面
+    # 只有管理员角色才允许访问对应资源
+    @wraps(func)
+    def wrap_func(*args, **kwargs):
+        # 获取当前用户
+        print('检查是否为管理员...')
+        current_user = g.current_user
+        if not current_user:
+            # 检查当前用户是已登录
+            abort(401, error='Unauthorized access')
+        elif current_user.role_id != 1:
+            # 检查当前用户是否为管理员
+            abort(403, error='Access forbidden')
+        else:
+            return func(*args, **kwargs)
+    return wrap_func
+
+
 ##################### 资源权限验证 #############################
 
 def permission_required(func):
@@ -54,58 +126,7 @@ def permission_required(func):
     return wrap_func
 
 
-##################### 请求账号验证 #############################
-basic_auth = HTTPBasicAuth()
-token_auth = HTTPTokenAuth(scheme='')
-multi_auth = MultiAuth(token_auth, basic_auth)
-
-# 默认以 Token 验证，也可以使用 Basic Http 验证或多重验证
-login_required = token_auth.login_required
-
-tokenParse = reqparse.RequestParser()
-tokenParse.add_argument(Setting.TOKEN_KEY, dest='Token',
-                        type=str, location=Setting.TOKEN_LOCATION, required=False)
-
-
-# Token 验证函数
-@ token_auth.verify_token
-def verify_token(token):
-    g.current_user = None
-    args = tokenParse.parse_args()
-    token = args.get('Token')
-    if not token:
-        return False
-    else:
-        g.current_user = User.verify_token(token)
-        return g.current_user is not None
-
-
-# Basic Http 验证函数
-@ basic_auth.verify_password
-def verify_password(username, password):
-    g.current_user = None
-    user = User.query.filter(User.username == username).first()
-    if user and user.verify_password(password):
-        g.current_user = user
-        return True
-    else:
-        return False
-
-
-# Token 验证错误处理函数
-@ token_auth.error_handler
-def auth_error():
-    abort(401, error='Unauthorized access')
-
-
-# Basic Http 验证错误处理函数
-@ basic_auth.error_handler
-def auth_error():
-    abort(401, error='Unauthorized access')
-
-
 ##################### 账号登录验证 #############################
-
 
 # 客户端登录认证
 class Login(Resource):
@@ -118,6 +139,7 @@ class Login(Resource):
         args = parse.parse_args()
         user = User.query.filter(User.username == args['username']).first()
         if user and user.verify_password(args['password']):
+            g.current_user = user
             return user.generate_response()
         else:
             abort(406, error='Username or passowrd is incorrect!')

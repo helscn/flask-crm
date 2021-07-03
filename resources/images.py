@@ -1,40 +1,31 @@
 #!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
 
-from auth import login_required, admin_required
-from models import File
+from auth import login_required
+from models import Image
 from settings import Setting
 from flask import g, request
 from flask_restful import abort, Resource
 from os import path, remove
 
 
-class ApiFiles(Resource):
-    @login_required
-    @admin_required
-    def get(self, id=None):
-        if not id:
-            files = File.query.all()
-            return {
-                'total': len(files),
-                'data': [v.to_dict() for v in files]
-            }
-
-        file = File.get(id)
-        if file:
-            return file.download()
+class ApiImages(Resource):
+    def get(self, id):
+        image = Image.get(id)
+        if image:
+            return image.response()
         else:
             abort(404, error='File not exist.')
 
     @login_required
     def delete(self, id):
-        file = File.get(id)
-        if file:
+        image = Image.get(id)
+        if image:
             try:
-                remove(path.join(Setting.UPLOAD_FOLDER, file.save_name))
+                remove(path.join(Setting.UPLOAD_FOLDER, image.save_name))
+                image.delete()
             except:
                 abort(404, error='File not exist.')
-            file.delete()
             return 'File deleted.', 204
         else:
             abort(404, error='Unknow file id.')
@@ -47,7 +38,7 @@ class ApiFiles(Resource):
             ext = path.splitext(filename)[1]
             mimetype = file.mimetype
             user_id = g.current_user.id
-            attachment = File(
+            attachment = Image(
                 name=filename, ext=ext, mimetype=mimetype, user_id=user_id)
             attachment.save()
             file.save(path.join(Setting.UPLOAD_FOLDER, attachment.save_name))
