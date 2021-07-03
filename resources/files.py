@@ -11,7 +11,6 @@ from os import path, remove
 
 class ApiFiles(Resource):
     @login_required
-    @admin_required
     def get(self, id=None):
         if not id:
             files = File.query.all()

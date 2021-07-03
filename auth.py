@@ -25,7 +25,6 @@ tokenParse.add_argument(Setting.TOKEN_KEY, dest='Token',
 # Token 验证函数
 @ token_auth.verify_token
 def verify_token(token):
-    print('用户登验证...')
     g.current_user = None
     args = tokenParse.parse_args()
     token = args.get('Token')
@@ -63,15 +62,14 @@ def auth_error():
 ##################### 管理员权限验证 #############################
 
 def admin_required(func):
-    # 资源接口的角色权限检查函数，此装饰器必须放在登录auth 登录验证装饰器后面
-    # 只有管理员角色才允许访问对应资源
+    # 资源接口的角色权限检查函数
+    # 当前用户必须已登录且角色为管理员时才允许访问对应资源
     @wraps(func)
     def wrap_func(*args, **kwargs):
         # 获取当前用户
-        print('检查是否为管理员...')
-        current_user = g.current_user
+        current_user = g.get('current_user', default=None)
         if not current_user:
-            # 检查当前用户是已登录
+            # 检查当前用户是否已登录
             abort(401, error='Unauthorized access')
         elif current_user.role_id != 1:
             # 检查当前用户是否为管理员
@@ -86,7 +84,7 @@ def admin_required(func):
 def permission_required(func):
     # 用户访问资源接口的权限检查函数，此装饰器必须放在登录auth验证装饰器后面
     # 且只能用于单独装饰函数，不能放在资源 decorators 中
-    @wraps(func)
+    @ wraps(func)
     def wrap_func(cls, *args, **kwargs):
 
         # 请求的资源名称，用于验证对应资源的权限
