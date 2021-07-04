@@ -21,9 +21,6 @@ def init_db():
     admins = Role(id=1, name='管理员')
     admins.save()
 
-    admins.set_permission('user')
-    admins.set_permission('users')
-
     users = Role(id=2, name='普通用户')
     users.save()
 

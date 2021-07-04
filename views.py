@@ -25,9 +25,16 @@ def index():
     return send_from_directory(app.config['FRONTEND_FOLDER'], 'index.html')
 
 
+# 注册上传文件路径
+@app.route('/uploads/<path:filename>')
+def get_uploads(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+
 # 注册前端文件打包路径
 @app.route('/<path:filename>')
 def frontend(filename):
+    print(filename)
     return send_from_directory(app.config['FRONTEND_FOLDER'], filename)
 
 

@@ -26,7 +26,7 @@ class Image(BaseModel):
 
     @property
     def save_name(self):
-        return 'Img{id}{ext}'.format(id=self.id, ext=self.ext)
+        return 'img_{id}{ext}'.format(id=self.id, ext=self.ext)
 
     @property
     def url(self):

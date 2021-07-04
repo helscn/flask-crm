@@ -1,6 +1,9 @@
 #!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
 
+from os import path,remove
+from settings import Setting
+from flask import url_for
 from datetime import datetime
 from .base_model import db, BaseModel
 from .images import Image
@@ -16,11 +19,12 @@ class Product(BaseModel):
     moq = db.Column(db.Integer, nullable=False, default=1)
     purchase_price = db.Column(db.Float, nullable=False, default=0.00)
     refer_price = db.Column(db.Float, nullable=False, default=0.00)
+    comment = db.Column(db.Text,nullable=False,default='')
     created_date = db.Column(
         db.DateTime, nullable=False, default=datetime.now())
     valid = db.Column(db.Boolean, nullable=False, default=True)
     category_id = db.Column(db.Integer, db.ForeignKey('product_categories.id'))
-    thumbnail_id = db.Column(db.Integer)
+    thumbnail = db.Column(db.String(256))
     supplier_id = db.Column(db.Integer, db.ForeignKey('suppliers.id'))
     labels = db.relationship(
         'Label', backref='product', lazy='dynamic', cascade='all')
@@ -34,6 +38,29 @@ class Product(BaseModel):
             return None
         return Product.query.filter_by(id=id).first()
 
-    @property
-    def thumbnail(self):
-        return Image.get(self.thumbnail_id)
+    def set_thumbnail(self,file):
+        save_name=None
+        mimetype = file.mimetype
+        if 'image' in mimetype:
+            filename = path.basename(file.filename)
+            ext = path.splitext(filename)[1]
+            save_name='thumb_{id}{ext}'.format(id=self.id, ext=ext)
+            file.save(path.join(Setting.UPLOAD_FOLDER,save_name))
+            self.thumbnail=save_name
+        return save_name
+
+    def to_dict(self):
+        # 将当前对象转换输出为字典对象
+        data= {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        if data['thumbnail']:
+            data['thumbnail']=url_for('get_uploads',filename=data['thumbnail'])
+
+    def delete(self):
+        for label in self.labes.all():
+            db.session.delete(label)
+        for image in self.images.all():
+            db.session.delete(image)
+        if self.thumbnail:
+            remove(path.join(Setting.UPLOAD_FOLDER, self.thumbnail))
+        db.session.delete(self)
+        db.session.commit()
