@@ -15,7 +15,13 @@ const routes = [
       },
       {
         path: "products",
-        component: () => import("layouts/ProductsLayout.vue")
+        component: () => import("layouts/ProductsLayout.vue"),
+        children: [
+          {
+            path: "all",
+            component: () => import("pages/products/AllProducts.vue")
+          }
+        ]
       },
       {
         path: "upload",

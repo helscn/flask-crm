@@ -25,7 +25,7 @@ export default {
   name: "TopToolbar",
   data() {
     return {
-      title: "项目跟进管理系统"
+      title: "CRM管理系统"
     };
   },
   methods: {

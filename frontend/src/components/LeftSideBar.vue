@@ -41,7 +41,7 @@ export default {
         {
           name: "产品管理",
           icon: "business_center",
-          path: "/products"
+          path: "/products/all"
         },
         {
           name: "供应商管理",
