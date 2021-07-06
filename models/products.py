@@ -6,7 +6,7 @@ from settings import Setting
 from flask import url_for
 from datetime import datetime
 from .base_model import db, BaseModel
-from .images import Image
+from PIL import Image
 
 
 class Product(BaseModel):
@@ -18,7 +18,7 @@ class Product(BaseModel):
     description = db.Column(db.Text, nullable=False, default='')
     moq = db.Column(db.Integer, nullable=False, default=1)
     purchase_price = db.Column(db.Float, nullable=False, default=0.00)
-    refer_price = db.Column(db.Float, nullable=False, default=0.00)
+    profit_rate = db.Column(db.Float, nullable=False, default=0.00)
     comment = db.Column(db.Text, nullable=False, default='')
     created_date = db.Column(
         db.DateTime, nullable=False, default=datetime.now())
@@ -45,8 +45,17 @@ class Product(BaseModel):
             filename = path.basename(file.filename)
             ext = path.splitext(filename)[1]
             save_name = 'thumb_{id}{ext}'.format(id=self.id, ext=ext)
-            file.save(path.join(Setting.UPLOAD_FOLDER, save_name))
+            save_path = path.join(Setting.UPLOAD_FOLDER, save_name)
+
+            img = Image.open(file)
+            w, h = img.size
+            while w > 400 or h > 300:
+                w = w/2
+                h = h/2
+            img.resize((int(w), int(h)))
+            img.save(save_path)
             self.thumbnail = save_name
+            self.save()
         return save_name
 
     def to_dict(self):
