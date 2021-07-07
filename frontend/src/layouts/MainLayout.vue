@@ -4,8 +4,8 @@
       <TopToolbar />
     </q-header>
     <LeftSideBar />
-
     <q-page-container>
+      <breadcrumb />
       <router-view />
     </q-page-container>
   </q-layout>
@@ -14,12 +14,14 @@
 <script>
 import TopToolbar from "components/TopToolbar.vue";
 import LeftSideBar from "components/LeftSideBar.vue";
+import Breadcrumb from "components/Breadcrumb.vue";
 
 export default {
   name: "MainLayout",
   components: {
     TopToolbar,
-    LeftSideBar
+    LeftSideBar,
+    Breadcrumb
   }
 };
 </script>

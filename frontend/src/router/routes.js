@@ -3,6 +3,8 @@ import MainLayout from "layouts/MainLayout";
 const routes = [
   {
     path: "/",
+    name: "home",
+    meta: { title: "首页", icon: "home" },
     component: MainLayout,
     children: [
       {
@@ -11,6 +13,7 @@ const routes = [
       },
       {
         path: "projects",
+        meta: { title: "我的项目", icon: "widgets" },
         component: () => import("pages/ProjectsView.vue")
       },
       {
@@ -18,13 +21,21 @@ const routes = [
         component: () => import("layouts/ProductsLayout.vue"),
         children: [
           {
+            path: "",
+            meta: { title: "我的产品", icon: "business_center" },
+            component: () => import("pages/Index.vue")
+          },
+
+          {
             path: "all",
+            meta: { title: "所有产品", icon: "business_center" },
             component: () => import("pages/products/AllProducts.vue")
           }
         ]
       },
       {
         path: "upload",
+        meta: { title: "上传文件" },
         component: () => import("pages/Upload.vue")
       }
     ]

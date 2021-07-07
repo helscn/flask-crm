@@ -2,11 +2,14 @@
   <q-toolbar class="bg-primary glossy text-white">
     <q-btn dense flat round icon="menu" @click="toggleLeftSideBar" />
     <q-toolbar-title>
-      <q-avatar>
-        <img src="/icons/SYE.ico" />
-      </q-avatar>
-      {{ title }}
+      <span>
+        <q-avatar>
+          <img src="/icons/SYE.ico" />
+        </q-avatar>
+        {{ title }}
+      </span>
     </q-toolbar-title>
+
     <q-btn
       class="glossy"
       round

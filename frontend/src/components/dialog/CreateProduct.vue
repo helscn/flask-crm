@@ -67,7 +67,6 @@
         filled
         label="产品缩略图"
         accept=".jpg, image/*"
-        @rejected="onRejected"
       />
     </q-form>
   </q-dialog>
