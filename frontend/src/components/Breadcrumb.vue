@@ -1,10 +1,16 @@
 <template>
-  <q-breadcrumbs class="q-px-lg q-py-sm bg-grey-2 shadow-3">
+  <q-breadcrumbs
+    gutter="sm"
+    class="q-px-lg q-py-sm bg-grey-2 shadow-3 text-subtitle1"
+  >
+    <template v-slot:separator>
+      <q-icon size="1.2em" name="arrow_forward" />
+    </template>
     <q-breadcrumbs-el
       v-for="item in breadList"
       v-bind:key="item.path"
-      :label="item.meta.title"
-      :icon="item.meta.icon"
+      :label="item.title"
+      :icon="item.icon"
       :to="item.path"
     />
   </q-breadcrumbs>
@@ -26,13 +32,17 @@ export default {
   methods: {
     getBreadcrumb() {
       let matched = this.$route.matched;
-      if (matched[0].name === "home") {
-        matched[0].path = "/";
-      } else {
-        matched = [{ path: "/", meta: { title: "首页" } }].concat(matched);
-      }
-
-      this.breadList = matched.filter(route => route.meta.title);
+      let breadcrumbs = [];
+      matched.forEach((v, i) => {
+        if (v.meta && (v.meta.title || v.meta.icon)) {
+          breadcrumbs.push({
+            path: v.path || "/",
+            title: v.meta.title || undefined,
+            icon: v.meta.icon || undefined
+          });
+        }
+      });
+      this.breadList = breadcrumbs;
     }
   },
   created() {

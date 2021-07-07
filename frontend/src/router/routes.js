@@ -3,7 +3,6 @@ import MainLayout from "layouts/MainLayout";
 const routes = [
   {
     path: "/",
-    name: "home",
     meta: { title: "首页", icon: "home" },
     component: MainLayout,
     children: [
@@ -18,11 +17,11 @@ const routes = [
       },
       {
         path: "products",
+        meta: { title: "我的产品", icon: "business_center" },
         component: () => import("layouts/ProductsLayout.vue"),
         children: [
           {
             path: "",
-            meta: { title: "我的产品", icon: "business_center" },
             component: () => import("pages/Index.vue")
           },
 

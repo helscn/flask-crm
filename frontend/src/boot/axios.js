@@ -18,23 +18,10 @@ axios.defaults.crossDomain = true;
 axios.defaults.timeout = 5000;
 
 // 设置请求 Content-Type 类型
-axios.defaults.headers.get["Content-Type"] =
-  "application/x-www-form-urlencoded;charset=UTF-8";
-axios.defaults.headers.post["Content-Type"] =
-  "application/x-www-form-urlencoded;charset=UTF-8";
-
-// 设置请求前置拦截器;
-// axios.interceptors.request.use(
-//   config => {
-//     if (Vue.$cookies.isKey("Token")) {
-//       config.headers.Token = Vue.$cookies.get("Token");
-//     }
-//     return config;
-//   },
-//   error => {
-//     return Promise.reject(error);
-//   }
-// );
+// axios.defaults.headers.get["Content-Type"] =
+//   "application/x-www-form-urlencoded;charset=UTF-8";
+// axios.defaults.headers.post["Content-Type"] =
+//   "application/x-www-form-urlencoded;charset=UTF-8";
 
 // 设置请求响应拦截器
 axios.interceptors.response.use(

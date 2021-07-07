@@ -89,7 +89,7 @@
               flat
               color="primary"
               label="保存"
-              @click="showDialog = false"
+              @click="add_product"
             />
             <q-btn
               v-close-popup
@@ -124,7 +124,30 @@ export default {
   },
   methods: {
     add_product: function() {
-      alert("ok");
+      let form = new FormData();
+      form.append("no", this.no);
+      form.append("name", this.name);
+      form.append("spec", this.spec);
+      form.append("description", this.description);
+      form.append("moq", this.moq);
+      form.append("purchase_price", this.purchase_price);
+      form.append("refer_price", this.refer_price);
+      form.append("comment", this.comment);
+      form.append("thumbnail", this.thumbnail);
+      let config = {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      };
+      this.$axios
+        .post("/api/products", form, config)
+        .then(res => {
+          alert("新建产品成功");
+        })
+        .catch(error => {
+          alert(error.data);
+        });
+
       this.showCreateProduct = true;
     }
   }

@@ -2,15 +2,15 @@ import Vue from "vue";
 import axios from "axios";
 
 export function refreshLogin({ commit }) {
-  axios({
+  return axios({
     method: "get",
     url: "/auth/gettoken"
   })
     .then(res => {
       commit("changeLogin", res.data);
     })
-    .catch(error => {
-      Vue.$router.push("/login");
+    .catch(err => {
+      commit("logout");
     });
 }
 

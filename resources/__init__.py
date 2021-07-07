@@ -18,10 +18,10 @@ Resources = Blueprint('api', __name__)
 api = Api(Resources)
 
 # 将导入的 Restful API 资源注册到蓝图中
-api.add_resource(ApiUsers, '/users/', '/users/<int:id>', endpoint='users')
-api.add_resource(ApiRoles, '/roles/', '/roles/<int:id>', endpoint='roles')
-api.add_resource(ApiProducts, '/products/',
+api.add_resource(ApiUsers, '/users', '/users/<int:id>', endpoint='users')
+api.add_resource(ApiRoles, '/roles', '/roles/<int:id>', endpoint='roles')
+api.add_resource(ApiProducts, '/products',
                  '/products/<int:id>', endpoint='products')
 api.add_resource(ApiNewProductNo, '/products/newno', endpoint='newno')
-api.add_resource(ApiFiles, '/files/', '/files/<int:id>', endpoint='files')
-api.add_resource(ApiImages, '/images/', '/images/<int:id>', endpoint='images')
+api.add_resource(ApiFiles, '/files', '/files/<int:id>', endpoint='files')
+api.add_resource(ApiImages, '/images', '/images/<int:id>', endpoint='images')

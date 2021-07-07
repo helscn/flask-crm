@@ -6,7 +6,7 @@
     :width="250"
     elevated
   >
-    <q-item clickable v-ripple @click="showIndex">
+    <q-item clickable v-ripple>
       <q-item-section top avatar>
         <q-avatar rounded size="48px">
           <img src="images/Avatar.png" />
@@ -76,12 +76,7 @@ export default {
       ]
     };
   },
-  methods: {
-    showIndex: function() {
-      this.$router.push("/");
-      this.$store.dispatch("auth/refreshLogin");
-    }
-  },
+  methods: {},
   computed: {
     ...mapState({
       name: state => state.auth.nickname,
