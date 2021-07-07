@@ -3,7 +3,7 @@
     <q-page-container>
       <div class="q-gutter-y-md" style="fullscreen">
         <q-tabs no-caps class="bg-gray-3  text-primary shadow-2">
-          <q-route-tab to="projects" exact replace label="Activate in 2s" />
+          <q-route-tab to="/products/all" exact replace label="所有产品" />
           <q-route-tab
             :to="{ query: { tab: '2' } }"
             exact
