@@ -41,7 +41,7 @@ export default {
         {
           name: "产品管理",
           icon: "business_center",
-          path: "/products/all"
+          path: "/products"
         },
         {
           name: "供应商管理",
@@ -90,10 +90,6 @@ export default {
         this.$store.commit("setLeftSideBar", value);
       }
     }
-  },
-
-  mounted: function() {
-    this.$store.dispatch("auth/refreshLogin");
   }
 };
 </script>

@@ -120,13 +120,7 @@
                 </q-input>
               </div>
               <q-card-actions class="justify-end">
-                <q-btn
-                  color="primary"
-                  icon="send"
-                  label="注册"
-                  tabindex="3"
-                  @click="register"
-                />
+                <q-btn color="primary" icon="send" label="注册" tabindex="3" />
               </q-card-actions>
             </q-tab-panel>
           </q-tab-panels>
@@ -153,8 +147,8 @@ export default {
 
   methods: {
     checkInput: function() {
-      if (!_this.loginForm.username || _this.loginForm.password.length < 6) {
-        _this.$q.notify({
+      if (!this.loginForm.username || this.loginForm.password.length < 6) {
+        this.$q.notify({
           type: "warning",
           position: "center",
           icon: "warning",
@@ -167,75 +161,34 @@ export default {
       }
     },
     login: function() {
-      let _this = this;
       if (this.inputIsOk) {
-        _this.isLoading = true;
-        _this.$store
+        this.isLoading = true;
+        this.$store
           .dispatch("auth/login", {
-            username: _this.loginForm.username,
-            password: _this.loginForm.password
+            username: this.loginForm.username,
+            password: this.loginForm.password
           })
           .then(res => {
-            _this.isLoading = false;
-            _this.$q.notify({
+            this.isLoading = false;
+            this.$q.notify({
               type: "positive",
               position: "center",
               icon: "announcement",
               message: "登录成功，正在跳转至主页...",
-              timeout: 500,
+              timeout: 300,
               progress: true
             });
             setTimeout(() => {
-              _this.$router.push("/");
+              this.$router.push("/");
             }, 1500);
           })
-          .catch(error => {
-            _this.isLoading = false;
-            _this.$store.dispatch("auth/logout");
-            _this.$q.notify({
+          .catch(err => {
+            this.isLoading = false;
+            this.$q.notify({
               type: "negative",
               position: "center",
               icon: "error",
-              message: "账号或密码错误!",
-              timeout: 300
-            });
-          });
-      }
-    },
-    register: function() {
-      let _this = this;
-      if (_this.inputIsOk) {
-        _this.isLoading = true;
-        this.$axios({
-          method: "post",
-          url: "/api/users",
-          data: {
-            username: _this.loginForm.username,
-            password: _this.loginForm.password
-          }
-        })
-          .then(res => {
-            _this.isLoading = false;
-            _this.$store.commit("auth/changeLogin", res.data);
-            _this.$q.notify({
-              type: "positive",
-              position: "center",
-              icon: "announcement",
-              message: "登录成功，正在跳转至主页...",
-              timeout: 500,
-              progress: true
-            });
-            setTimeout(() => {
-              _this.$router.push("/");
-            }, 1000);
-          })
-          .catch(error => {
-            _this.isLoading = false;
-            _this.$q.notify({
-              type: "negative",
-              position: "center",
-              icon: "error",
-              message: "账号注册失败!",
+              message: "账号或密码错误!!",
               timeout: 1000
             });
           });

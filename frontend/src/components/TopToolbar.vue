@@ -36,9 +36,8 @@ export default {
       this.$store.commit("toggleLeftSideBar");
     },
     logout: function() {
-      let _this = this;
-      _this.$store.commit("auth/logout");
-      _this.$q.notify({
+      this.$store.commit("auth/logout");
+      this.$q.notify({
         type: "warning",
         position: "center",
         icon: "announcement",
@@ -47,9 +46,32 @@ export default {
         progress: true
       });
       setTimeout(() => {
-        _this.$router.push("/login");
+        this.$router.push("/login");
       }, 1500);
     }
+  },
+  created: function() {
+    if (!this.$cookies.isKey("Token")) {
+      this.$router.push("/login");
+    }
+    this.$store
+      .dispatch("auth/refreshLogin")
+      .then(res => {
+        this.$store.dispatch("products/fetchProducts");
+      })
+      .catch(err => {
+        this.$q.notify({
+          type: "negative",
+          position: "center",
+          icon: "announcement",
+          message: "当前用户未认证，请重新登录...",
+          timeout: 500,
+          progress: true
+        });
+        setTimeout(() => {
+          this.$router.push("/login");
+        }, 1500);
+      });
   }
 };
 </script>

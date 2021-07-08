@@ -1,3 +1,5 @@
-export function isLogined (state) {
-    return !!(state.id && state.token)
+import Vue from "vue";
+
+export function isLogined(state) {
+  return !!(state.id && Vue.$cookies.isKey("Token"));
 }

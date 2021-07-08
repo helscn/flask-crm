@@ -1,5 +1,5 @@
 <template>
-  <q-dialog v-model="showCreateProduct">
+  <q-page class="q-ma-xs q-mr-md q-pa-xs q-gutter-md">
     <q-form class="row" style="max-width: 400px">
       <q-input
         filled
@@ -69,7 +69,7 @@
         accept=".jpg, image/*"
       />
     </q-form>
-  </q-dialog>
+  </q-page>
 </template>
 
 <script>
