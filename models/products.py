@@ -63,7 +63,7 @@ class Product(BaseModel):
         data = {c.name: getattr(self, c.name) for c in self.__table__.columns}
         if data['thumbnail']:
             data['thumbnail'] = url_for(
-                'get_uploads', filename=data['thumbnail'])
+                'get_uploads', filename=data['thumbnail'], _external=True)
         if data['created_date']:
             data['created_date'] = data['created_date'].strftime(
                 '%Y-%m-%d %H:%M:%S')
