@@ -28,7 +28,9 @@ export default function(/* { store, ssrContext } */) {
 
   // 导航守卫
   Router.beforeEach((to, from, next) => {
-    if (Vue.$cookies.isKey("Token")) {
+    if (from.path === to.path && to.path !== "/") {
+      next(false);
+    } else if (Vue.$cookies.isKey("Token") || to.path == "/login") {
       next();
     } else {
       next("/login");
