@@ -64,6 +64,10 @@ class Product(BaseModel):
         if data['thumbnail']:
             data['thumbnail'] = url_for(
                 'get_uploads', filename=data['thumbnail'])
+        if data['created_date']:
+            data['created_date'] = data['created_date'].strftime(
+                '%Y-%m-%d %H:%M:%S')
+        return data
 
     def delete(self):
         try:

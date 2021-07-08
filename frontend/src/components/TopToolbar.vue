@@ -48,7 +48,7 @@ export default {
       });
       setTimeout(() => {
         _this.$router.push("/login");
-      }, 1000);
+      }, 1500);
     }
   }
 };
