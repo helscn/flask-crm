@@ -1,6 +1,6 @@
 <template>
-  <q-page class="q-ma-xs q-mr-md q-pa-xs q-gutter-md">
-    <q-form class="row" style="max-width: 400px">
+  <q-page class="q-ma-xs q-mr-md q-pa-xs q-gutter-md flex">
+    <q-form style="max-width: 400px">
       <q-input
         filled
         v-model="no"
@@ -39,7 +39,7 @@
         label="最小采购量*"
         hint="Name and surname"
         lazy-rules
-        :rules="[val => (val && val.length > 0) || 'Please type something']"
+        :rules="[val => (val => val > 0) || '请输入最小采购量']"
       />
       <q-input
         filled
@@ -49,15 +49,15 @@
         hint="Name and surname"
         prefix="¥"
         lazy-rules
-        :rules="[val => (val && val.length > 0) || 'Please type something']"
+        :rules="[val => val > 0 || '请输入商采购价格']"
       />
       <q-input
         filled
-        v-model="refer_price"
+        v-model="profit_rate"
         type="number"
-        label="建议售价*"
+        label="参考利润率"
         hint="Name and surname"
-        prefix="$"
+        suffix="%"
         lazy-rules
         :rules="[val => (val && val.length > 0) || 'Please type something']"
       />
@@ -82,9 +82,9 @@ export default {
       name: "",
       spec: "",
       description: "",
-      moq: "",
+      moq: 100,
       purchase_price: 0.0,
-      refer_price: 0.0,
+      profit_rate: 0.0,
       comment: "",
       thumbnail: null
     };
