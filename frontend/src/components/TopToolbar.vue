@@ -2,12 +2,7 @@
   <q-toolbar class="bg-primary glossy text-white">
     <q-btn dense flat round icon="menu" @click="toggleLeftSideBar" />
     <q-toolbar-title>
-      <span>
-        <q-avatar>
-          <img src="/icons/SYE.ico" />
-        </q-avatar>
-        {{ title }}
-      </span>
+      {{ title }}
     </q-toolbar-title>
 
     <q-btn
@@ -28,7 +23,7 @@ export default {
   name: "TopToolbar",
   data() {
     return {
-      title: "CRM管理系统"
+      title: "产品客户管理系统"
     };
   },
   methods: {

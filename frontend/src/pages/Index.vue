@@ -1,19 +1,11 @@
 <template>
   <q-page class="flex flex-center">
-    <img
-      @click="test"
-      alt="Quasar logo"
-      src="~assets/quasar-logo-vertical.svg"
-      style="width: 200px; height: 200px"
-    />
+    <img alt="DTN-Tech logo" src="~assets/logo.png" />
   </q-page>
 </template>
 
 <script>
 export default {
-  name: "PageIndex",
-  methods: {
-    test: function() {}
-  }
+  name: "PageIndex"
 };
 </script>
