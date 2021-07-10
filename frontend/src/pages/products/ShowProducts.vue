@@ -34,7 +34,6 @@
     </template>
     <q-table
       ref="productsTable"
-      title="产品清单"
       :data="data"
       :columns="columns"
       row-key="id"
@@ -45,7 +44,7 @@
       :visible-columns="visibleColumns"
       @row-dblclick="showProductCard"
     >
-      <template v-slot:top-right>
+      <template v-slot:top>
         <q-input
           color="black"
           dense
@@ -57,6 +56,21 @@
             <q-icon name="search" />
           </template>
         </q-input>
+        <q-space />
+                <q-select
+          v-model="visibleColumns"
+          multiple
+          outlined
+          dense
+          options-dense
+          display-value="列选择"
+          emit-value
+          map-options
+          :options="columns"
+          option-value="name"
+          options-cover
+          style="min-width: 150px"
+        />
       </template>
     </q-table>
     <q-dialog v-model="isShowCard">
