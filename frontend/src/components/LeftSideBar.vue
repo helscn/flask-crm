@@ -19,68 +19,22 @@
     </q-item>
     <q-separator spaced inset />
 
-    <PageListItem v-for="item in projectsList" :key="item.name" v-bind="item" />
+    <MenuListItem v-for="item in menuList" :key="item.name" v-bind="item" />
   </q-drawer>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import PageListItem from "components/PageListItem.vue";
+import MenuListItem from "src/components/MenuListItem.vue";
 
 export default {
   name: "LeftSideBar",
-  components: { PageListItem },
-  data() {
-    return {
-      projectsList: [
-        {
-          name: "客户管理",
-          icon: "people",
-          path: "/customers"
-        },
-        {
-          name: "产品管理",
-          icon: "business_center",
-          path: "/products"
-        },
-        {
-          name: "供应商管理",
-          icon: "support_agent",
-          path: "/suppliers"
-        },
-        {
-          name: "客户询价",
-          icon: "request_quote",
-          path: "/quotations"
-        },
-        {
-          name: "订单管理",
-          icon: "paid",
-          path: "/orders"
-        },
-        {
-          name: "数据统计",
-          icon: "leaderboard",
-          path: "/stat"
-        },
-        {
-          name: "用户管理",
-          icon: "manage_accounts",
-          path: "/users"
-        },
-        {
-          name: "文件上传",
-          icon: "cloud_upload",
-          path: "/upload"
-        }
-      ]
-    };
-  },
-  methods: {},
+  components: { MenuListItem },
   computed: {
     ...mapState({
       name: state => state.auth.nickname,
-      role_name: state => state.auth.role_name
+      role_name: state => state.auth.role_name,
+      menuList: state=>state.leftMenuList
     }),
     isShowLeft: {
       get: function() {

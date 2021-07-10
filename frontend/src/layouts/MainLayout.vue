@@ -22,6 +22,24 @@ export default {
     TopToolbar,
     LeftSideBar,
     Breadcrumb
+  },
+  created: function() {
+    if (!this.$cookies.isKey("Token")) {
+      this.$router.push("/login");
+    }
+    this.$store
+      .dispatch("auth/refreshLogin")
+      .catch(err => {
+        this.$q.notify({
+          type: "negative",
+          position: "top",
+          icon: "error",
+          message: "当前用户未认证，请重新登录..."
+        });
+        setTimeout(() => {
+          this.$router.push("/login");
+        }, 1500);
+      });
   }
 };
 </script>

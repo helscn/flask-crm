@@ -1,31 +1,53 @@
 <template>
   <q-page class="q-ma-xs q-mr-md q-pa-xs q-gutter-md">
-    <q-btn
-      label="新建产品"
-      icon="add_circle_outline"
-      @click="$router.push('/products/new')"
-      color="primary"
-    />
-    <q-btn
-      label="修改产品"
-      icon="edit"
-      @click="$router.push('/products/edit')"
-      color="primary"
-    />
+    <template>
+      <q-btn
+        label="新建产品"
+        icon="add_circle_outline"
+        @click="$router.push('/products/new')"
+        color="primary"
+      />
+      <q-btn
+        label="修改产品"
+        icon="edit"
+        @click="$router.push('/products/edit')"
+        color="primary"
+      />
+      <q-btn
+        label="删除产品"
+        icon="delete_forever"
+        @click="removeProducts"
+        color="primary"
+      />
+      <q-btn
+        label="导出产品"
+        icon="file_download"
+        @click="$router.push('/products/download')"
+        color="primary"
+      />
+      <q-btn
+        label="导入产品"
+        icon="file_upload"
+        @click="$router.push('/products/upload')"
+        color="primary"
+      />
+    </template>
     <q-table
       ref="productsTable"
       title="产品清单"
       :data="data"
       :columns="columns"
       row-key="id"
-      selection="single"
+      selection="multiple"
       :selected.sync="selected"
       :pagination.sync="pagination"
       :filter="filter"
+      :visible-columns="visibleColumns"
+      @row-dblclick="showProductCard"
     >
       <template v-slot:top-right>
         <q-input
-          borderless
+          color="black"
           dense
           debounce="300"
           v-model="filter"
@@ -34,8 +56,36 @@
           <template v-slot:append>
             <q-icon name="search" />
           </template>
-        </q-input> </template
-    ></q-table>
+        </q-input>
+      </template>
+    </q-table>
+    <q-dialog v-model="isShowCard">
+      <q-card class="my-card">
+        <q-card-section>
+          <div class="row no-wrap items-center">
+            <div class="col">
+              <q-badge class="text-subtitle2" color="accent" align="middle" :label="currentProduct.no" />
+             <span class="q-ml-md text-subtitle1"> {{ currentProduct.name }}</span>
+            </div>
+            <div
+              class="col-auto text-grey-6 text-subtitle1 q-pt-none row no-wrap items-center"
+            >
+              {{ currentProduct.spec }}
+            </div>
+          </div>
+        </q-card-section>
+        <q-img :src="currentProduct.thumbnail" />
+        <q-card-section>
+          {{currentProduct.description}}
+           </q-card-section>
+
+        <q-separator />
+
+        <q-card-actions align="right">
+          <q-btn v-close-popup flat color="primary" label="关闭" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -45,14 +95,13 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      navigationActive: false,
+      showProduct: true,
       filter: "",
       selected: [],
-      pagination: {},
+      pagination: { sortBy: null, descending: false, page: 1, rowsPerPage: 5 },
       columns: [
         {
           name: "no",
-          required: true,
           label: "产品代码",
           align: "left",
           field: row => row.no,
@@ -61,7 +110,6 @@ export default {
         },
         {
           name: "name",
-          required: true,
           label: "产品名称",
           align: "center",
           field: row => row.name,
@@ -70,7 +118,6 @@ export default {
         },
         {
           name: "spec",
-          required: false,
           label: "产品规格",
           align: "center",
           field: row => row.spec,
@@ -79,7 +126,6 @@ export default {
         },
         {
           name: "description",
-          required: false,
           label: "产品描述",
           align: "left",
           field: row => row.description,
@@ -88,7 +134,6 @@ export default {
         },
         {
           name: "moq",
-          required: true,
           label: "MOQ",
           align: "right",
           field: row => row.moq,
@@ -97,7 +142,6 @@ export default {
         },
         {
           name: "purchase_price",
-          required: true,
           label: "采购价格",
           align: "right",
           field: row => row.purchase_price,
@@ -106,16 +150,14 @@ export default {
         },
         {
           name: "profit_rate",
-          required: true,
           label: "利润率",
           align: "right",
           field: row => row.profit_rate,
-          format: val => `${val}`,
+          format: val => `${val * 100}%`,
           sortable: true
         },
         {
           name: "comment",
-          required: false,
           label: "备注",
           align: "center",
           field: row => row.comment,
@@ -124,22 +166,58 @@ export default {
         },
         {
           name: "created_date",
-          required: true,
           label: "创建日期",
           align: "center",
           field: row => row.created_date,
           sortable: true
         }
-      ]
+      ],
+      visibleColumns:['no','name','spec','moq','purchase_price','profit_rate'],
+      currentProduct: {},
+      isShowCard: false
     };
   },
+  methods: {
+    showProductCard(evt, row, index) {
+      this.currentProduct = row;
+      this.isShowCard = true;
+    },
+    removeProducts() {
+      this.$q
+        .dialog({
+          title: "确认",
+          message: "确认要删除当前选定的产品吗？注意该操作无法恢复！",
+          cancel: true,
+          persistent: true,
+          focus: "cancel"
+        })
+        .onOk(() => {
+          alert("Deleted!");
+        })
+        .onCancel(() => {});
+    }
+  },
   computed: {
-    // ...mapState({
-    //   data: state => state.products.data
-    // })
     ...mapGetters({
       data: "products/validProducts"
     })
+  },
+  created() {
+    this.$store.dispatch("products/fetchProducts").catch(err => {
+      this.$q.notify({
+        type: "negative",
+        position: "top",
+        icon: "warning",
+        message: "无法获取产品数据，请确认网络连接是否正常。"
+      });
+    });
   }
 };
 </script>
+
+<style>
+.my-card {
+  max-width: 100%;
+  min-width: 400px;
+}
+</style>

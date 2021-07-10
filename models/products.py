@@ -17,9 +17,9 @@ class Product(BaseModel):
     spec = db.Column(db.String(256), nullable=False, default='')
     description = db.Column(db.Text, nullable=False, default='')
     moq = db.Column(db.Integer, nullable=False, default=1)
-    purchase_price = db.Column(db.Float, nullable=False, default=0.00)
-    profit_rate = db.Column(db.Float, nullable=False, default=0.00)
-    comment = db.Column(db.Text, nullable=False, default='')
+    purchase_price = db.Column(db.Float, nullable=False)
+    profit_rate = db.Column(db.Float, nullable=False)
+    comment = db.Column(db.Text, default='')
     created_date = db.Column(
         db.DateTime, nullable=False, default=datetime.now())
     valid = db.Column(db.Boolean, nullable=False, default=True)

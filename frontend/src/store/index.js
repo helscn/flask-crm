@@ -20,7 +20,48 @@ export default function(/* { ssrContext } */) {
   const Store = new Vuex.Store({
     state() {
       return {
-        isShowLeft: true
+        isShowLeft: true,
+        leftMenuList: [
+          {
+            name: "客户管理",
+            icon: "people",
+            path: "/customers"
+          },
+          {
+            name: "产品管理",
+            icon: "business_center",
+            path: "/products"
+          },
+          {          name: "供应商管理",
+            icon: "support_agent",
+            path: "/suppliers"
+          },
+          {
+            name: "客户询价",
+            icon: "request_quote",
+            path: "/quotations"
+          },
+          {
+            name: "订单管理",
+            icon: "paid",
+            path: "/orders"
+          },
+          {
+            name: "数据统计",
+            icon: "leaderboard",
+            path: "/stat"
+          },
+          {
+            name: "用户管理",
+            icon: "manage_accounts",
+            path: "/users"
+          },
+          {
+            name: "文件上传",
+            icon: "cloud_upload",
+            path: "/upload"
+          }
+        ]
       };
     },
     mutations: {

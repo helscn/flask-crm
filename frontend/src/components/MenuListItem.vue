@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: "PageListItem",
+  name: "MenuListItem",
   props: {
     path: {
       type: String,

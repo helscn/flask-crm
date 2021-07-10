@@ -29,12 +29,6 @@ const routes = [
             path: "new",
             meta: { title: "新建产品", icon: "add_circle" },
             component: () => import("pages/products/NewProduct.vue")
-          },
-
-          {
-            path: "all",
-            meta: { title: "所有产品", icon: "business_center" },
-            component: () => import("pages/products/AllProducts.vue")
           }
         ]
       },
