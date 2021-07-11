@@ -23,7 +23,7 @@ export default {
   name: "TopToolbar",
   data() {
     return {
-      title: "产品客户管理系统"
+      title: "DTN-tech SAP管理系统"
     };
   },
   methods: {

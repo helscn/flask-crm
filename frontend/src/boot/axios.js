@@ -4,7 +4,7 @@ import VueCookies from "vue-cookies";
 
 // 载入 Vue-Cookies 插件
 Vue.use(VueCookies);
-Vue.$cookies.config("1h");
+Vue.$cookies.config("2h");
 
 // 配置 Axios 默认请求参数：
 // 开发环境请求API接口地址
@@ -26,6 +26,10 @@ axios.defaults.timeout = 5000;
 // 设置请求响应拦截器
 axios.interceptors.response.use(
   data => {
+    if (Vue.$cookies.isKey("Token")) {
+      let token = Vue.$cookies.get("Token");
+      Vue.$cookies.set("Token", token, "2h");
+    }
     return data;
   },
   error => {

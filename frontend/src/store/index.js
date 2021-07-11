@@ -32,10 +32,7 @@ export default function(/* { ssrContext } */) {
             icon: "business_center",
             path: "/products"
           },
-          {          name: "供应商管理",
-            icon: "support_agent",
-            path: "/suppliers"
-          },
+          { name: "供应商管理", icon: "support_agent", path: "/suppliers" },
           {
             name: "客户询价",
             icon: "request_quote",
@@ -49,17 +46,17 @@ export default function(/* { ssrContext } */) {
           {
             name: "数据统计",
             icon: "leaderboard",
-            path: "/stat"
+            path: "/stats"
+          },
+          {
+            name: "设置",
+            icon: "settings",
+            path: "/settings"
           },
           {
             name: "用户管理",
             icon: "manage_accounts",
             path: "/users"
-          },
-          {
-            name: "文件上传",
-            icon: "cloud_upload",
-            path: "/upload"
           }
         ]
       };

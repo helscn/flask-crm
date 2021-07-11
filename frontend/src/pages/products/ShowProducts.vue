@@ -43,6 +43,7 @@
       :filter="filter"
       :visible-columns="visibleColumns"
       @row-dblclick="showProductCard"
+      table-header-class="bg-grey-4"
     >
       <template v-slot:top>
         <q-input
@@ -52,12 +53,15 @@
           v-model="filter"
           placeholder="搜索产品"
         >
-          <template v-slot:append>
+          <template v-slot:prepend>
             <q-icon name="search" />
+          </template>
+          <template v-if="filter" v-slot:append>
+            <q-icon name="close" @click="filter = ''" class="cursor-pointer" />
           </template>
         </q-input>
         <q-space />
-                <q-select
+        <q-select
           v-model="visibleColumns"
           multiple
           outlined
@@ -78,8 +82,15 @@
         <q-card-section>
           <div class="row no-wrap items-center">
             <div class="col">
-              <q-badge class="text-subtitle2" color="accent" align="middle" :label="currentProduct.no" />
-             <span class="q-ml-md text-subtitle1"> {{ currentProduct.name }}</span>
+              <q-badge
+                class="text-subtitle2"
+                color="accent"
+                align="middle"
+                :label="currentProduct.no"
+              />
+              <span class="q-ml-md text-subtitle1">
+                {{ currentProduct.name }}</span
+              >
             </div>
             <div
               class="col-auto text-grey-6 text-subtitle1 q-pt-none row no-wrap items-center"
@@ -90,8 +101,8 @@
         </q-card-section>
         <q-img :src="currentProduct.thumbnail" />
         <q-card-section>
-          {{currentProduct.description}}
-           </q-card-section>
+          {{ currentProduct.description }}
+        </q-card-section>
 
         <q-separator />
 
@@ -171,6 +182,14 @@ export default {
           sortable: true
         },
         {
+          name: "thumbnail",
+          label: "缩略图",
+          align: "center",
+          field: row => row.thumbnail,
+          format: val => (val ? "\u2705" : "\u274C"),
+          sortable: true
+        },
+        {
           name: "comment",
           label: "备注",
           align: "center",
@@ -186,7 +205,16 @@ export default {
           sortable: true
         }
       ],
-      visibleColumns:['no','name','spec','moq','purchase_price','profit_rate'],
+      visibleColumns: [
+        "no",
+        "name",
+        "spec",
+        "description",
+        "moq",
+        "purchase_price",
+        "profit_rate",
+        "thumbnail"
+      ],
       currentProduct: {},
       isShowCard: false
     };
