@@ -1,6 +1,6 @@
-import { Notify } from 'quasar'
+import { Notify } from "quasar";
 
 Notify.setDefaults({
-  position: 'top',
-  timeout: 5000
-})
+  position: "top",
+  timeout: 3000
+});

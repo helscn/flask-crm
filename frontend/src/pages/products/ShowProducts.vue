@@ -225,18 +225,36 @@ export default {
       this.isShowCard = true;
     },
     removeProducts() {
-      this.$q
-        .dialog({
-          title: "确认",
-          message: "确认要删除当前选定的产品吗？注意该操作无法恢复！",
-          cancel: true,
-          persistent: true,
-          focus: "cancel"
-        })
-        .onOk(() => {
-          alert("Deleted!");
-        })
-        .onCancel(() => {});
+      if (this.selected.length === 0) {
+        this.$q.notify({
+          type: "warning",
+          position: "top",
+          icon: "warning",
+          timeout: 2000,
+          message: "请先选择需要删除的产品项目。"
+        });
+      } else {
+        this.$q
+          .dialog({
+            title: "确认",
+            message: "确认要删除当前选定的产品吗？注意该操作无法恢复！",
+            cancel: true,
+            persistent: true,
+            focus: "cancel"
+          })
+          .onOk(() => {
+            let ids = this.selected.map(v => v.id);
+            this.$axios
+              .delete("/api/products", {
+                data: {
+                  id: ids
+                }
+              })
+              .then(res => {
+                this.$store.dispatch("products/fetchProducts");
+              });
+          });
+      }
     }
   },
   computed: {

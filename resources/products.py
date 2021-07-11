@@ -31,7 +31,7 @@ class ApiProducts(Resource):
             if product:
                 return product.to_dict()
             else:
-                abort(404, error='Product not exist.')
+                abort(404, message='Product not exist.')
         else:
             products = Product.query.all()
             return {
@@ -39,13 +39,26 @@ class ApiProducts(Resource):
                 'data': [v.to_dict() for v in products]
             }
 
-    def delete(self, id):
-        product = Product.get(id)
-        if product:
-            product.delete()
-            return 'Product deleted.', 204
+    def delete(self, id=None):
+        if id:
+            product = Product.get(id)
+            if product:
+                product.delete()
+                return 'Product deleted.', 204
+            else:
+                abort(404, message='Product not exist.')
         else:
-            abort(404, error='Product not exist.')
+            data = request.get_json()
+            if 'id' in data:
+                for id in data['id']:
+                    product = Product.get(id)
+                    print(id, type(id), product)
+                    if product:
+                        db.session.delete(product)
+                db.session.commit()
+                return 'Product deleted.', 204
+            else:
+                abort(400, message="Invalid request argument.")
 
     def post(self):
         formParse = reqparse.RequestParser()
