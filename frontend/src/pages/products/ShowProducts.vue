@@ -1,39 +1,47 @@
 <template>
   <q-page class="q-ma-xs q-mr-md q-pa-xs q-gutter-md">
     <template>
-      <q-btn
-        label="新建产品"
-        icon="add_circle_outline"
-        @click="$router.push('/products/new')"
-        color="primary"
-      />
-      <q-btn
-        label="修改产品"
-        icon="edit"
-        @click="$router.push('/products/edit')"
-        color="primary"
-      />
-      <q-btn
-        label="删除产品"
-        icon="delete_forever"
-        @click="removeProducts"
-        color="primary"
-      />
-      <q-btn
-        label="导出产品"
-        icon="file_download"
-        @click="$router.push('/products/download')"
-        color="primary"
-      />
-      <q-btn
-        label="导入产品"
-        icon="file_upload"
-        @click="$router.push('/products/upload')"
-        color="primary"
-      />
+      <q-btn-group rounded push>
+        <q-btn
+          label="新建"
+          icon="add_circle_outline"
+          @click="$router.push('/products/new')"
+          color="primary"
+        />
+        <q-btn
+          label="修改"
+          :disable="selected.length !== 1"
+          icon="edit"
+          @click="$router.push('/products/edit')"
+          color="primary"
+        />
+        <q-btn
+          label="删除"
+          :disable="selected.length === 0"
+          rounded
+          icon="delete_forever"
+          @click="removeProducts"
+          color="primary"
+        />
+      </q-btn-group>
+      <q-btn-group rounded>
+        <q-btn
+          label="导出"
+          icon="file_download"
+          @click="$router.push('/products/download')"
+          color="primary"
+        />
+        <q-btn
+          label="导入"
+          icon="file_upload"
+          @click="$router.push('/products/upload')"
+          color="primary"
+        />
+      </q-btn-group>
     </template>
     <q-table
       ref="productsTable"
+      :loading="loading"
       :data="data"
       :columns="columns"
       row-key="id"
@@ -115,7 +123,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   data() {
@@ -258,6 +266,9 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      loading: state => state.products.loading
+    }),
     ...mapGetters({
       data: "products/validProducts"
     })

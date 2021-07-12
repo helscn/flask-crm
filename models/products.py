@@ -71,7 +71,7 @@ class Product(BaseModel):
 
     def delete(self):
         try:
-            for label in self.labes.all():
+            for label in self.labels.all():
                 db.session.delete(label)
             for image in self.images.all():
                 db.session.delete(image)
@@ -79,5 +79,6 @@ class Product(BaseModel):
                 remove(path.join(Setting.UPLOAD_FOLDER, self.thumbnail))
             db.session.delete(self)
             db.session.commit()
-        except:
+        except Exception as e:
             db.session.rollback()
+            raise e

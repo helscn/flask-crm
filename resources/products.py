@@ -54,8 +54,7 @@ class ApiProducts(Resource):
                     product = Product.get(id)
                     print(id, type(id), product)
                     if product:
-                        db.session.delete(product)
-                db.session.commit()
+                        product.delete()
                 return 'Product deleted.', 204
             else:
                 abort(400, message="Invalid request argument.")
