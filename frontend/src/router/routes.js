@@ -22,6 +22,7 @@ const routes = [
         children: [
           {
             path: "",
+            meta: { keepAlive: true },
             component: () => import("pages/products/ShowProducts.vue")
           },
 
@@ -29,6 +30,11 @@ const routes = [
             path: "new",
             meta: { title: "新建产品", icon: "add_circle" },
             component: () => import("pages/products/NewProduct.vue")
+          },
+          {
+            path: "edit",
+            meta: { title: "修改产品", icon: "edit" },
+            component: () => import("pages/products/EditProduct.vue")
           }
         ]
       },

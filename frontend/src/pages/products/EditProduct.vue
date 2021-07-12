@@ -64,13 +64,7 @@
             suffix="%"
             lazy-rules
             :rules="[val => val > 0 || '请输入参考利润率']"
-          >
-            <q-tooltip
-              >参考售价 ${{
-                ((purchase_price * (1 + profit_rate / 100)) / 6.6).toFixed(2)
-              }}</q-tooltip
-            >
-          </q-input>
+          />
         </div>
         <div class="row justify-between">
           <q-input
@@ -82,12 +76,7 @@
           />
         </div>
         <div class="row justify-around q-py-md">
-          <q-btn
-            color="primary"
-            icon="save"
-            label="保存"
-            @click="saveProduct"
-          />
+          <q-btn color="primary" icon="save" label="保存" @click="test" />
           <q-btn color="primary" icon="cancel" label="取消" @click="cancel" />
         </div>
       </q-form>
@@ -96,22 +85,40 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
-  name: "CreateProduct",
+  name: "EditProduct",
+  computed: {
+    ...mapState({
+      oldData(state) {
+        return state.products.data.find(
+          product => product.id == this.$route.query.id
+        );
+      }
+    })
+  },
+
   data() {
+    let data = this.$store.state.products.data.find(
+      product => product.id == this.$route.query.id
+    );
     return {
-      no: "",
-      name: "",
-      spec: "",
-      description: "",
-      moq: 100,
-      purchase_price: 1.0,
-      profit_rate: 15,
-      comment: "",
+      no: data.no,
+      name: data.name,
+      spec: data.spec,
+      description: data.description,
+      moq: data.moq,
+      purchase_price: data.purchase_price,
+      profit_rate: data.profit_rate,
+      comment: data.comment,
       thumbnail: null
     };
   },
   methods: {
+    test() {
+      alert(this.id);
+    },
     cancel() {
       this.$router.go(-1);
     },

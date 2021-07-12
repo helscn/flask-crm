@@ -6,7 +6,15 @@
     <LeftSideBar />
     <q-page-container>
       <breadcrumb />
-      <router-view />
+      <keep-alive>
+        <router-view v-if="$route.meta.keepAlive">
+          <!-- 这里是会被缓存的视图组件，比如 Home！ -->
+        </router-view>
+      </keep-alive>
+
+      <router-view v-if="!$route.meta.keepAlive">
+        <!-- 这里是不被缓存的视图组件，比如 Edit！ -->
+      </router-view>
     </q-page-container>
   </q-layout>
 </template>
@@ -29,6 +37,16 @@ export default {
     }
     this.$store
       .dispatch("auth/refreshLogin")
+      .then(res => {
+        this.$store.dispatch("products/fetchProducts").catch(err => {
+          this.$q.notify({
+            type: "negative",
+            position: "top",
+            icon: "warning",
+            message: "无法获取产品数据，请确认网络连接是否正常。"
+          });
+        });
+      })
       .catch(err => {
         this.$q.notify({
           type: "negative",

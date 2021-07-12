@@ -12,7 +12,12 @@
           label="修改"
           :disable="selected.length !== 1"
           icon="edit"
-          @click="$router.push('/products/edit')"
+          @click="
+            $router.push({
+              path: '/products/edit',
+              query: { id: selected[0].id }
+            })
+          "
           color="primary"
         />
         <q-btn
@@ -109,7 +114,7 @@
         </q-card-section>
         <q-img :src="currentProduct.thumbnail" />
         <q-card-section>
-          {{ currentProduct.description }}
+          <div class="text-wrapper">{{ currentProduct.description }}</div>
         </q-card-section>
 
         <q-separator />
@@ -272,16 +277,6 @@ export default {
     ...mapGetters({
       data: "products/validProducts"
     })
-  },
-  created() {
-    this.$store.dispatch("products/fetchProducts").catch(err => {
-      this.$q.notify({
-        type: "negative",
-        position: "top",
-        icon: "warning",
-        message: "无法获取产品数据，请确认网络连接是否正常。"
-      });
-    });
   }
 };
 </script>
@@ -290,5 +285,8 @@ export default {
 .my-card {
   max-width: 100%;
   min-width: 400px;
+}
+.text-wrapper {
+  white-space: pre-wrap;
 }
 </style>
