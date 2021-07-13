@@ -2,14 +2,11 @@
 # -*- coding: utf-8 -*-
 
 from auth import login_required
-from models import db, Product
-from settings import Setting
-from flask import g, request
+from models import db, Product, Category
+from flask import request
 from flask_restful import abort, Resource, reqparse
 from sqlalchemy.sql import func
 from werkzeug.datastructures import FileStorage
-from PIL import Image
-from os import path
 
 
 def getNewProductNo():
@@ -103,3 +100,31 @@ class ApiNewProductNo(Resource):
 
     def get(self):
         return {'no': getNewProductNo()}
+
+
+class ApiCategories(Resource):
+    def get(self, id=None):
+        if id:
+            category = Category.get(id)
+            if category:
+                return category.to_dict()
+            else:
+                abort(404, message='Category not exist.')
+        else:
+            categories = Category.query.all()
+            return {
+                'total': len(categories),
+                'categories': [v.to_dict() for v in categories]
+            }
+
+    def post(self):
+        Parser = reqparse.RequestParser()
+        Parser.add_argument('name', type=str, required=True)
+        args = Parser.parse_args()
+        name = args.get('name')
+        if Category.query.filter_by(name=name).first():
+            abort(400, message="Category already exist.")
+        else:
+            category = Category(name=name)
+            category.save()
+            return {'success': True}, 201

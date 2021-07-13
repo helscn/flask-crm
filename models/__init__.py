@@ -7,7 +7,6 @@ from .permissions import Permission
 from .users import User
 from .products import Product
 from .categories import Category
-from .labels import Label
 from .suppliers import Supplier
 from .images import Image
 from .files import File

@@ -7,7 +7,7 @@ from .base_model import db, BaseModel
 class Category(BaseModel):
     __tablename__ = 'product_categories'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(64), nullable=False)
+    name = db.Column(db.String(64), nullable=False, unique=True)
     products = db.relationship(
         'Product', backref='category', lazy='dynamic', cascade='all')
 

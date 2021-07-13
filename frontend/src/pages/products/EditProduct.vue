@@ -187,6 +187,9 @@ export default {
         this.profit_rate = data.profit_rate;
         this.comment = data.comment;
         this.thumbnail_file = data.thumbnail;
+        this.$store.dispatch("products/fetchCategories").then(res => {
+          console.log(res.data);
+        });
       });
   }
 };

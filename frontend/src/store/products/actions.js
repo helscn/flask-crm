@@ -20,3 +20,23 @@ export function fetchProducts({ commit }) {
       });
   });
 }
+
+export function fetchCategories({ commit }) {
+  commit("setLoading");
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "get",
+      url: "/api/products/categories"
+    })
+      .then(res => {
+        commit("setCategories", res.data);
+        commit("setLoaded");
+        resolve(res);
+      })
+      .catch(err => {
+        commit("clearCategories");
+        commit("setLoaded");
+        reject(err);
+      });
+  });
+}

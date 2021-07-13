@@ -26,8 +26,6 @@ class Product(BaseModel):
     category_id = db.Column(db.Integer, db.ForeignKey('product_categories.id'))
     thumbnail = db.Column(db.String(256))
     supplier_id = db.Column(db.Integer, db.ForeignKey('suppliers.id'))
-    labels = db.relationship(
-        'Label', backref='product', lazy='dynamic', cascade='all')
     images = db.relationship(
         'Image', backref='product', lazy='dynamic', cascade='all')
 
