@@ -52,7 +52,6 @@ class Setting:
     TOKEN_KEY = 'Token'
 
     # 链接数据库
-    # SQLALCHEMY_DATABASE_URI =
     SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI
 
     # 跟踪数据库修改

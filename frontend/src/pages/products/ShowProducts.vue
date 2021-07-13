@@ -277,6 +277,16 @@ export default {
     ...mapGetters({
       data: "products/validProducts"
     })
+  },
+  created: function() {
+    this.$store.dispatch("products/fetchProducts").catch(err => {
+      this.$q.notify({
+        type: "negative",
+        position: "top",
+        icon: "warning",
+        message: "无法获取产品数据，请确认网络连接是否正常。"
+      });
+    });
   }
 };
 </script>

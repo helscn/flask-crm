@@ -3,40 +3,39 @@
     <div class="q-py-lg row justify-center">
       <q-form
         ref="myForm"
-        class="col-xs-12 col-sm-8 col-md-6 col-xl-4 shadow-3 q-pa-md q-gutter-xs"
+        class="col-xs-12 col-sm-8 col-md-6 col-xl-4 shadow-3 q-pa-md"
       >
-        <div class="row justify-between">
-          <q-input
-            class="col-5"
-            filled
-            v-model="no"
-            label="产品编号*"
-            lazy-rules
-            :rules="[val => (val && val.length > 0) || '请输入产品编号']"
-          />
-          <q-file
-            class="col-5"
-            v-model="thumbnail"
-            outlined
-            label="产品缩略图"
-            accept=".jpg, image/*"
-          >
-          </q-file>
+        <div class="row justify-between q-gutter-md">
+          <div class="col">
+            <q-input
+              filled
+              v-model="no"
+              label="产品编号*"
+              lazy-rules
+              :rules="[val => (val && val.length > 0) || '请输入产品编号']"
+            />
+            <q-input
+              filled
+              v-model="name"
+              label="产品名称*"
+              lazy-rules
+              :rules="[val => (val && val.length > 0) || '请输入产品名称']"
+            />
+          </div>
+          <div class="col q-pb-md">
+            <q-file
+              v-model="thumbnail"
+              outlined
+              label="产品缩略图"
+              accept=".jpg, image/*"
+            />
+            <q-img :src="thumbnail_file" />
+          </div>
         </div>
-        <div class="row justify-between">
+        <div class="row justify-between q-gutter-md">
+          <q-input class="col" filled v-model="spec" label="产品规格" />
           <q-input
-            class="col-12"
-            filled
-            v-model="name"
-            label="产品名称*"
-            lazy-rules
-            :rules="[val => (val && val.length > 0) || '请输入产品名称']"
-          />
-        </div>
-        <div class="row justify-between">
-          <q-input class="col-5" filled v-model="spec" label="产品规格" />
-          <q-input
-            class="col-5"
+            class="col"
             filled
             v-model="moq"
             label="最小采购量*"
@@ -44,9 +43,9 @@
             :rules="[val => val > 0 || '请输入最小采购量']"
           />
         </div>
-        <div class="row justify-between">
+        <div class="row justify-between q-gutter-md">
           <q-input
-            class="col-5"
+            class="col"
             filled
             v-model="purchase_price"
             type="number"
@@ -56,7 +55,7 @@
             :rules="[val => val > 0 || '请输入供应商采购价格']"
           />
           <q-input
-            class="col-5"
+            class="col"
             filled
             v-model="profit_rate"
             type="number"
@@ -64,18 +63,24 @@
             suffix="%"
             lazy-rules
             :rules="[val => val > 0 || '请输入参考利润率']"
-          />
+          >
+            <q-tooltip>
+              参考售价 ${{
+                ((purchase_price * (1 + profit_rate / 100)) / 6.6).toFixed(2)
+              }}
+            </q-tooltip>
+          </q-input>
         </div>
-        <div class="row justify-between">
+        <div class="row justify-between q-gutter-md">
           <q-input
-            class="col-12"
+            class="col"
             filled
             v-model="description"
             autogrow
             label="产品描述"
           />
         </div>
-        <div class="row justify-around q-py-md">
+        <div class="row justify-around q-pt-md">
           <q-btn color="primary" icon="save" label="保存" @click="test" />
           <q-btn color="primary" icon="cancel" label="取消" @click="cancel" />
         </div>
@@ -85,35 +90,28 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-
 export default {
   name: "EditProduct",
-  computed: {
-    ...mapState({
-      oldData(state) {
-        return state.products.data.find(
-          product => product.id == this.$route.query.id
-        );
-      }
-    })
-  },
 
   data() {
-    let data = this.$store.state.products.data.find(
-      product => product.id == this.$route.query.id
-    );
     return {
-      no: data.no,
-      name: data.name,
-      spec: data.spec,
-      description: data.description,
-      moq: data.moq,
-      purchase_price: data.purchase_price,
-      profit_rate: data.profit_rate,
-      comment: data.comment,
-      thumbnail: null
+      id: 0,
+      no: "",
+      name: "",
+      spec: "",
+      description: "",
+      moq: 0,
+      purchase_price: 0.0,
+      profit_rate: 0.0,
+      comment: "",
+      thumbnail: null,
+      thumbnail_file: null
     };
+  },
+  watch: {
+    thumbnail: function(val, oldVal) {
+      this.thumbnail_file = window.URL.createObjectURL(val);
+    }
   },
   methods: {
     test() {
@@ -175,9 +173,21 @@ export default {
     }
   },
   created: function() {
-    this.$axios.get("/api/products/newno").then(res => {
-      this.no = res.data.no;
-    });
+    this.$axios
+      .get("/api/products/" + this.$route.query.id)
+      .then(({ data }) => {
+        console.log(data);
+        this.id = data.id;
+        this.no = data.no;
+        this.name = data.name;
+        this.spec = data.spec;
+        this.description = data.description;
+        this.moq = data.moq;
+        this.purchase_price = data.purchase_price;
+        this.profit_rate = data.profit_rate;
+        this.comment = data.comment;
+        this.thumbnail_file = data.thumbnail;
+      });
   }
 };
 </script>

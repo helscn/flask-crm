@@ -3,40 +3,39 @@
     <div class="q-py-lg row justify-center">
       <q-form
         ref="myForm"
-        class="col-xs-12 col-sm-8 col-md-6 col-xl-4 shadow-3 q-pa-md q-gutter-xs"
+        class="col-xs-12 col-sm-8 col-md-6 col-xl-4 shadow-3 q-pa-md"
       >
-        <div class="row justify-between">
-          <q-input
-            class="col-5"
-            filled
-            v-model="no"
-            label="产品编号*"
-            lazy-rules
-            :rules="[val => (val && val.length > 0) || '请输入产品编号']"
-          />
-          <q-file
-            class="col-5"
-            v-model="thumbnail"
-            outlined
-            label="产品缩略图"
-            accept=".jpg, image/*"
-          >
-          </q-file>
+        <div class="row justify-between q-gutter-md">
+          <div class="col">
+            <q-input
+              filled
+              v-model="no"
+              label="产品编号*"
+              lazy-rules
+              :rules="[val => (val && val.length > 0) || '请输入产品编号']"
+            />
+            <q-input
+              filled
+              v-model="name"
+              label="产品名称*"
+              lazy-rules
+              :rules="[val => (val && val.length > 0) || '请输入产品名称']"
+            />
+          </div>
+          <div class="col q-pb-md">
+            <q-file
+              v-model="thumbnail"
+              outlined
+              label="产品缩略图"
+              accept=".jpg, image/*"
+            />
+            <q-img :src="thumbnail_file" />
+          </div>
         </div>
-        <div class="row justify-between">
+        <div class="row justify-between q-gutter-md">
+          <q-input class="col" filled v-model="spec" label="产品规格" />
           <q-input
-            class="col-12"
-            filled
-            v-model="name"
-            label="产品名称*"
-            lazy-rules
-            :rules="[val => (val && val.length > 0) || '请输入产品名称']"
-          />
-        </div>
-        <div class="row justify-between">
-          <q-input class="col-5" filled v-model="spec" label="产品规格" />
-          <q-input
-            class="col-5"
+            class="col"
             filled
             v-model="moq"
             label="最小采购量*"
@@ -44,9 +43,9 @@
             :rules="[val => val > 0 || '请输入最小采购量']"
           />
         </div>
-        <div class="row justify-between">
+        <div class="row justify-between q-gutter-md">
           <q-input
-            class="col-5"
+            class="col"
             filled
             v-model="purchase_price"
             type="number"
@@ -56,7 +55,7 @@
             :rules="[val => val > 0 || '请输入供应商采购价格']"
           />
           <q-input
-            class="col-5"
+            class="col"
             filled
             v-model="profit_rate"
             type="number"
@@ -65,23 +64,23 @@
             lazy-rules
             :rules="[val => val > 0 || '请输入参考利润率']"
           >
-            <q-tooltip
-              >参考售价 ${{
+            <q-tooltip>
+              参考售价 ${{
                 ((purchase_price * (1 + profit_rate / 100)) / 6.6).toFixed(2)
-              }}</q-tooltip
-            >
+              }}
+            </q-tooltip>
           </q-input>
         </div>
-        <div class="row justify-between">
+        <div class="row justify-between q-gutter-md">
           <q-input
-            class="col-12"
+            class="col"
             filled
             v-model="description"
             autogrow
             label="产品描述"
           />
         </div>
-        <div class="row justify-around q-py-md">
+        <div class="row justify-around q-pt-md">
           <q-btn
             color="primary"
             icon="save"
@@ -108,8 +107,14 @@ export default {
       purchase_price: 1.0,
       profit_rate: 15,
       comment: "",
-      thumbnail: null
+      thumbnail: null,
+      thumbnail_file: null
     };
+  },
+  watch: {
+    thumbnail: function(val, oldVal) {
+      this.thumbnail_file = window.URL.createObjectURL(val);
+    }
   },
   methods: {
     cancel() {
