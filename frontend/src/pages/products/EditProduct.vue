@@ -6,14 +6,27 @@
         class="col-xs-12 col-sm-8 col-md-6 col-xl-4 shadow-3 q-pa-md"
       >
         <div class="row justify-between q-gutter-md">
-          <div class="col">
-            <q-input
-              filled
-              v-model="no"
-              label="产品编号*"
-              lazy-rules
-              :rules="[val => (val && val.length > 0) || '请输入产品编号']"
-            />
+          <q-input
+            class="col"
+            filled
+            v-model="no"
+            label="产品编号*"
+            lazy-rules
+            :rules="[val => (val && val.length > 0) || '请输入产品编号']"
+          />
+          <q-select
+            class="col"
+            label="供应商"
+            filled
+            v-model="category"
+            use-input
+            hide-dropdown-icon
+            input-debounce="0"
+            :options="categories"
+          />
+        </div>
+        <div class="row justify-between q-gutter-md">
+          <div class="col q-mb-md">
             <q-input
               filled
               v-model="name"
@@ -21,8 +34,25 @@
               lazy-rules
               :rules="[val => (val && val.length > 0) || '请输入产品名称']"
             />
+            <q-select
+              label="产品分类"
+              filled
+              v-model="category"
+              use-input
+              hide-dropdown-icon
+              input-debounce="0"
+              :options="categories"
+            >
+              <template v-if="category" v-slot:append>
+                <q-icon
+                  name="cancel"
+                  @click.stop="category = null"
+                  class="cursor-pointer"
+                />
+              </template>
+            </q-select>
           </div>
-          <div class="col q-pb-md">
+          <div class="col q-mb-md" style="border:1px solid #c2c2c2">
             <q-file
               v-model="thumbnail"
               outlined
@@ -81,7 +111,12 @@
           />
         </div>
         <div class="row justify-around q-pt-md">
-          <q-btn color="primary" icon="save" label="保存" @click="test" />
+          <q-btn
+            color="primary"
+            icon="save"
+            label="保存"
+            @click="saveProduct"
+          />
           <q-btn color="primary" icon="cancel" label="取消" @click="cancel" />
         </div>
       </q-form>
@@ -90,6 +125,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "EditProduct",
 
@@ -105,7 +142,9 @@ export default {
       profit_rate: 0.0,
       comment: "",
       thumbnail: null,
-      thumbnail_file: null
+      thumbnail_file: null,
+      category: null,
+      categories: []
     };
   },
   watch: {
@@ -114,9 +153,6 @@ export default {
     }
   },
   methods: {
-    test() {
-      alert(this.id);
-    },
     cancel() {
       this.$router.go(-1);
     },
@@ -176,7 +212,6 @@ export default {
     this.$axios
       .get("/api/products/" + this.$route.query.id)
       .then(({ data }) => {
-        console.log(data);
         this.id = data.id;
         this.no = data.no;
         this.name = data.name;
@@ -187,8 +222,9 @@ export default {
         this.profit_rate = data.profit_rate;
         this.comment = data.comment;
         this.thumbnail_file = data.thumbnail;
+        this.category = data.category;
         this.$store.dispatch("products/fetchCategories").then(res => {
-          console.log(res.data);
+          this.categories = this.$store.getters["products/productCategories"];
         });
       });
   }

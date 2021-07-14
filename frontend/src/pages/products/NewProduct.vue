@@ -6,7 +6,7 @@
         class="col-xs-12 col-sm-8 col-md-6 col-xl-4 shadow-3 q-pa-md"
       >
         <div class="row justify-between q-gutter-md">
-          <div class="col">
+          <div class="col q-mb-md">
             <q-input
               filled
               v-model="no"
@@ -21,8 +21,25 @@
               lazy-rules
               :rules="[val => (val && val.length > 0) || '请输入产品名称']"
             />
+            <q-select
+              label="产品分类"
+              filled
+              v-model="category"
+              use-input
+              hide-dropdown-icon
+              input-debounce="0"
+              :options="categories"
+            >
+              <template v-if="category" v-slot:append>
+                <q-icon
+                  name="cancel"
+                  @click.stop="category = null"
+                  class="cursor-pointer"
+                />
+              </template>
+            </q-select>
           </div>
-          <div class="col q-pb-md">
+          <div class="col q-mb-md" style="border:1px solid #c2c2c2">
             <q-file
               v-model="thumbnail"
               outlined
@@ -108,7 +125,9 @@ export default {
       profit_rate: 15,
       comment: "",
       thumbnail: null,
-      thumbnail_file: null
+      thumbnail_file: null,
+      category: null,
+      categories: []
     };
   },
   watch: {
