@@ -49,7 +49,6 @@ class ApiProducts(Resource):
             if 'id' in data:
                 for id in data['id']:
                     product = Product.get(id)
-                    print(id, type(id), product)
                     if product:
                         product.delete()
                 return 'Product deleted.', 204
@@ -114,7 +113,7 @@ class ApiCategories(Resource):
             categories = Category.query.all()
             return {
                 'total': len(categories),
-                'categories': [v.to_dict() for v in categories]
+                'data': [v.to_dict() for v in categories]
             }
 
     def post(self):

@@ -21,6 +21,26 @@ export function fetchProducts({ commit }) {
   });
 }
 
+export function fetchSuppliers({ commit }) {
+  commit("setLoading");
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "get",
+      url: "/api/products/suppliers"
+    })
+      .then(res => {
+        commit("setSuppliers", res.data);
+        commit("setLoaded");
+        resolve(res);
+      })
+      .catch(err => {
+        commit("clearSuppliers");
+        commit("setLoaded");
+        reject(err);
+      });
+  });
+}
+
 export function fetchCategories({ commit }) {
   commit("setLoading");
   return new Promise((resolve, reject) => {

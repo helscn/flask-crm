@@ -8,7 +8,7 @@
         <q-input
           class="col"
           filled
-          v-model="no"
+          v-model.trim="no"
           label="产品编号*"
           lazy-rules
           :rules="[val => (val && val.length > 0) || '请输入产品编号']"
@@ -17,9 +17,8 @@
           class="col"
           label="供应商"
           filled
-          v-model="category"
+          v-model.trim="category"
           use-input
-          hide-dropdown-icon
           input-debounce="0"
           :options="categories"
         />
@@ -28,7 +27,7 @@
         <div class="col q-mb-md">
           <q-input
             filled
-            v-model="name"
+            v-model.trim="name"
             label="产品名称*"
             lazy-rules
             :rules="[val => (val && val.length > 0) || '请输入产品名称']"
@@ -36,9 +35,8 @@
           <q-select
             label="产品分类"
             filled
-            v-model="category"
+            v-model.trim="category"
             use-input
-            hide-dropdown-icon
             input-debounce="0"
             :options="categories"
           >

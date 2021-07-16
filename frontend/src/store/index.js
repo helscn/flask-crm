@@ -32,7 +32,11 @@ export default function(/* { ssrContext } */) {
             icon: "business_center",
             path: "/products"
           },
-          { name: "供应商管理", icon: "support_agent", path: "/suppliers" },
+          {
+            name: "供应商管理",
+            icon: "support_agent",
+            path: "/suppliers"
+          },
           {
             name: "客户询价",
             icon: "request_quote",

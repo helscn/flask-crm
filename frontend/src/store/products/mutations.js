@@ -6,8 +6,16 @@ export function clearProducts(state) {
   state.data = [];
 }
 
+export function setSuppliers(state, newState) {
+  state.suppliers = newState.data;
+}
+
+export function clearSuppliers(state) {
+  state.suppliers = [];
+}
+
 export function setCategories(state, newState) {
-  state.categories = newState.categories;
+  state.categories = newState.data;
 }
 
 export function clearCategories(state) {
