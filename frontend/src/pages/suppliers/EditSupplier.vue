@@ -12,7 +12,7 @@ export default {
   components: { SupplierEditer },
   data() {
     return {
-      product: null
+      supplier: null
     };
   },
 
@@ -21,7 +21,6 @@ export default {
       this.$router.go(-1);
     },
     save(form) {
-      console.log(form.get("id"));
       let config = {
         headers: {
           "Content-Type": "multipart/form-data"
@@ -45,7 +44,7 @@ export default {
             type: "negative",
             position: "top",
             icon: "error",
-            message: "保存供应商出错，请检查网络连接是否正常。",
+            message: "保存供应商信息出错，请检查网络连接是否正常。",
             timeout: 1000
           });
         });
@@ -53,9 +52,9 @@ export default {
   },
   created: function() {
     this.$axios
-      .get("/api/products/" + this.$route.query.id)
+      .get("/api/products/suppliers/" + this.$route.query.id)
       .then(({ data }) => {
-        this.product = data;
+        this.supplier = data;
       });
   }
 };

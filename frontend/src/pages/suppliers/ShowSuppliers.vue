@@ -55,7 +55,6 @@
       :pagination.sync="pagination"
       :filter="filter"
       :visible-columns="visibleColumns"
-      @row-dblclick="showProductCard"
       table-header-class="bg-grey-4"
     >
       <template v-slot:top>
@@ -90,40 +89,6 @@
         />
       </template>
     </q-table>
-    <q-dialog v-model="isShowCard">
-      <q-card class="my-card">
-        <q-card-section>
-          <div class="row no-wrap items-center">
-            <div class="col">
-              <q-badge
-                class="text-subtitle2"
-                color="accent"
-                align="middle"
-                :label="currentProduct.no"
-              />
-              <span class="q-ml-md text-subtitle1">
-                {{ currentProduct.name }}</span
-              >
-            </div>
-            <div
-              class="col-auto text-grey-6 text-subtitle1 q-pt-none row no-wrap items-center"
-            >
-              {{ currentProduct.spec }}
-            </div>
-          </div>
-        </q-card-section>
-        <q-img :src="currentProduct.thumbnail" />
-        <q-card-section>
-          <div class="text-wrapper">{{ currentProduct.description }}</div>
-        </q-card-section>
-
-        <q-separator />
-
-        <q-card-actions align="right">
-          <q-btn v-close-popup flat color="primary" label="关闭" />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
   </q-page>
 </template>
 
@@ -200,6 +165,13 @@ export default {
           align: "center",
           field: row => row.created_date,
           sortable: true
+        },
+        {
+          name: "modified_date",
+          label: "修改日期",
+          align: "center",
+          field: row => row.modified_date,
+          sortable: true
         }
       ],
       visibleColumns: [
@@ -210,18 +182,12 @@ export default {
         "address",
         "website",
         "comment",
-        "created_date"
-      ],
-      currentProduct: {},
-      isShowCard: false
+        "modified_date"
+      ]
     };
   },
   methods: {
-    showProductCard(evt, row, index) {
-      this.currentProduct = row;
-      this.isShowCard = true;
-    },
-    removeProducts() {
+    removeSuppliers() {
       if (this.selected.length === 0) {
         this.$q.notify({
           type: "warning",
@@ -272,13 +238,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.my-card {
-  max-width: 100%;
-  min-width: 400px;
-}
-.text-wrapper {
-  white-space: pre-wrap;
-}
-</style>

@@ -2,7 +2,7 @@
   <div class="q-py-lg row justify-center">
     <q-form
       ref="myForm"
-      class="col-xs-12 col-sm-8 col-md-6 col-xl-4 shadow-3 q-pa-md q-gutter-md"
+      class="col-xs-12 col-sm-8 col-md-6 col-xl-4 shadow-3 q-pa-md q-col-gutter-md"
     >
       <div class="row justify-between q-gutter-md">
         <q-input
@@ -26,13 +26,12 @@
         <q-input class="col" filled v-model.trim="address" label="地址" />
       </div>
       <div class="row justify-between q-gutter-md">
-        <q-input
-          class="col"
-          filled
-          v-model="comment"
-          autogrow
-          label="产品描述"
-        />
+        <div class="col">
+          <div class="text-grey-7 text-subtitle1">备注</div>
+          <div>
+            <q-editor v-model="comment" min-height="8rem" />
+          </div>
+        </div>
       </div>
       <div class="row justify-around q-pt-md">
         <q-btn color="primary" icon="save" label="保存" @click="save" />
@@ -50,7 +49,7 @@ export default {
   },
   data() {
     return {
-      id: null,
+      id: 0,
       name: "",
       contract: "",
       email: "",
@@ -92,7 +91,6 @@ export default {
           form.append("phone", this.phone);
           form.append("address", this.address);
           form.append("website", this.website);
-          form.append("comment", this.comment);
           form.append("comment", this.comment);
           this.$emit("save", form, this.id);
         } else {

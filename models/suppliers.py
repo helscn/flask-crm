@@ -15,8 +15,10 @@ class Supplier(BaseModel):
     email = db.Column(db.String(128))
     phone = db.Column(db.String(30))
     website = db.Column(db.String(256))
-    comment = db.Column(db.String(256))
+    comment = db.Column(db.Text)
     created_date = db.Column(
+        db.DateTime, nullable=False, default=datetime.now())
+    modified_date = db.Column(
         db.DateTime, nullable=False, default=datetime.now())
     products = db.relationship(
         'Product', backref='supplier', lazy='dynamic', cascade='all')
@@ -27,11 +29,3 @@ class Supplier(BaseModel):
         if not id:
             return None
         return Supplier.query.filter_by(id=id).first()
-
-    def to_dict(self):
-        # 将当前对象转换输出为字典对象
-        data = {c.name: getattr(self, c.name) for c in self.__table__.columns}
-        if data['created_date']:
-            data['created_date'] = data['created_date'].strftime(
-                '%Y-%m-%d %H:%M:%S')
-        return data

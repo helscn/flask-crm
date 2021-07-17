@@ -216,6 +216,13 @@ export default {
           align: "center",
           field: row => row.created_date,
           sortable: true
+        },
+        {
+          name: "modified_date",
+          label: "修改日期",
+          align: "center",
+          field: row => row.modified_date,
+          sortable: true
         }
       ],
       visibleColumns: [
@@ -226,7 +233,8 @@ export default {
         "moq",
         "purchase_price",
         "profit_rate",
-        "thumbnail"
+        "thumbnail",
+        "modified_date"
       ],
       currentProduct: {},
       isShowCard: false

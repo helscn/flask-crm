@@ -22,6 +22,8 @@ class Product(BaseModel):
     comment = db.Column(db.Text, default='')
     created_date = db.Column(
         db.DateTime, nullable=False, default=datetime.now())
+    modified_date = db.Column(
+        db.DateTime, nullable=False, default=datetime.now())
     valid = db.Column(db.Boolean, nullable=False, default=True)
     category_id = db.Column(db.Integer, db.ForeignKey('product_categories.id'))
     thumbnail = db.Column(db.String(256))
@@ -62,9 +64,10 @@ class Product(BaseModel):
         if data['thumbnail']:
             data['thumbnail'] = url_for(
                 'get_uploads', filename=data['thumbnail'], _external=True)
-        if data['created_date']:
-            data['created_date'] = data['created_date'].strftime(
-                '%Y-%m-%d %H:%M:%S')
+        data['created_date'] = data['created_date'].strftime(
+            '%Y-%m-%d %H:%M:%S')
+        data['modified_date'] = data['modified_date'].strftime(
+            '%Y-%m-%d %H:%M:%S')
         return data
 
     def delete(self):

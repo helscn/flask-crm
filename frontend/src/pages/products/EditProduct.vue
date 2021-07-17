@@ -21,7 +21,6 @@ export default {
       this.$router.go(-1);
     },
     save(form) {
-      console.log(form.get("id"));
       let config = {
         headers: {
           "Content-Type": "multipart/form-data"

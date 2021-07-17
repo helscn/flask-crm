@@ -69,16 +69,17 @@ class ApiProducts(Resource):
                                default=0.0, location='form')
         formParse.add_argument('comment', type=str,
                                default='', location='form')
-        # formParse.add_argument('created_date', type=str, location='form')
-        # formParse.add_argument('valid', type=bool, location='form')
         formParse.add_argument('category_id', type=int, location='form')
         formParse.add_argument('thumbnail', type=FileStorage, location='files')
         formParse.add_argument('supplier_id', type=int, location='form')
+        # formParse.add_argument('created_date', type=str, location='form')
+        # formParse.add_argument('modified_date', type=str, location='form')
+        # formParse.add_argument('valid', type=bool, location='form')
         form = formParse.parse_args()
         if not form['no']:
             form['no'] = getNewProductNo()
         product = Product(
-            no=form['no'],
+            no=form['no'].upper(),
             name=form['name'],
             spec=form['spec'],
             description=form['description'],

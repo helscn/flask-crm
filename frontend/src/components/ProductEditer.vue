@@ -16,12 +16,34 @@
         <q-select
           class="col"
           label="供应商"
+          clearable
           filled
-          v-model.trim="category"
+          v-model.trim="supplier"
           use-input
           input-debounce="0"
-          :options="categories"
-        />
+          bottom-slots
+          @filter="suppliersFilter"
+          :options="suppliers"
+        >
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-grey">
+                找不到对应供应商
+              </q-item-section>
+            </q-item>
+          </template>
+          <template v-slot:append>
+            <q-icon
+              name="add_circle"
+              @click="addSupplier"
+              class="cursor-pointer"
+            >
+              <q-tooltip>
+                添加产品供应商
+              </q-tooltip>
+            </q-icon>
+          </template>
+        </q-select>
       </div>
       <div class="row justify-between q-gutter-md">
         <div class="col q-mb-md">
@@ -34,18 +56,20 @@
           />
           <q-select
             label="产品分类"
+            clearable
             filled
             v-model.trim="category"
             use-input
             input-debounce="0"
+            bottom-slots
             :options="categories"
           >
-            <template v-if="category" v-slot:append>
-              <q-icon
-                name="cancel"
-                @click.stop="category = null"
-                class="cursor-pointer"
-              />
+            <template v-slot:append>
+              <q-icon name="add_circle" @click.stop class="cursor-pointer">
+                <q-tooltip>
+                  添加产品分类
+                </q-tooltip>
+              </q-icon>
             </template>
           </q-select>
         </div>
@@ -194,11 +218,26 @@ export default {
           });
         }
       });
+    },
+    suppliersFilter(val, update, abort) {
+      update(() => {
+        const keyword = val.toLowerCase();
+        const suppliers = this.$store.getters["products/productSuppliers"];
+        this.suppliers = suppliers.filter(
+          v => v.toLowerCase().indexOf(keyword) > -1
+        );
+      });
+    },
+    addSupplier() {
+      this.$router.push("/suppliers/new");
     }
   },
   created: function() {
     this.$store.dispatch("products/fetchCategories").then(res => {
       this.categories = this.$store.getters["products/productCategories"];
+    });
+    this.$store.dispatch("products/fetchSuppliers").then(res => {
+      this.suppliers = this.$store.getters["products/productSuppliers"];
     });
   }
 };

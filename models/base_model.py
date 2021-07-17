@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from main import db
+from datetime import datetime
+
 
 class BaseModel(db.Model):
     # 当前对象模型类为抽象类，只能被继承使用
@@ -19,4 +21,8 @@ class BaseModel(db.Model):
 
     def to_dict(self):
         # 将当前对象转换输出为字典对象
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        data = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        for key, item in data.items():
+            if type(item) is datetime:
+                data[key] = item.strftime('%Y-%m-%d %H:%M:%S')
+        return data

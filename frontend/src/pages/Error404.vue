@@ -1,14 +1,11 @@
 <template>
   <div
-    class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center"
+    class="fullscreen text-white text-center q-pa-md flex flex-center"
+    style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%)"
   >
     <div>
-      <div style="font-size: 30vh">
-        404
-      </div>
-
-      <div class="text-h2" style="opacity:.4">
-        Oops. Nothing here...
+      <div class="text-h2 q-my-xl" style="opacity:.6">
+        (๑ŐдŐ) 呃……该功能还未开发完成……
       </div>
       <div class="q-gutter-md">
         <q-btn
