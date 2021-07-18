@@ -7,7 +7,8 @@ from flask_restful import Api
 # 从当前路径中导入需要加载的 Restful 资源对象
 from .users import ApiUsers
 from .roles import ApiRoles
-from .products import ApiProducts, ApiNewProductNo, ApiCategories
+from .products import ApiProducts, ApiNewProductNo
+from .categories import ApiCategories
 from .suppliers import ApiSuppliers
 from .files import ApiFiles
 from .images import ApiImages

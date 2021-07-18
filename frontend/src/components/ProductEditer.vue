@@ -62,16 +62,29 @@
             use-input
             input-debounce="0"
             bottom-slots
+            @filter="categoriesFilter"
             :options="categories"
           >
+            <template v-slot:no-option>
+              <q-item>
+                <q-item-section class="text-grey">
+                  找不到对应产品分类
+                </q-item-section>
+              </q-item>
+            </template>
             <template v-slot:append>
-              <q-icon name="add_circle" @click.stop class="cursor-pointer">
+              <q-icon
+                name="add_circle"
+                @click.stop="isShowDialog = true"
+                class="cursor-pointer"
+              >
                 <q-tooltip>
                   添加产品分类
                 </q-tooltip>
               </q-icon>
             </template>
           </q-select>
+          <q-select label="单位" filled v-model="unit" :options="units" />
         </div>
         <div class="col q-mb-md" style="border:1px solid #c2c2c2">
           <q-file
@@ -136,6 +149,28 @@
         <q-btn color="primary" icon="cancel" label="取消" @click="cancel" />
       </div>
     </q-form>
+    <q-dialog v-model="isShowDialog" persistent>
+      <q-card style="min-width: 350px">
+        <q-card-section>
+          <div class="text-subtitle1">请输入新产品类别名称：</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-input
+            dense
+            v-model.trim="newCategory"
+            autofocus
+            @keyup.enter="saveCategory"
+            @keyup.esc="closeDialog"
+          />
+        </q-card-section>
+
+        <q-card-actions align="right" class="text-primary">
+          <q-btn flat label="取消" v-close-popup @click="closeDialog" />
+          <q-btn flat label="保存" v-close-popup @click="saveCategory" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -147,21 +182,24 @@ export default {
   },
   data() {
     return {
-      id: null,
+      id: 0,
       no: "",
       name: "",
       spec: "",
       description: "",
-      moq: 0,
+      moq: 1,
       purchase_price: 0.0,
-      profit_rate: 0.0,
-      comment: "",
+      profit_rate: 15.0,
       thumbnail: null,
       thumbnail_url: null,
+      unit: "pcs",
+      units: ["pcs", "unit"],
       supplier: null,
-      suppliers: [],
+      suppliers:[],
       category: null,
-      categories: []
+      categories:[],
+      isShowDialog: false,
+      newCategory: ""
     };
   },
   watch: {
@@ -174,6 +212,7 @@ export default {
           this.id = val.id || this.id;
           this.no = val.no || this.no;
           this.name = val.name || this.name;
+          this.spec = val.spec || this.spec;
           this.description = val.description || this.description;
           this.moq = val.moq || this.moq;
           this.purchase_price = val.purchase_price || this.purchase_price;
@@ -199,11 +238,11 @@ export default {
           form.append("no", this.no);
           form.append("name", this.name);
           form.append("spec", this.spec);
+          form.append("unit", this.unit);
           form.append("description", this.description);
           form.append("moq", this.moq);
           form.append("purchase_price", this.purchase_price);
           form.append("profit_rate", this.profit_rate / 100);
-          form.append("comment", this.comment);
           form.append("supplier", this.supplier);
           form.append("category", this.category);
           form.append("thumbnail", this.thumbnail);
@@ -228,16 +267,67 @@ export default {
         );
       });
     },
+    categoriesFilter(val, update, abort) {
+      update(() => {
+        const keyword = val.toLowerCase();
+        const categories = this.$store.getters["products/productCategories"];
+        this.categories = categories.filter(
+          v => v.toLowerCase().indexOf(keyword) > -1
+        );
+      });
+    },
     addSupplier() {
       this.$router.push("/suppliers/new");
+    },
+    closeDialog() {
+      this.isShowDialog = false;
+      this.newCategory = "";
+    },
+    saveCategory() {
+      if (this.categories.indexOf(this.newCategory) === -1) {
+        this.$axios
+          .post("/api/products/categories", {
+            name: this.newCategory
+          })
+          .then(res => {
+            this.$store.dispatch("products/fetchCategories").then(res => {
+              this.cateogry = this.newCategory;
+              this.$q.notify({
+                type: "positive",
+                position: "top",
+                icon: "check_circle",
+                message: "已新建产品分类：" + this.newCategory,
+                timeout: 1000
+              });
+            });
+          })
+          .catch(err => {
+            this.$q.notify({
+              type: "negative",
+              position: "top",
+              icon: "error",
+              message: "保存产品类别信息出错，请检查网络连接是否正常!",
+              timeout: 1000
+            });
+          });
+      } else {
+        this.$q.notify({
+          type: "negative",
+          position: "top",
+          icon: "error",
+          message: "输入的产品类别重复!",
+          timeout: 1000
+        });
+        this.newCategory = "";
+      }
     }
   },
   created: function() {
-    this.$store.dispatch("products/fetchCategories").then(res => {
-      this.categories = this.$store.getters["products/productCategories"];
+    this.$store.dispatch("products/fetchCategories").then(res=>{
+      this.categories=this.$store.getters["products/productCategories"]
     });
-    this.$store.dispatch("products/fetchSuppliers").then(res => {
-      this.suppliers = this.$store.getters["products/productSuppliers"];
+    this.$store.dispatch("products/fetchSuppliers").then(res=>{
+      this.suppliers=this.$store.getters["products/productSuppliers"]
     });
   }
 };

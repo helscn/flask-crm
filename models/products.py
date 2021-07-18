@@ -15,11 +15,11 @@ class Product(BaseModel):
     no = db.Column(db.String(20), unique=True, nullable=False)
     name = db.Column(db.String(256), nullable=False)
     spec = db.Column(db.String(256), nullable=False, default='')
+    unit = db.Column(db.String(10), default='pcs')
     description = db.Column(db.Text, nullable=False, default='')
     moq = db.Column(db.Integer, nullable=False, default=1)
     purchase_price = db.Column(db.Float, nullable=False)
     profit_rate = db.Column(db.Float, nullable=False)
-    comment = db.Column(db.Text, default='')
     created_date = db.Column(
         db.DateTime, nullable=False, default=datetime.now())
     modified_date = db.Column(
@@ -42,6 +42,8 @@ class Product(BaseModel):
         save_name = None
         mimetype = file.mimetype
         if 'image' in mimetype:
+            if self.thumbnail:
+                self.del_thumbnail()
             filename = path.basename(file.filename)
             ext = path.splitext(filename)[1]
             save_name = 'thumb_{id}{ext}'.format(id=self.id, ext=ext)
@@ -58,6 +60,10 @@ class Product(BaseModel):
             self.save()
         return save_name
 
+    def del_thumbnail(self):
+        if self.thumbnail:
+            remove(path.join(Setting.UPLOAD_FOLDER, self.thumbnail))
+
     def to_dict(self):
         # 将当前对象转换输出为字典对象
         data = {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -68,6 +74,8 @@ class Product(BaseModel):
             '%Y-%m-%d %H:%M:%S')
         data['modified_date'] = data['modified_date'].strftime(
             '%Y-%m-%d %H:%M:%S')
+        data['supplier']=self.supplier.name if self.supplier else None
+        data['category']=self.category.name if self.category else None
         return data
 
     def delete(self):
@@ -76,8 +84,7 @@ class Product(BaseModel):
                 db.session.delete(label)
             for image in self.images.all():
                 db.session.delete(image)
-            if self.thumbnail:
-                remove(path.join(Setting.UPLOAD_FOLDER, self.thumbnail))
+            self.del_thumbnail()
             db.session.delete(self)
             db.session.commit()
         except Exception as e:

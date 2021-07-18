@@ -163,6 +163,22 @@ export default {
           sortable: true
         },
         {
+          name: "category",
+          label: "产品分类",
+          align: "center",
+          field: row => row.category,
+          format: val => `${val}`,
+          sortable: true
+        },
+        {
+          name: "supplier",
+          label: "产品供应商",
+          align: "center",
+          field: row => row.supplier,
+          format: val => `${val}`,
+          sortable: true
+        },
+        {
           name: "description",
           label: "产品描述",
           align: "left",
@@ -188,7 +204,7 @@ export default {
         },
         {
           name: "profit_rate",
-          label: "利润率",
+          label: "参考利润率",
           align: "right",
           field: row => row.profit_rate,
           format: val => `${val * 100}%`,
@@ -200,14 +216,6 @@ export default {
           align: "center",
           field: row => row.thumbnail,
           format: val => (val ? "\u2705" : "\u274C"),
-          sortable: true
-        },
-        {
-          name: "comment",
-          label: "备注",
-          align: "center",
-          field: row => row.comment,
-          format: val => `${val}`,
           sortable: true
         },
         {
@@ -229,11 +237,11 @@ export default {
         "no",
         "name",
         "spec",
-        "description",
+        "category",
+        "supplier",
         "moq",
         "purchase_price",
         "profit_rate",
-        "thumbnail",
         "modified_date"
       ],
       currentProduct: {},

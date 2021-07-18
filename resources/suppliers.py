@@ -5,6 +5,7 @@ from auth import login_required
 from models import db, Supplier
 from flask import request
 from flask_restful import abort, Resource, reqparse
+from datetime import datetime
 
 formParse = reqparse.RequestParser()
 formParse.add_argument('id', type=int, location='form')
@@ -82,8 +83,6 @@ class ApiSuppliers(Resource):
             supplier = Supplier.get(form['id'])
         if not supplier:
             abort(404, message='Supplier not exist.')
-        elif not form['name']:
-            abort(400, message="Invalid request argument.")
         supplier.name = form['name']
         supplier.contract = form['contract']
         supplier.address = form['address']
@@ -91,5 +90,6 @@ class ApiSuppliers(Resource):
         supplier.phone = form['phone']
         supplier.website = form['website']
         supplier.comment = form['comment']
+        supplier.modified_date = datetime.now()
         supplier.save()
         return {'success': True}, 201
