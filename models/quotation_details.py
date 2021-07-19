@@ -3,6 +3,7 @@
 
 from datetime import datetime
 from .base_model import db, BaseModel
+from .products import Product
 
 
 class QuotationDetails(BaseModel):
@@ -23,9 +24,21 @@ class QuotationDetails(BaseModel):
         # USD
         return round(self.purchase_price*(1+self.profit_rate)/self.quotation.exchange_rate, 2)
 
+    @property
+    def profit(self):
+        return round(self.purchase_price*self.profit_rate, 2)
+
     @staticmethod
     def get(id):
         """根据ID返回对象"""
         if not id:
             return None
         return QuotationDetails.query.filter_by(id=id).first()
+
+    def to_dict(self):
+        data = super().to_dict()
+        data['quote_price'] = self.quote_price
+        data['profit'] = self.profit
+        data['product_no'] = self.product.no
+        data['product_name'] = self.product.name
+        return data

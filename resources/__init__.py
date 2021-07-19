@@ -10,6 +10,7 @@ from .roles import ApiRoles
 from .products import ApiProducts, ApiNewProductNo
 from .categories import ApiCategories
 from .suppliers import ApiSuppliers
+from .quotations import ApiQuotations
 from .files import ApiFiles
 from .images import ApiImages
 
@@ -28,6 +29,8 @@ api.add_resource(ApiCategories, '/products/categories',
                  '/products/categories/<int:id>', endpoint='categories')
 api.add_resource(ApiSuppliers, '/products/suppliers',
                  '/products/suppliers/<int:id>', endpoint='suppliers')
+api.add_resource(ApiQuotations, '/products/quotations',
+                 '/products/quotations/<int:id>', endpoint='quotations')
 api.add_resource(ApiNewProductNo, '/products/newno', endpoint='newno')
 api.add_resource(ApiFiles, '/files', '/files/<int:id>', endpoint='files')
 api.add_resource(ApiImages, '/images', '/images/<int:id>', endpoint='images')

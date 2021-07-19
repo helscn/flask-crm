@@ -8,6 +8,8 @@ from .users import User
 from .products import Product
 from .categories import Category
 from .suppliers import Supplier
+from .quotation_details import QuotationDetails
+from .quotations import Quotation
 from .images import Image
 from .files import File
 

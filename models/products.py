@@ -30,6 +30,8 @@ class Product(BaseModel):
     supplier_id = db.Column(db.Integer, db.ForeignKey('suppliers.id'))
     images = db.relationship(
         'Image', backref='product', lazy='dynamic', cascade='all')
+    quotations = db.relationship(
+        'QuotationDetails', backref='product', lazy='dynamic', cascade='all')
 
     @staticmethod
     def get(id):
