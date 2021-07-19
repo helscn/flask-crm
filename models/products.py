@@ -74,14 +74,12 @@ class Product(BaseModel):
             '%Y-%m-%d %H:%M:%S')
         data['modified_date'] = data['modified_date'].strftime(
             '%Y-%m-%d %H:%M:%S')
-        data['supplier']=self.supplier.name if self.supplier else None
-        data['category']=self.category.name if self.category else None
+        data['supplier'] = self.supplier.name if self.supplier else None
+        data['category'] = self.category.name if self.category else None
         return data
 
     def delete(self):
         try:
-            for label in self.labels.all():
-                db.session.delete(label)
             for image in self.images.all():
                 db.session.delete(image)
             self.del_thumbnail()

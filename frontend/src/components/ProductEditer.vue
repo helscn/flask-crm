@@ -193,11 +193,11 @@ export default {
       thumbnail: null,
       thumbnail_url: null,
       unit: "pcs",
-      units: ["pcs", "unit"],
+      units: ["pcs", "set"],
       supplier: null,
-      suppliers:[],
+      suppliers: [],
       category: null,
-      categories:[],
+      categories: [],
       isShowDialog: false,
       newCategory: ""
     };
@@ -323,11 +323,11 @@ export default {
     }
   },
   created: function() {
-    this.$store.dispatch("products/fetchCategories").then(res=>{
-      this.categories=this.$store.getters["products/productCategories"]
+    this.$store.dispatch("products/fetchCategories").then(res => {
+      this.categories = this.$store.getters["products/productCategories"];
     });
-    this.$store.dispatch("products/fetchSuppliers").then(res=>{
-      this.suppliers=this.$store.getters["products/productSuppliers"]
+    this.$store.dispatch("products/fetchSuppliers").then(res => {
+      this.suppliers = this.$store.getters["products/productSuppliers"];
     });
   }
 };
