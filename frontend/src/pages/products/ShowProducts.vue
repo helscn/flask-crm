@@ -124,6 +124,35 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-page-sticky position="bottom-right" :offset="[40, 40]">
+      <q-fab
+        glossy
+        external-label
+        label-position="left"
+        label="暂存区"
+        color="primary"
+        icon="shopping_cart"
+        direction="up"
+      >
+        <template v-slot:tooltip>
+          <q-badge color="orange" text-color="black" floating>2</q-badge>
+        </template>
+        <q-fab-action
+          external-label
+          label-position="left"
+          label="创建询价单"
+          color="primary"
+          icon="description"
+        />
+        <q-fab-action
+          external-label
+          label-position="left"
+          label="创建订单"
+          color="primary"
+          icon="request_quote"
+        />
+      </q-fab>
+    </q-page-sticky>
   </q-page>
 </template>
 

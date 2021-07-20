@@ -38,13 +38,13 @@ export default function(/* { ssrContext } */) {
             path: "/suppliers"
           },
           {
-            name: "客户询价",
-            icon: "request_quote",
+            name: "报价单管理",
+            icon: "description",
             path: "/quotations"
           },
           {
             name: "订单管理",
-            icon: "paid",
+            icon: "request_quote",
             path: "/orders"
           },
           {
