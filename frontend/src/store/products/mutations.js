@@ -29,3 +29,15 @@ export function setLoading(state) {
 export function setLoaded(state) {
   state.loading = false;
 }
+
+export function addCartItem(state,item){
+  state.cart.push(item)
+}
+
+export function clearCart(state){
+  state.cart=[];
+}
+
+export function setCart(state,items){
+  state.cart=[...items]
+}

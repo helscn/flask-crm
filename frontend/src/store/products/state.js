@@ -3,6 +3,7 @@ export default function() {
     data: [],
     suppliers: [],
     categories: [],
+    cart:[],
     loading: false
   };
 }

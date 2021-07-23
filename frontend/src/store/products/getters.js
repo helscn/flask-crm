@@ -21,3 +21,7 @@ export function productCategories(state) {
 export function categoriesCount(state) {
   return state.categories.length;
 }
+
+export function cartItemsCount(state) {
+  return state.cart.length;
+}

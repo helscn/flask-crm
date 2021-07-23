@@ -43,6 +43,13 @@
           color="primary"
         />
       </q-btn-group>
+      <q-btn
+        rounded
+        color="primary"
+        icon="add_shopping_cart"
+        label="加入暂存区"
+        @click="addCart"
+      />
     </template>
     <q-table
       ref="productsTable"
@@ -124,7 +131,8 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-page-sticky position="bottom-right" :offset="[40, 40]">
+
+    <q-page-sticky position="bottom-right" :offset="cartPos">
       <q-fab
         glossy
         external-label
@@ -133,9 +141,13 @@
         color="primary"
         icon="shopping_cart"
         direction="up"
+        :disable="draggingCart"
+        v-touch-pan.prevent.mouse="moveCart"
       >
         <template v-slot:tooltip>
-          <q-badge color="orange" text-color="black" floating>2</q-badge>
+          <q-badge color="orange" text-color="black" floating>{{
+            cartItemsCount
+          }}</q-badge>
         </template>
         <q-fab-action
           external-label
@@ -196,7 +208,7 @@ export default {
           label: "产品分类",
           align: "center",
           field: row => row.category,
-          format: val => `${val}`,
+          format: val => val || "(无)",
           sortable: true
         },
         {
@@ -204,7 +216,7 @@ export default {
           label: "产品供应商",
           align: "center",
           field: row => row.supplier,
-          format: val => `${val}`,
+          format: val => val || "(无)",
           sortable: true
         },
         {
@@ -274,7 +286,9 @@ export default {
         "modified_date"
       ],
       currentProduct: {},
-      isShowCard: false
+      isShowCard: false,
+      cartPos: [40, 40],
+      draggingCart: false
     };
   },
   methods: {
@@ -313,6 +327,19 @@ export default {
               });
           });
       }
+    },
+    moveCart(ev) {
+      this.draggingCart = ev.isFirst !== true && ev.isFinal !== true;
+      this.cartPos = [
+        this.cartPos[0] - ev.delta.x,
+        this.cartPos[1] - ev.delta.y
+      ];
+    },
+    addCart(){
+      this.selected.forEach(el=>{
+        this.$store.commit("products/addCartItem",el)
+      },this)
+      this.selected=[];
     }
   },
   computed: {
@@ -320,7 +347,8 @@ export default {
       loading: state => state.products.loading
     }),
     ...mapGetters({
-      data: "products/validProducts"
+      data: "products/validProducts",
+      cartItemsCount: "products/cartItemsCount"
     })
   },
   created: function() {
