@@ -33,7 +33,13 @@ export default function(/* { store, ssrContext } */) {
     } else if (Vue.$cookies.isKey("Token") || to.path == "/login") {
       next();
     } else {
-      next("/login");
+      // next("/login");
+      next({
+        path:"/login",
+        query:{
+          next:encodeURIComponent(to.path)
+        }
+      })
     }
   });
   return Router;

@@ -174,12 +174,16 @@ export default {
               type: "positive",
               position: "center",
               icon: "announcement",
-              message: "登录成功，正在跳转至主页...",
+              message: "登录成功，正在跳转页面...",
               timeout: 300,
               progress: true
             });
             setTimeout(() => {
-              this.$router.push("/");
+              if (this.$route.query.next){
+                this.$router.push(decodeURIComponent(this.$route.query.next))
+              }else{
+                this.$router.push("/");
+              }
             }, 1500);
           })
           .catch(err => {
