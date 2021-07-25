@@ -10,6 +10,10 @@ from .categories import Category
 from .suppliers import Supplier
 from .quotation_details import QuotationDetails
 from .quotations import Quotation
+from .customers import Customer
+from .messages import Message
+from .message_addresses import MessageAddress
+from .config import Config
 from .images import Image
 from .files import File
 

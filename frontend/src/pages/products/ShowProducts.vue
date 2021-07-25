@@ -47,7 +47,7 @@
         rounded
         color="primary"
         icon="add_shopping_cart"
-        label="加入暂存区"
+        label="加入购物车"
         @click="addCart"
       />
     </template>
@@ -137,7 +137,7 @@
         glossy
         external-label
         label-position="left"
-        label="暂存区"
+        label="购物车"
         color="primary"
         icon="shopping_cart"
         direction="up"
