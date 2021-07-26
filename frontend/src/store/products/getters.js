@@ -1,5 +1,11 @@
-export function validProducts(state) {
-  return state.data.filter(product => product.valid);
+export function filteredProducts(state) {
+  if (state.validFilter == "valid") {
+    return state.data.filter(product => product.valid == 1);
+  } else if (state.validFilter == "unvalid") {
+    return state.data.filter(product => product.valid == 0);
+  } else {
+    return state.data;
+  }
 }
 
 export function productsCount(state) {

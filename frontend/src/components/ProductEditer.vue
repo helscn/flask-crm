@@ -112,7 +112,9 @@
           class="col"
           filled
           v-model="purchase_price"
-          type="number"
+          mask="#.##"
+          fill-mask="0"
+          reverse-fill-mask
           label="采购价格*"
           prefix="¥"
           lazy-rules
@@ -187,8 +189,8 @@ export default {
       name: "",
       spec: "",
       description: "",
-      moq: 1,
-      purchase_price: 0.0,
+      moq: 100,
+      purchase_price: "1.00",
       profit_rate: 15.0,
       thumbnail: null,
       thumbnail_url: null,

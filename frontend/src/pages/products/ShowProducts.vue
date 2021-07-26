@@ -1,102 +1,119 @@
 <template>
   <q-page class="q-ma-xs q-mr-md q-pa-xs q-gutter-md">
-    <template>
-      <q-btn-group rounded push>
-        <q-btn
-          label="新建"
-          icon="add_circle_outline"
-          @click="$router.push('/products/new')"
-          color="primary"
-        />
-        <q-btn
-          label="修改"
-          :disable="selected.length !== 1"
-          icon="edit"
-          @click="
-            $router.push({
-              path: '/products/edit',
-              query: { id: selected[0].id }
-            })
-          "
-          color="primary"
-        />
-        <q-btn
-          label="删除"
-          :disable="selected.length === 0"
-          rounded
-          icon="delete_forever"
-          @click="removeProducts"
-          color="primary"
-        />
-      </q-btn-group>
-      <q-btn-group rounded>
-        <q-btn
-          label="导出"
-          icon="file_download"
-          @click="$router.push('/products/download')"
-          color="primary"
-        />
-        <q-btn
-          label="导入"
-          icon="file_upload"
-          @click="$router.push('/products/upload')"
-          color="primary"
-        />
-      </q-btn-group>
+    <q-btn-group rounded push>
       <q-btn
-        rounded
+        label="新建"
+        icon="add_circle_outline"
+        @click="$router.push('/products/new')"
         color="primary"
-        icon="add_shopping_cart"
-        label="加入购物车"
-        @click="addCart"
       />
-    </template>
-    <q-table
-      ref="productsTable"
-      :loading="loading"
-      :data="data"
-      :columns="columns"
-      row-key="id"
-      selection="multiple"
-      :selected.sync="selected"
-      :pagination.sync="pagination"
-      :filter="filter"
-      :visible-columns="visibleColumns"
-      @row-dblclick="showProductCard"
-      table-header-class="bg-grey-4"
-    >
-      <template v-slot:top>
-        <q-input
-          color="black"
-          dense
-          debounce="300"
-          v-model="filter"
-          placeholder="搜索产品"
-        >
-          <template v-slot:prepend>
-            <q-icon name="search" />
-          </template>
-          <template v-if="filter" v-slot:append>
-            <q-icon name="close" @click="filter = ''" class="cursor-pointer" />
-          </template>
-        </q-input>
-        <q-space />
-        <q-select
-          v-model="visibleColumns"
-          multiple
-          outlined
-          dense
-          options-dense
-          display-value="列选择"
-          emit-value
-          map-options
-          :options="columns"
-          option-value="name"
-          options-cover
-          style="min-width: 150px"
-        />
-      </template>
-    </q-table>
+      <q-btn
+        label="修改"
+        :disable="selected.length !== 1"
+        icon="edit"
+        @click="
+          $router.push({
+            path: '/products/edit',
+            query: { id: selected[0].id }
+          })
+        "
+        color="primary"
+      />
+      <q-btn
+        label="删除"
+        :disable="selected.length === 0"
+        rounded
+        icon="delete_forever"
+        @click="removeProducts"
+        color="primary"
+      />
+    </q-btn-group>
+    <q-btn-group rounded>
+      <q-btn
+        label="导出"
+        icon="file_download"
+        @click="$router.push('/products/download')"
+        color="primary"
+      />
+      <q-btn
+        label="导入"
+        icon="file_upload"
+        @click="$router.push('/products/upload')"
+        color="primary"
+      />
+    </q-btn-group>
+    <q-btn
+      rounded
+      color="primary"
+      icon="add_shopping_cart"
+      label="加入购物车"
+      @click="addCart"
+    />
+
+    <div>
+      <q-tabs
+        v-model="productsFilter"
+        align="left"
+        inline-label
+        class="text-primary bg-grey-3 shadow-2"
+        :breakpoint="300"
+      >
+        <q-tab name="all" label="所有产品" icon="business_center" />
+        <q-tab name="valid" label="上架产品" icon="visibility" />
+        <q-tab name="unvalid" label="下架产品" icon="visibility_off" />
+      </q-tabs>
+      <q-table
+        ref="productsTable"
+        :loading="loading"
+        :data="data"
+        :columns="columns"
+        row-key="id"
+        selection="multiple"
+        :selected.sync="selected"
+        :pagination.sync="pagination"
+        :filter="filter"
+        :visible-columns="visibleColumns"
+        @row-dblclick="showProductCard"
+        table-header-class="bg-grey-2"
+      >
+        <template v-slot:top>
+          <q-input
+            color="black"
+            dense
+            debounce="300"
+            v-model="filter"
+            placeholder="搜索产品"
+          >
+            <template v-slot:prepend>
+              <q-icon name="search" />
+            </template>
+            <template v-if="filter" v-slot:append>
+              <q-icon
+                name="close"
+                @click="filter = ''"
+                class="cursor-pointer"
+              />
+            </template>
+          </q-input>
+          <q-space />
+          <q-select
+            v-model="visibleColumns"
+            multiple
+            outlined
+            dense
+            options-dense
+            display-value="列选择"
+            emit-value
+            map-options
+            :options="columns"
+            option-value="name"
+            options-cover
+            style="min-width: 150px"
+          />
+        </template>
+      </q-table>
+    </div>
+
     <q-dialog v-model="isShowCard">
       <q-card class="my-card">
         <q-card-section>
@@ -174,7 +191,7 @@ import { mapState, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      showProduct: true,
+      productsFilter: "valid",
       filter: "",
       selected: [],
       pagination: { sortBy: null, descending: false, page: 1, rowsPerPage: 5 },
@@ -272,6 +289,13 @@ export default {
           align: "center",
           field: row => row.modified_date,
           sortable: true
+        },
+        {
+          name: "valid",
+          label: "上架产品",
+          align: "center",
+          field: row => (row.valid ? "\u2705" : "\u274C"),
+          sortable: true
         }
       ],
       visibleColumns: [
@@ -283,13 +307,20 @@ export default {
         "moq",
         "purchase_price",
         "profit_rate",
-        "modified_date"
+        "modified_date",
+        "valid"
       ],
       currentProduct: {},
       isShowCard: false,
       cartPos: [40, 40],
       draggingCart: false
     };
+  },
+  watch: {
+    productsFilter: function(val, oldVal) {
+      this.$store.commit("products/setProductsFilter", val);
+      this.selected = [];
+    }
   },
   methods: {
     showProductCard(evt, row, index) {
@@ -335,11 +366,11 @@ export default {
         this.cartPos[1] - ev.delta.y
       ];
     },
-    addCart(){
-      this.selected.forEach(el=>{
-        this.$store.commit("products/addCartItem",el)
-      },this)
-      this.selected=[];
+    addCart() {
+      this.selected.forEach(el => {
+        this.$store.commit("products/addCartItem", el);
+      }, this);
+      this.selected = [];
     }
   },
   computed: {
@@ -347,7 +378,7 @@ export default {
       loading: state => state.products.loading
     }),
     ...mapGetters({
-      data: "products/validProducts",
+      data: "products/filteredProducts",
       cartItemsCount: "products/cartItemsCount"
     })
   },

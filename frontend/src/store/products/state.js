@@ -1,9 +1,10 @@
 export default function() {
   return {
     data: [],
+    validFilter: "valid",
     suppliers: [],
     categories: [],
-    cart:[],
+    cart: [],
     loading: false
   };
 }

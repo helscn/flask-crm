@@ -6,6 +6,10 @@ export function clearProducts(state) {
   state.data = [];
 }
 
+export function setProductsFilter(state, filter) {
+  state.validFilter = filter;
+}
+
 export function setSuppliers(state, newState) {
   state.suppliers = newState.data;
 }
@@ -30,14 +34,14 @@ export function setLoaded(state) {
   state.loading = false;
 }
 
-export function addCartItem(state,item){
-  state.cart.push(item)
+export function addCartItem(state, item) {
+  state.cart.push(item);
 }
 
-export function clearCart(state){
-  state.cart=[];
+export function clearCart(state) {
+  state.cart = [];
 }
 
-export function setCart(state,items){
-  state.cart=[...items]
+export function setCart(state, items) {
+  state.cart = [...items];
 }
