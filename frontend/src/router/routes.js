@@ -11,11 +11,6 @@ const routes = [
         component: () => import("pages/Index.vue")
       },
       {
-        path: "projects",
-        meta: { title: "我的项目", icon: "widgets" },
-        component: () => import("pages/ProjectsView.vue")
-      },
-      {
         path: "products",
         meta: { title: "我的产品", icon: "business_center" },
         component: () => import("src/layouts/ContentLayout.vue"),
