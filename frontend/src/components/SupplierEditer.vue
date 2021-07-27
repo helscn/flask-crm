@@ -13,7 +13,7 @@
           lazy-rules
           :rules="[val => (val && val.length > 0) || '请输入供应商的名称']"
         />
-        <q-input class="col" filled v-model.trim="contract" label="联系人" />
+        <q-input class="col" filled v-model.trim="contact" label="联系人" />
       </div>
       <div class="row justify-between q-gutter-md">
         <q-input class="col" filled v-model.trim="email" label="邮箱" />
@@ -51,7 +51,7 @@ export default {
     return {
       id: 0,
       name: "",
-      contract: "",
+      contact: "",
       email: "",
       phone: "",
       address: "",
@@ -65,7 +65,7 @@ export default {
         if (val) {
           this.id = val.id || this.id;
           this.name = val.name || this.name;
-          this.contract = val.contract || this.contract;
+          this.contact = val.contact || this.contact;
           this.email = val.email || this.email;
           this.phone = val.phone || this.phone;
           this.address = val.address || this.address;
@@ -86,7 +86,7 @@ export default {
           let form = new FormData();
           form.append("id", this.id);
           form.append("name", this.name);
-          form.append("contract", this.contract);
+          form.append("contact", this.contact);
           form.append("email", this.email);
           form.append("phone", this.phone);
           form.append("address", this.address);

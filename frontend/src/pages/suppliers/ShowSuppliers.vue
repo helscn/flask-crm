@@ -112,10 +112,10 @@ export default {
           sortable: true
         },
         {
-          name: "contract",
+          name: "contact",
           label: "联系人",
           align: "center",
-          field: row => row.contract,
+          field: row => row.contact,
           format: val => `${val}`,
           sortable: true
         },
@@ -176,7 +176,7 @@ export default {
       ],
       visibleColumns: [
         "name",
-        "contract",
+        "contact",
         "email",
         "phone",
         "address",

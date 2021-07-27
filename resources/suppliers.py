@@ -10,7 +10,7 @@ from datetime import datetime
 formParse = reqparse.RequestParser()
 formParse.add_argument('id', type=int, location='form')
 formParse.add_argument('name', type=str, location='form')
-formParse.add_argument('contract', type=str, location='form')
+formParse.add_argument('contact', type=str, location='form')
 formParse.add_argument('address', type=str, location='form')
 formParse.add_argument('email', type=str, location='form')
 formParse.add_argument('phone', type=str, location='form')
@@ -65,7 +65,7 @@ class ApiSuppliers(Resource):
             abort(400, message="Invalid request argument.")
         supplier = Supplier(
             name=form['name'],
-            contract=form['contract'],
+            contact=form['contact'],
             address=form['address'],
             email=form['email'],
             phone=form['phone'],
@@ -84,8 +84,8 @@ class ApiSuppliers(Resource):
         if not supplier:
             abort(404, message='Supplier not exist.')
         supplier.name = form['name']
-        supplier.contract = form['contract']
         supplier.address = form['address']
+        supplier.contact = form['contact']
         supplier.email = form['email']
         supplier.phone = form['phone']
         supplier.website = form['website']

@@ -10,8 +10,8 @@ class Supplier(BaseModel):
     __tablename__ = 'suppliers'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(128), unique=True, nullable=False)
-    contract = db.Column(db.String(32))
     address = db.Column(db.String(256))
+    contact = db.Column(db.String(32))
     email = db.Column(db.String(128))
     phone = db.Column(db.String(30))
     website = db.Column(db.String(256))
