@@ -10,7 +10,7 @@ class Contact(BaseModel):
     name = db.Column(db.String(64), default='')
     title = db.Column(db.String(64), default='')
     department = db.Column(db.String(64), default='')
-    email = db.Column(db.String(256), unique=True)
+    email = db.Column(db.String(256), unique=True, index=True)
     phone = db.Column(db.String(30), default='')
     address = db.Column(db.String(256), default='')
     comment = db.Column(db.Text, default='')

@@ -8,7 +8,7 @@ from datetime import datetime
 class MessageAddress(BaseModel):
     __tablename__ = 'msg_addrs'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    address = db.Column(db.String(256), default='')
+    address = db.Column(db.String(256), index=True, default='')
     msg_id = db.Column(db.Integer, db.ForeignKey('messages.id'))
 
     @staticmethod

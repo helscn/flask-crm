@@ -11,6 +11,7 @@ from .suppliers import Supplier
 from .quotation_details import QuotationDetails
 from .quotations import Quotation
 from .customers import Customer
+from .contacts import Contact
 from .messages import Message
 from .message_addresses import MessageAddress
 from .config import Config

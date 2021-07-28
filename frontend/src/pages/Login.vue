@@ -32,6 +32,7 @@
                   counter
                   :loading="isLoading"
                   tabindex="1"
+                  autofocus
                   @keyup.enter="login"
                 >
                   <template v-slot:prepend>
@@ -179,9 +180,9 @@ export default {
               progress: true
             });
             setTimeout(() => {
-              if (this.$route.query.next){
-                this.$router.push(decodeURIComponent(this.$route.query.next))
-              }else{
+              if (this.$route.query.next) {
+                this.$router.push(decodeURIComponent(this.$route.query.next));
+              } else {
                 this.$router.push("/");
               }
             }, 1500);

@@ -55,7 +55,7 @@
       :pagination.sync="pagination"
       :filter="filter"
       :visible-columns="visibleColumns"
-      table-header-class="bg-grey-4"
+      table-header-class="bg-grey-2"
     >
       <template v-slot:top>
         <q-input

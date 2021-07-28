@@ -55,7 +55,7 @@
         v-model="productsFilter"
         align="left"
         inline-label
-        class="text-primary bg-grey-3 shadow-2"
+        class="bg-grey-4 text-primary shadow-2"
         :breakpoint="300"
       >
         <q-tab name="all" label="所有产品" icon="business_center" />
