@@ -12,18 +12,23 @@ class Config(BaseModel):
 
     @staticmethod
     def get(para):
-        """根据ID返回对象"""
         if not para:
             return None
-        p = Config.query.filter_by(name=para).first()
+        else:
+            return Config.query.filter_by(name=para).first()
+
+    @staticmethod
+    def getValue(para):
+        """根据ID返回对象"""
+        p = Config.get(para)
         if not p:
             return None
         else:
             return json.loads(p.value)
 
     @staticmethod
-    def set(para, value):
-        p = Config.query.filter_by(name=para).first()
+    def setValue(para, value):
+        p = Config.get(para)
         if p:
             p.value = json.dumps(value)
         else:
