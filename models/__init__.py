@@ -21,7 +21,6 @@ from .files import File
 
 def init_db():
     """删除数据库中所有数据并初始化"""
-    db.drop_all()
     db.create_all()
 
     admins = Role(id=1, name='管理员')

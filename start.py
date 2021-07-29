@@ -20,19 +20,19 @@ if len(sys.argv) >= 2:
     elif command == 'initdb':
         init_db()
 
-    elif command.lower() == 'serve':
+    elif command.lower() == 'dev':
         if len(sys.argv) == 3:
-            application.run('localhost', int(sys.argv[2]))
+            app.run('localhost', int(sys.argv[2]))
         elif len(sys.argv) == 4:
-            application.run(sys.argv[2], int(sys.argv[3]))
+            app.run(sys.argv[2], int(sys.argv[3]))
         else:
-            application.run('localhost', 5000)
+            app.run('localhost', 5000)
     else:
         print('''
   Command:
       initdb : Init the application and install the database.
-      dropdb  : Delete all database data.
-      serve   : Start the simple web server , the default address is localhost:5000.
+      dropdb : Delete all database data.
+      dev    : Start the simple web server , the default address is localhost:5000.
         ''')
 elif __name__ == '__main__':
     app.run('0.0.0.0', 5000)
