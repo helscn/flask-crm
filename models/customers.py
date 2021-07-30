@@ -18,6 +18,8 @@ class Customer(BaseModel):
     last_contact_date = db.Column(db.DateTime)
     created_date = db.Column(
         db.DateTime, default=datetime.now())
+    modified_date = db.Column(
+        db.DateTime, default=datetime.now())
     contacts = db.relationship(
         'Contact', backref='company', lazy='dynamic', cascade='all')
 
