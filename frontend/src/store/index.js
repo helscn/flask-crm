@@ -4,6 +4,7 @@ import Vuex from "vuex";
 // import example from './module-example'
 import auth from "./auth";
 import products from "./products";
+import customers from "./customers";
 
 Vue.use(Vuex);
 
@@ -76,7 +77,8 @@ export default function(/* { ssrContext } */) {
 
     modules: {
       auth,
-      products
+      products,
+      customers
     },
 
     // enable strict mode (adds overhead!)
