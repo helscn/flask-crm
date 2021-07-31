@@ -20,10 +20,8 @@ class Product(BaseModel):
     moq = db.Column(db.Integer, nullable=False, default=1)
     purchase_price = db.Column(db.Float, nullable=False)
     profit_rate = db.Column(db.Float, nullable=False)
-    created_date = db.Column(
-        db.DateTime, nullable=False, default=datetime.now())
-    modified_date = db.Column(
-        db.DateTime, nullable=False, default=datetime.now())
+    created_date = db.Column(db.DateTime, default=datetime.now())
+    modified_date = db.Column(db.DateTime, default=datetime.now())
     valid = db.Column(db.Boolean, nullable=False, default=True)
     category_id = db.Column(db.Integer, db.ForeignKey('product_categories.id'))
     thumbnail = db.Column(db.String(256))

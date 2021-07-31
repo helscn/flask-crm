@@ -21,7 +21,7 @@ class Customer(BaseModel):
     modified_date = db.Column(
         db.DateTime, default=datetime.now())
     contacts = db.relationship(
-        'Contact', backref='company', lazy='dynamic', cascade='all')
+        'Contacter', backref='customer', lazy='dynamic', cascade='all')
 
     @staticmethod
     def get(id):
