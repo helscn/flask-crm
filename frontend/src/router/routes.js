@@ -11,6 +11,29 @@ const routes = [
         component: () => import("pages/Index.vue")
       },
       {
+        path: "customers",
+        meta: { title: "我的客户", icon: "people" },
+        component: () => import("src/layouts/ContentLayout.vue"),
+        children: [
+          {
+            path: "",
+            meta: { keepAlive: true},
+            component: () => import("pages/customers/ShowCustomers.vue")
+          },
+
+          {
+            path: "new",
+            meta: { title: "新建客户", icon: "add_circle" },
+            component: () => import("pages/customers/NewCustomer.vue")
+          },
+          {
+            path: "edit",
+            meta: {itle: "修改客户", icon: "edit" },
+            component: () => import("pages/customers/EditCustomer.vue")
+          }
+        ]
+      },
+      {
         path: "products",
         meta: { title: "我的产品", icon: "business_center" },
         component: () => import("src/layouts/ContentLayout.vue"),
