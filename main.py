@@ -4,6 +4,8 @@ import os
 import sys
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_apscheduler import APScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 from settings import Setting
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -26,3 +28,7 @@ if Setting.SUPPORT_CORS:
 
 # 数据库模型对象
 db = SQLAlchemy(app)
+
+# 任务计划对象
+scheduler = APScheduler(BackgroundScheduler())
+scheduler.init_app(app)

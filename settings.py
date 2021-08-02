@@ -65,3 +65,6 @@ class Setting:
 
     # 调试模式
     DEBUG = False
+
+    # 开启 APScheduler API 接口
+    SCHEDULER_API_ENABLED = True
