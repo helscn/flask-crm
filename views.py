@@ -4,6 +4,7 @@
 from main import app
 from auth import UserLogin
 from resources import Resources
+from schedulers import Scheduler
 from utils import Utils
 from flask import send_from_directory, render_template
 
@@ -13,6 +14,9 @@ app.register_blueprint(UserLogin, url_prefix='/auth')
 
 # 注册 Restful API 蓝图
 app.register_blueprint(Resources, url_prefix='/api')
+
+# 注册 Schedulers API 蓝图
+app.register_blueprint(Scheduler, url_prefix="/scheduler")
 
 # 注册 Utils 蓝图
 app.register_blueprint(Utils, url_prefix='/utils')

@@ -6,4 +6,6 @@ from main import scheduler
 
 
 def job(arg):
-    print(datetime.now(), arg)
+    import time
+    time.sleep(4)
+    print('Running job.')

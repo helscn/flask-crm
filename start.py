@@ -37,4 +37,4 @@ if len(sys.argv) >= 2:
         ''')
 elif __name__ == '__main__':
     scheduler.start()
-    app.run('0.0.0.0', 5000)
+    app.run('0.0.0.0', 5000, use_reloader=False)

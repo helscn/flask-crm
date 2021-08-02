@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from os import path
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+from apscheduler.executors.pool import ThreadPoolExecutor
 
 BASE_DIR = path.abspath(path.dirname(__file__))
 
@@ -67,4 +69,14 @@ class Setting:
     DEBUG = False
 
     # 开启 APScheduler API 接口
-    SCHEDULER_API_ENABLED = True
+    # SCHEDULER_API_ENABLED = False
+
+    # APScheduler 任务存储器，保存至当前数据库中
+    SCHEDULER_JOBSTORES = {
+        'default': SQLAlchemyJobStore(url=SQLALCHEMY_DATABASE_URI)
+    }
+
+    # APScheduler 执行器
+    SCHEDULER_EXECUTORS = {
+        'default': ThreadPoolExecutor(20)
+    }
