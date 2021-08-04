@@ -68,9 +68,6 @@ class Setting:
     # 调试模式
     DEBUG = False
 
-    # 开启 APScheduler API 接口
-    # SCHEDULER_API_ENABLED = False
-
     # APScheduler 任务存储器，保存至当前数据库中
     SCHEDULER_JOBSTORES = {
         'default': SQLAlchemyJobStore(url=SQLALCHEMY_DATABASE_URI)
@@ -78,5 +75,11 @@ class Setting:
 
     # APScheduler 执行器
     SCHEDULER_EXECUTORS = {
-        'default': ThreadPoolExecutor(20)
+        'default': ThreadPoolExecutor(10)
     }
+
+    # APScheduler 计划时间时区设置
+    TIME_ZONE = 'Asia/Shanghai'
+
+    # 日期时间对象转化为文本时的格式设置
+    DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'

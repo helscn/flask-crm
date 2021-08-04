@@ -71,9 +71,9 @@ class Product(BaseModel):
             data['thumbnail'] = url_for(
                 'get_uploads', filename=data['thumbnail'], _external=True)
         data['created_date'] = data['created_date'].strftime(
-            '%Y-%m-%d %H:%M:%S')
+            Setting.DATETIME_FORMAT)
         data['modified_date'] = data['modified_date'].strftime(
-            '%Y-%m-%d %H:%M:%S')
+            Setting.DATETIME_FORMAT)
         data['supplier'] = self.supplier.name if self.supplier else None
         data['category'] = self.category.name if self.category else None
         return data

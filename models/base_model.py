@@ -3,6 +3,7 @@
 
 from main import db
 from datetime import datetime
+from settings import Setting
 
 
 class BaseModel(db.Model):
@@ -24,5 +25,5 @@ class BaseModel(db.Model):
         data = {c.name: getattr(self, c.name) for c in self.__table__.columns}
         for key, item in data.items():
             if type(item) is datetime:
-                data[key] = item.strftime('%Y-%m-%d %H:%M:%S')
+                data[key] = item.strftime(Setting.DATETIME_FORMAT)
         return data
