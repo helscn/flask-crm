@@ -1,34 +1,27 @@
 #!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
 
+from os import path
 from main import scheduler
 from flask import Blueprint
 from flask_restful import Api
 
+from .filelock import FileLock
 from .urls import ApiJobs, ApiJob
 
-from .test import job
+__all__ = ['Scheduler', 'SchedulerLock', 'scheduler']
+
+# 获取文件锁
+BASE_DIR = path.abspath(path.dirname(__file__))
+SchedulerLock = FileLock(path.join(BASE_DIR, 'scheduler.lock'))
+SchedulerLock.lock()
 
 # 创建 scheduler 资源蓝图
 Scheduler = Blueprint('scheduler', __name__)
-api = Api(Scheduler)
 
-# 将导入的 Restful API 资源注册到蓝图中
-api.add_resource(ApiJobs, '/jobs', endpoint='jobs')
-api.add_resource(ApiJob, '/job/<name>', endpoint='job')
-
-
-def job2():
-    import time
-    time.sleep(4)
-    print('Running job2.')
-
-
-# scheduler.add_job(id='job1', func='schedulers.test:job, name='mytestjob', args=(
-#     '循环任务',), trigger='interval', seconds=5)
-
-# scheduler.add_job(id='job2', func="schedulers:job2", name='testjob2',
-#                   trigger='interval', seconds=5)
-
-
-__all__ = ['Scheduler']
+# 如果获取到文件锁，将导入的 Restful API 资源注册到蓝图中，并启动 scheduler
+if SchedulerLock.locked:
+    api = Api(Scheduler)
+    api.add_resource(ApiJobs, '/jobs', endpoint='jobs')
+    api.add_resource(ApiJob, '/job/<name>', endpoint='job')
+    scheduler.start()
