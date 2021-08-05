@@ -68,6 +68,9 @@ class Setting:
     # 调试模式
     DEBUG = False
 
+    # APScheduler 任务脚本模块路径
+    SCHEDULER_JOBS_PATH = 'schedulers.jobs'
+
     # APScheduler 任务存储器，保存至当前数据库中
     SCHEDULER_JOBSTORES = {
         'default': SQLAlchemyJobStore(url=SQLALCHEMY_DATABASE_URI)

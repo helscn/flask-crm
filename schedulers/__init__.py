@@ -7,7 +7,7 @@ from flask import Blueprint
 from flask_restful import Api
 
 from .filelock import FileLock
-from .urls import ApiJobs, ApiJob
+from .api import ApiJobs, ApiJob
 
 __all__ = ['Scheduler', 'SchedulerLock', 'scheduler']
 
