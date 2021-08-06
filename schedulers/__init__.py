@@ -23,5 +23,5 @@ Scheduler = Blueprint('scheduler', __name__)
 if SchedulerLock.locked:
     api = Api(Scheduler)
     api.add_resource(ApiJobs, '/jobs', endpoint='jobs')
-    api.add_resource(ApiJob, '/job/<name>', endpoint='job')
+    api.add_resource(ApiJob, '/job/<id>', endpoint='job')
     scheduler.start()

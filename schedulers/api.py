@@ -29,6 +29,7 @@ argParser.add_argument('fields', type=dict, location='json')
 
 # # interval trigger
 # argParser.add_argument('interval', type=str)
+# argParser.add_argument('seconds', type=int)
 
 # # cron trigger
 # argParser.add_argument('year', type=str)
@@ -57,7 +58,7 @@ class ApiJobs(Resource):
             data = argParser.parse_args()
             if not (data['func'] and data['trigger']):
                 raise ValueError('Invalid request data.')
-            if not data['func'].starswith(Setting.SCHEDULER_JOBS_PATH):
+            if not data['func'].startswith(Setting.SCHEDULER_JOBS_PATH):
                 data['func'] = Setting.SCHEDULER_JOBS_PATH + '.' + data['func']
             if not data['args']:
                 data['args'] = None
@@ -78,6 +79,7 @@ class ApiJobs(Resource):
                 misfire_grace_time=data['misfire_grace_time'],
                 coalesce=data['coalesce'],
                 replace_existing=True,
+                timezone=Setting.TIME_ZONE,
                 **data['fields']
             )
 
@@ -92,11 +94,12 @@ class ApiJobs(Resource):
 
 class ApiJob(Resource):
     # decorators = [login_required]
-    def get(self, name=None):
-        id = uuid1().hex
-        scheduler.add_job(id=id, func='schedulers.jobs.'+name, name=name,
-                          trigger='interval', seconds=6, replace_existing=True, timezone=Setting.TIME_ZONE)
-        return 'OK'
+    def get(self, id):
+        try:
+            job = scheduler.get_job(id)
+            return job_to_dict(job)
+        except Exception as e:
+            abort(400, message=e.args[0])
 
     def delete(self, id):
         try:
