@@ -6,7 +6,12 @@ from settings import Setting
 from flask import url_for
 from datetime import datetime
 from .base_model import db, BaseModel
-from PIL import Image
+
+# 允许上传的缩略图文件扩展名
+THUMBNAIL_ALLOWED_EXTENSIONS = ['.jpg', '.jpeg', '.gif', '.png']
+
+# 是否允许自动缩小过大的缩略图
+THUMBNAIL_AUTO_ZOOM = False
 
 
 class Product(BaseModel):
@@ -46,23 +51,28 @@ class Product(BaseModel):
                 self.del_thumbnail()
             filename = path.basename(file.filename)
             ext = path.splitext(filename)[1]
-            save_name = 'thumb_{id}{ext}'.format(id=self.id, ext=ext)
-            save_path = path.join(Setting.UPLOAD_FOLDER, save_name)
-
-            img = Image.open(file)
-            w, h = img.size
-            while w > 400 or h > 300:
-                w = w/2
-                h = h/2
-            img.resize((int(w), int(h)))
-            img.save(save_path)
-            self.thumbnail = save_name
-            self.save()
+            if ext.lower() in THUMBNAIL_ALLOWED_EXTENSIONS:
+                save_name = 'thumb_{id}{ext}'.format(id=self.id, ext=ext)
+                save_path = path.join(Setting.UPLOAD_FOLDER, save_name)
+                if THUMBNAIL_AUTO_ZOOM:
+                    from PIL import Image
+                    img = Image.open(file)
+                    w, h = img.size
+                    while w > 400 or h > 300:
+                        w = w/2
+                        h = h/2
+                    img.resize((int(w), int(h)))
+                    img.save(save_path)
+                else:
+                    file.save(save_path)
+                self.thumbnail = save_name
+                self.save()
         return save_name
 
     def del_thumbnail(self):
         if self.thumbnail:
             remove(path.join(Setting.UPLOAD_FOLDER, self.thumbnail))
+            self.thumbnail = None
 
     def to_dict(self):
         # 将当前对象转换输出为字典对象
