@@ -17,7 +17,7 @@ const routes = [
         children: [
           {
             path: "",
-            meta: { keepAlive: true},
+            meta: { keepAlive: true },
             component: () => import("pages/customers/ShowCustomers.vue")
           },
 
@@ -28,7 +28,7 @@ const routes = [
           },
           {
             path: "edit",
-            meta: {itle: "修改客户", icon: "edit" },
+            meta: { itle: "修改客户", icon: "edit" },
             component: () => import("pages/customers/EditCustomer.vue")
           }
         ]
@@ -76,6 +76,18 @@ const routes = [
             path: "edit",
             meta: { title: "修改供应商信息", icon: "edit" },
             component: () => import("pages/suppliers/EditSupplier.vue")
+          }
+        ]
+      },
+      {
+        path: "schedulers",
+        meta: { title: "计划任务", icon: "scheduler" },
+        component: () => import("src/layouts/ContentLayout.vue"),
+        children: [
+          {
+            path: "",
+            meta: { keepAlive: true },
+            component: () => import("pages/schedulers/ShowSchedulers.vue")
           }
         ]
       },

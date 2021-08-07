@@ -54,7 +54,12 @@ export default function(/* { ssrContext } */) {
             path: "/stats"
           },
           {
-            name: "设置",
+            name: "计划任务",
+            icon: "schedule",
+            path: "/schedulers"
+          },
+          {
+            name: "系统设置",
             icon: "settings",
             path: "/settings"
           },

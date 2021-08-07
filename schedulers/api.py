@@ -9,6 +9,46 @@ from apscheduler.triggers.interval import IntervalTrigger
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.date import DateTrigger
 from uuid import uuid1
+from apscheduler.events import EVENT_JOB_ERROR, EVENT_JOB_MISSED, EVENT_JOB_EXECUTED
+from datetime import datetime
+import logging
+
+logger = logging.getLogger('job')
+
+
+def job_missed_listener(Event):
+    job = scheduler.get_job(Event.job_id)
+    print(datetime.now(), job.name, '任务被跳过未执行，计划时间:', Event.scheduled_run_time)
+
+
+def job_executed_listener(Event):
+    job = scheduler.get_job(Event.job_id)
+    print(datetime.now(), job.name, '任务正在执行，计划时间:', Event.scheduled_run_time)
+
+
+def job_error_listener(Event):
+    job = scheduler.get_job(Event.job_id)
+    print(datetime.now(), job.name, '任务出现错误，计划时间:',
+          Event.scheduled_run_time, '\n错误内容:', Event.exception, Event.traceback)
+
+
+scheduler.add_listener(job_missed_listener, EVENT_JOB_MISSED)
+scheduler.add_listener(job_executed_listener, EVENT_JOB_EXECUTED)
+scheduler.add_listener(job_error_listener, EVENT_JOB_ERROR)
+
+
+# def job_listener(Event):
+#     job = scheduler.get_job(Event.job_id)
+#     if not Event.exception:
+#         print(dir(Event))
+#         logger.warn("正在运行：jobname=%s|jobtrigger=%s|jobtime=%s|retval=%s", job.name, job.trigger,
+#                     Event.scheduled_run_time, Event.retval)
+#     else:
+#         logger.error("异常：jobname=%s|jobtrigger=%s|jobtime=%s|errcode=%s|exception=[%s]|traceback=[%s]|scheduled_time=%s", job.name,
+#                      job.trigger, Event.scheduled_run_time, Event.code,
+#                      Event.exception, Event.traceback, Event.scheduled_run_time)
+# scheduler.add_listener(job_listener, EVENT_JOB_ERROR |
+#                        EVENT_JOB_EXECUTED)
 
 
 argParser = reqparse.RequestParser()
@@ -107,6 +147,26 @@ class ApiJob(Resource):
             return {'success': True}, 201
         except Exception as e:
             abort(404, message=e.args[0])
+
+    def put(self, id):
+        try:
+            argParser = reqparse.RequestParser()
+            argParser.add_argument('action', type=str)
+            data = argParser.parse_args()
+            job = scheduler.get_job(id)
+        except Exception as e:
+            abort(404, message=e.args[0])
+        try:
+            action = data.get('action')
+            if action.lower() == 'pause':
+                job.pause()
+            elif action.lower() == 'resume':
+                job.resume()
+            else:
+                raise ValueError('Unvalid argument.')
+            return {'success': True}
+        except Exception as e:
+            abort(400, message=e.args[0])
 
 
 def trigger_to_dict(trigger):
