@@ -17,6 +17,7 @@ from .message_addresses import MessageAddress
 from .config import Config
 from .images import Image
 from .files import File
+from .scheduler_logs import SchedulerLog
 
 
 def init_db():

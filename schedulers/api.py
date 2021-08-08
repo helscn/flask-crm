@@ -2,54 +2,13 @@
 # -*- coding: utf-8 -*-
 
 from main import scheduler
+from models import db,SchedulerLog
 from settings import Setting
 from auth import login_required
 from flask_restful import abort, Resource, reqparse
-from apscheduler.triggers.interval import IntervalTrigger
-from apscheduler.triggers.cron import CronTrigger
-from apscheduler.triggers.date import DateTrigger
+from sqlalchemy import or_
 from uuid import uuid1
-from apscheduler.events import EVENT_JOB_ERROR, EVENT_JOB_MISSED, EVENT_JOB_EXECUTED
-from datetime import datetime
-import logging
-
-logger = logging.getLogger('job')
-
-
-def job_missed_listener(Event):
-    job = scheduler.get_job(Event.job_id)
-    print(datetime.now(), job.name, '任务被跳过未执行，计划时间:', Event.scheduled_run_time)
-
-
-def job_executed_listener(Event):
-    job = scheduler.get_job(Event.job_id)
-    print(datetime.now(), job.name, '任务正在执行，计划时间:', Event.scheduled_run_time)
-
-
-def job_error_listener(Event):
-    job = scheduler.get_job(Event.job_id)
-    print(datetime.now(), job.name, '任务出现错误，计划时间:',
-          Event.scheduled_run_time, '\n错误内容:', Event.exception, Event.traceback)
-
-
-scheduler.add_listener(job_missed_listener, EVENT_JOB_MISSED)
-scheduler.add_listener(job_executed_listener, EVENT_JOB_EXECUTED)
-scheduler.add_listener(job_error_listener, EVENT_JOB_ERROR)
-
-
-# def job_listener(Event):
-#     job = scheduler.get_job(Event.job_id)
-#     if not Event.exception:
-#         print(dir(Event))
-#         logger.warn("正在运行：jobname=%s|jobtrigger=%s|jobtime=%s|retval=%s", job.name, job.trigger,
-#                     Event.scheduled_run_time, Event.retval)
-#     else:
-#         logger.error("异常：jobname=%s|jobtrigger=%s|jobtime=%s|errcode=%s|exception=[%s]|traceback=[%s]|scheduled_time=%s", job.name,
-#                      job.trigger, Event.scheduled_run_time, Event.code,
-#                      Event.exception, Event.traceback, Event.scheduled_run_time)
-# scheduler.add_listener(job_listener, EVENT_JOB_ERROR |
-#                        EVENT_JOB_EXECUTED)
-
+from .func import job_to_dict
 
 argParser = reqparse.RequestParser()
 argParser.add_argument('id', type=str)
@@ -82,6 +41,63 @@ argParser.add_argument('fields', type=dict, location='json')
 # argParser.add_argument('second', type=str)
 
 
+logParser = reqparse.RequestParser()
+logParser.add_argument('page', type=int,default=1)
+logParser.add_argument('per_page', type=int, default=5)
+logParser.add_argument('sort_by', type=str, default=None)
+logParser.add_argument('descending', type=bool, default=False)
+logParser.add_argument('filter', type=str, default=None)
+
+class ApiLogs(Resource):
+    def get(self):
+        args = logParser.parse_args()
+        query=SchedulerLog.query
+        if args['filter']:
+            filter='%'+args['filter']+'%'
+            query=query.filter(or_(
+                SchedulerLog.name.ilike(filter),
+                SchedulerLog.func.ilike(filter),
+                SchedulerLog.trigger.ilike(filter),
+                SchedulerLog.message.ilike(filter),
+                SchedulerLog.detail.ilike(filter)
+            ))
+        if args['sort_by'] and hasattr(SchedulerLog,args['sort_by']):
+            if args['descending']:
+                query=query.order_by(getattr(SchedulerLog,args['sort_by']).desc())
+            else:
+                query=query.order_by(getattr(SchedulerLog,args['sort_by']))
+        pagination = query.paginate(args['page'], per_page=args['per_page'], error_out = False)
+        return {
+            'total':pagination.total,
+            'page':pagination.page,
+            'pages':pagination.pages,
+            'per_page':pagination.per_page,
+            'sort_by':args['sort_by'],
+            'descending':args['descending'],
+            'data':[item.to_dict() for item in pagination.items]
+        }
+
+    def delete(self):
+        try:
+            args = logParser.parse_args()
+            query=SchedulerLog.query
+            if args['filter']:
+                filter='%'+args['filter']+'%'
+                logs=SchedulerLog.query.filter(or_(
+                    SchedulerLog.name.ilike(filter),
+                    SchedulerLog.func.ilike(filter),
+                    SchedulerLog.trigger.ilike(filter),
+                    SchedulerLog.message.ilike(filter),
+                    SchedulerLog.detail.ilike(filter)
+                )).all()
+                for log in logs:
+                    log.delete(commit=False)
+            else:
+                query.delete()
+            db.session.commit()
+        except Exception as e:
+            abort(400,message=e.args[0])
+
 class ApiJobs(Resource):
     # decorators = [login_required]
     def get(self):
@@ -106,7 +122,6 @@ class ApiJobs(Resource):
                 data['args'] = set(data['args'])
             if not data['kwargs']:
                 data['kwargs'] = None
-
             scheduler.add_job(
                 id=id,
                 name=data['name'],
@@ -168,45 +183,3 @@ class ApiJob(Resource):
         except Exception as e:
             abort(400, message=e.args[0])
 
-
-def trigger_to_dict(trigger):
-    if type(trigger) is CronTrigger:
-        return {
-            'type': 'cron',
-            'start_date': trigger.start_date.strftime(Setting.DATETIME_FORMAT) if trigger.start_date else None,
-            'end_date': trigger.end_date.strftime(Setting.DATETIME_FORMAT) if trigger.end_date else None,
-            'fields': {field.name: str(field) for field in trigger.fields}
-        }
-    elif type(trigger) is IntervalTrigger:
-        return {
-            'type': 'interval',
-            'start_date': trigger.start_date.strftime(Setting.DATETIME_FORMAT) if trigger.start_date else None,
-            'end_date': trigger.end_date.strftime(Setting.DATETIME_FORMAT) if trigger.end_date else None,
-            'interval': trigger.interval_length
-        }
-
-    elif type(trigger) is DateTrigger:
-        return {
-            'type': 'date',
-            'run_date': trigger.run_date.strftime(Setting.DATETIME_FORMAT)
-        }
-    else:
-        return {
-            'type': trigger.__module__
-        }
-
-
-def job_to_dict(job):
-    return {
-        'id': job.id,
-        'name': job.name,
-        'func': job.func_ref,
-        'args': job.args,
-        'kwargs': job.kwargs,
-        'pending': job.pending,
-        'trigger': trigger_to_dict(job.trigger),
-        'next_run_time': job.next_run_time.strftime(Setting.DATETIME_FORMAT) if job.next_run_time else None,
-        'misfire_grace_time': job.misfire_grace_time,
-        'coalesce': job.coalesce,
-        'max_instances': job.max_instances
-    }

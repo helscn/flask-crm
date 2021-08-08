@@ -14,7 +14,7 @@
 
       <q-separator />
 
-      <q-tab-panels v-model="tab" animated>
+      <q-tab-panels v-model="tab" animated keep-alive>
         <q-tab-panel name="schedulers" class="q-gutter-md">
           <q-btn-group rounded push>
             <q-btn
@@ -33,7 +33,7 @@
             />
             <q-btn
               label="暂停运行"
-              :disable="selected.length !== 1"
+              :disable="selected.length !== 1 || !selected[0].next_run_time"
               rounded
               icon="pause"
               @click="pauseJob"
@@ -41,7 +41,7 @@
             />
             <q-btn
               label="恢复运行"
-              :disable="selected.length !== 1"
+              :disable="selected.length !== 1 || !!selected[0].next_run_time"
               rounded
               icon="play_arrow"
               @click="resumeJob"
@@ -109,11 +109,11 @@
         </q-tab-panel>
 
         <q-tab-panel name="logs">
-          <div class="text-h6">Alarms</div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          <SchedulerLogs />
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
+
     <q-dialog v-model="isShowDetail">
       <q-card class="my-card">
         <q-card-section>
@@ -123,20 +123,18 @@
                 class="text-subtitle2"
                 color="accent"
                 align="middle"
-                :label="currentJob.no"
+                :label="currentJob.name"
               />
-              <span class="q-ml-md text-subtitle1"> {{ currentJob.name }}</span>
-            </div>
-            <div
-              class="col-auto text-grey-6 text-subtitle1 q-pt-none row no-wrap items-center"
-            >
-              {{ currentJob.spec }}
+              <span class="q-ml-md text-subtitle1"> {{ currentJob.func }}</span>
             </div>
           </div>
         </q-card-section>
-        <q-img :src="currentJob.thumbnail" />
+        <q-separator />
         <q-card-section>
-          <div class="text-wrapper">{{ currentJob.description }}</div>
+          <div class="text-wrapper"><b>开始时间：</b>{{ currentJob.start_date || '无'}}</div>
+          <div class="text-wrapper"><b>结束时间：</b>{{ currentJob.end_date || '无'}}</div>
+          <div class="text-wrapper"><b>下次运行：</b>{{ currentJob.next_run_time || '无'}}</div>
+          <div class="text-wrapper"><b>触发器：</b><br />{{ currentJob.trigger }}</div>
         </q-card-section>
 
         <q-separator />
@@ -150,9 +148,10 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import SchedulerLogs from "components/SchedulerLogs.vue";
 
 export default {
+  components: { SchedulerLogs },
   data() {
     return {
       tab: "schedulers",
@@ -181,7 +180,7 @@ export default {
         {
           name: "func",
           label: "任务模块",
-          align: "center",
+          align: "left",
           field: row => row.func,
           format: val => `${val}`,
           sortable: true
@@ -226,16 +225,8 @@ export default {
           sortable: true
         },
         {
-          name: "pending",
-          label: "执行中",
-          align: "center",
-          field: row => row.pending,
-          format: row => (row.pending ? "\u2705" : "\u274C"),
-          sortable: true
-        },
-        {
           name: "activated",
-          label: "生效中",
+          label: "已激活",
           align: "center",
           field: row => row.next_run_time,
           format: val => (val ? "\u2705" : "\u274C"),
@@ -249,7 +240,6 @@ export default {
         "start_date",
         "end_date",
         "next_run_time",
-        "pending",
         "activated"
       ],
       currentJob: {},
@@ -259,7 +249,7 @@ export default {
   methods: {
     showJobCard(evt, row, index) {
       this.currentJob = row;
-      this.isShowCard = true;
+      this.isShowDetail = true;
     },
     refreshJobs() {
       this.loading = true;
@@ -310,6 +300,7 @@ export default {
                   message: "已删除任务：" + name
                 });
                 this.refreshJobs();
+                this.selected=[];
               })
               .catch(err => {
                 this.$q.notify({
@@ -346,6 +337,7 @@ export default {
               message: "已暂停指定的计划任务：" + name
             });
             this.refreshJobs();
+            this.selected=[];
           })
           .catch(err => {
             this.$q.notify({
@@ -381,6 +373,7 @@ export default {
               message: "已恢复指定的计划任务：" + name
             });
             this.refreshJobs();
+            this.selected=[];
           })
           .catch(err => {
             this.$q.notify({
