@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from main import scheduler
-from models import db,SchedulerLog
+from models import db, SchedulerLog
 from settings import Setting
 from auth import login_required
 from flask_restful import abort, Resource, reqparse
@@ -42,48 +42,51 @@ argParser.add_argument('fields', type=dict, location='json')
 
 
 logParser = reqparse.RequestParser()
-logParser.add_argument('page', type=int,default=1)
+logParser.add_argument('page', type=int, default=1)
 logParser.add_argument('per_page', type=int, default=5)
 logParser.add_argument('sort_by', type=str, default=None)
 logParser.add_argument('descending', type=bool, default=False)
 logParser.add_argument('filter', type=str, default=None)
 
+
 class ApiLogs(Resource):
     def get(self):
         args = logParser.parse_args()
-        query=SchedulerLog.query
+        query = SchedulerLog.query
         if args['filter']:
-            filter='%'+args['filter']+'%'
-            query=query.filter(or_(
+            filter = '%'+args['filter']+'%'
+            query = query.filter(or_(
                 SchedulerLog.name.ilike(filter),
                 SchedulerLog.func.ilike(filter),
                 SchedulerLog.trigger.ilike(filter),
                 SchedulerLog.message.ilike(filter),
                 SchedulerLog.detail.ilike(filter)
             ))
-        if args['sort_by'] and hasattr(SchedulerLog,args['sort_by']):
+        if args['sort_by'] and hasattr(SchedulerLog, args['sort_by']):
             if args['descending']:
-                query=query.order_by(getattr(SchedulerLog,args['sort_by']).desc())
+                query = query.order_by(
+                    getattr(SchedulerLog, args['sort_by']).desc())
             else:
-                query=query.order_by(getattr(SchedulerLog,args['sort_by']))
-        pagination = query.paginate(args['page'], per_page=args['per_page'], error_out = False)
+                query = query.order_by(getattr(SchedulerLog, args['sort_by']))
+        pagination = query.paginate(
+            args['page'], per_page=args['per_page'], error_out=False)
         return {
-            'total':pagination.total,
-            'page':pagination.page,
-            'pages':pagination.pages,
-            'per_page':pagination.per_page,
-            'sort_by':args['sort_by'],
-            'descending':args['descending'],
-            'data':[item.to_dict() for item in pagination.items]
+            'total': pagination.total,
+            'page': pagination.page,
+            'pages': pagination.pages,
+            'per_page': pagination.per_page,
+            'sort_by': args['sort_by'],
+            'descending': args['descending'],
+            'data': [item.to_dict() for item in pagination.items]
         }
 
     def delete(self):
         try:
             args = logParser.parse_args()
-            query=SchedulerLog.query
+            query = SchedulerLog.query
             if args['filter']:
-                filter='%'+args['filter']+'%'
-                logs=SchedulerLog.query.filter(or_(
+                filter = '%'+args['filter']+'%'
+                logs = SchedulerLog.query.filter(or_(
                     SchedulerLog.name.ilike(filter),
                     SchedulerLog.func.ilike(filter),
                     SchedulerLog.trigger.ilike(filter),
@@ -96,7 +99,8 @@ class ApiLogs(Resource):
                 query.delete()
             db.session.commit()
         except Exception as e:
-            abort(400,message=e.args[0])
+            abort(400, message=e.args[0])
+
 
 class ApiJobs(Resource):
     # decorators = [login_required]
@@ -114,8 +118,9 @@ class ApiJobs(Resource):
             data = argParser.parse_args()
             if not (data['func'] and data['trigger']):
                 raise ValueError('Invalid request data.')
-            if not data['func'].startswith(Setting.SCHEDULER_JOBS_PATH):
-                data['func'] = Setting.SCHEDULER_JOBS_PATH + '.' + data['func']
+            if not data['func'].lower().startswith(Setting.SCHEDULER_JOBS_PATH):
+                data['func'] = Setting.SCHEDULER_JOBS_PATH + \
+                    '.' + data['func'].lower()
             if not data['args']:
                 data['args'] = None
             else:
@@ -182,4 +187,3 @@ class ApiJob(Resource):
             return {'success': True}
         except Exception as e:
             abort(400, message=e.args[0])
-

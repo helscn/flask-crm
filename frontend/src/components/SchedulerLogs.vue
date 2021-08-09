@@ -76,8 +76,10 @@
                 align="middle"
                 :label="currentLog.type"
               />
-              <span class="text-subtitle1 q-ml-md">{{currentLog.func}}</span>
-              <span class="q-ml-md text-subtitle2 text-grey"> @ {{ currentLog.date }}</span>
+              <span class="text-subtitle1 q-ml-md">{{ currentLog.func }}</span>
+              <span class="q-ml-md text-subtitle2 text-grey">
+                @ {{ currentLog.date }}</span
+              >
             </div>
           </div>
         </q-card-section>
@@ -151,15 +153,15 @@ export default {
           name: "trigger",
           label: "触发器",
           align: "center",
-          field: row =>
-            row.trigger == "date"
+          field: row => row.trigger,
+          format: val =>
+            val == "date"
               ? "单次任务"
-              : row.triggere == "interval"
+              : val == "interval"
               ? "循环任务"
-              : row.trigger == "cron"
+              : val == "cron"
               ? "定时任务"
-              : row.trigger,
-          format: val => `${val}`,
+              : rval,
           sortable: true
         },
         {

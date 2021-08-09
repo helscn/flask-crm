@@ -131,10 +131,18 @@
         </q-card-section>
         <q-separator />
         <q-card-section>
-          <div class="text-wrapper"><b>开始时间：</b>{{ currentJob.start_date || '无'}}</div>
-          <div class="text-wrapper"><b>结束时间：</b>{{ currentJob.end_date || '无'}}</div>
-          <div class="text-wrapper"><b>下次运行：</b>{{ currentJob.next_run_time || '无'}}</div>
-          <div class="text-wrapper"><b>触发器：</b><br />{{ currentJob.trigger }}</div>
+          <div class="text-wrapper">
+            <b>开始时间：</b>{{ currentJob.start_date || "无" }}
+          </div>
+          <div class="text-wrapper">
+            <b>结束时间：</b>{{ currentJob.end_date || "无" }}
+          </div>
+          <div class="text-wrapper">
+            <b>下次运行：</b>{{ currentJob.next_run_time || "无" }}
+          </div>
+          <div class="text-wrapper">
+            <b>触发器：</b><br />{{ currentJob.trigger }}
+          </div>
         </q-card-section>
 
         <q-separator />
@@ -170,6 +178,14 @@ export default {
           sortable: true
         },
         {
+          name: "activated",
+          label: "已激活",
+          align: "center",
+          field: row => row.next_run_time,
+          format: val => (val ? "\u2705" : "\u274C"),
+          sortable: true
+        },
+        {
           name: "name",
           label: "任务名称",
           align: "center",
@@ -189,15 +205,15 @@ export default {
           name: "trigger",
           label: "触发器",
           align: "center",
-          field: row =>
-            row.trigger.type == "date"
+          field: row => row.trigger.type,
+          format: val =>
+            val == "date"
               ? "单次任务"
-              : row.trigger.type == "interval"
+              : val == "interval"
               ? "循环任务"
-              : row.trigger.type == "cron"
+              : val == "cron"
               ? "定时任务"
-              : row.trigger.type,
-          format: val => `${val}`,
+              : rval,
           sortable: true
         },
         {
@@ -223,24 +239,16 @@ export default {
           field: row => row.next_run_time,
           format: val => val || "(无)",
           sortable: true
-        },
-        {
-          name: "activated",
-          label: "已激活",
-          align: "center",
-          field: row => row.next_run_time,
-          format: val => (val ? "\u2705" : "\u274C"),
-          sortable: true
         }
       ],
       visibleColumns: [
+        "activated",
         "name",
         "func",
         "trigger",
         "start_date",
         "end_date",
-        "next_run_time",
-        "activated"
+        "next_run_time"
       ],
       currentJob: {},
       isShowDetail: false
@@ -300,7 +308,7 @@ export default {
                   message: "已删除任务：" + name
                 });
                 this.refreshJobs();
-                this.selected=[];
+                this.selected = [];
               })
               .catch(err => {
                 this.$q.notify({
@@ -337,7 +345,7 @@ export default {
               message: "已暂停指定的计划任务：" + name
             });
             this.refreshJobs();
-            this.selected=[];
+            this.selected = [];
           })
           .catch(err => {
             this.$q.notify({
@@ -373,7 +381,7 @@ export default {
               message: "已恢复指定的计划任务：" + name
             });
             this.refreshJobs();
-            this.selected=[];
+            this.selected = [];
           })
           .catch(err => {
             this.$q.notify({
