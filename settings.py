@@ -2,7 +2,6 @@
 
 from os import path
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
-from apscheduler.executors.pool import ThreadPoolExecutor
 
 BASE_DIR = path.abspath(path.dirname(__file__))
 
@@ -78,7 +77,10 @@ class Setting:
 
     # APScheduler 执行器
     SCHEDULER_EXECUTORS = {
-        'default': ThreadPoolExecutor(10)
+        'default': {
+            'type': 'threadpool',
+            'max_workers': 20
+        }
     }
 
     # APScheduler Job 默认设置
