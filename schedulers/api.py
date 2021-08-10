@@ -8,48 +8,12 @@ from auth import login_required
 from flask_restful import abort, Resource, reqparse
 from sqlalchemy import or_
 from uuid import uuid1
+from .req_parser import argParser, logParser
 from .func import job_to_dict
-
-argParser = reqparse.RequestParser()
-argParser.add_argument('id', type=str)
-argParser.add_argument('name', type=str)
-argParser.add_argument('func', type=str)
-argParser.add_argument('args',  type=list, location='json')
-argParser.add_argument('kwargs', type=dict, location='json')
-argParser.add_argument('start_date', type=str)
-argParser.add_argument('end_date', type=str)
-argParser.add_argument('misfire_grace_time', type=int, default=1)
-argParser.add_argument('coalesce', type=bool, default=True)
-argParser.add_argument('trigger', type=str)
-argParser.add_argument('fields', type=dict, location='json')
-
-# # date trigger
-# argParser.add_argument('run_date', type=str)
-
-# # interval trigger
-# argParser.add_argument('interval', type=str)
-# argParser.add_argument('seconds', type=int)
-
-# # cron trigger
-# argParser.add_argument('year', type=str)
-# argParser.add_argument('month', type=str)
-# argParser.add_argument('day', type=str)
-# argParser.add_argument('week', type=str)
-# argParser.add_argument('day_of_week', type=str)
-# argParser.add_argument('hour', type=str)
-# argParser.add_argument('minute', type=str)
-# argParser.add_argument('second', type=str)
-
-
-logParser = reqparse.RequestParser()
-logParser.add_argument('page', type=int, default=1)
-logParser.add_argument('per_page', type=int, default=5)
-logParser.add_argument('sort_by', type=str, default=None)
-logParser.add_argument('descending', type=bool, default=False)
-logParser.add_argument('filter', type=str, default=None)
 
 
 class ApiLogs(Resource):
+    # decorators = [login_required]
     def get(self):
         args = logParser.parse_args()
         query = SchedulerLog.query
@@ -113,13 +77,16 @@ class ApiJobs(Resource):
         }
 
     def post(self):
-        id = uuid1().hex
         try:
             data = argParser.parse_args()
+            if data['id']:
+                id = data['id']
+            else:
+                id = uuid1().hex
             if not (data['func'] and data['trigger']):
                 raise ValueError('Invalid request data.')
-            if not data['func'].lower().startswith(Setting.SCHEDULER_JOBS_PATH):
-                data['func'] = Setting.SCHEDULER_JOBS_PATH + \
+            if Setting.SCHEDULER_JOBS_PATH and (not data['func'].lower().startswith(Setting.SCHEDULER_JOBS_PATH)):
+                data['func'] = Setting.SCHEDULER_JOBS_PATH.lower() + \
                     '.' + data['func'].lower()
             if not data['args']:
                 data['args'] = None
@@ -138,8 +105,9 @@ class ApiJobs(Resource):
                 end_date=data['end_date'],
                 misfire_grace_time=data['misfire_grace_time'],
                 coalesce=data['coalesce'],
+                max_instances=data['max_instances'],
+                timezone=data['timezone'],
                 replace_existing=True,
-                timezone=Setting.TIME_ZONE,
                 **data['fields']
             )
 

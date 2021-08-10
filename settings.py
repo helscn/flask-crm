@@ -34,7 +34,7 @@ class Setting:
     # 文件上传的保存目录
     UPLOAD_FOLDER = path.join(BASE_DIR, 'uploads')
 
-    # 文件上传最大文件大小
+    # 文件上传最大文件大小，单位 bytes
     MAX_CONTENT_LENGTH = 64 * 1024 * 1024
 
     # 是否允许跨源资源共享访问
@@ -81,8 +81,14 @@ class Setting:
         'default': ThreadPoolExecutor(10)
     }
 
-    # APScheduler 计划时间时区设置
-    TIME_ZONE = 'Asia/Shanghai'
+    # APScheduler Job 默认设置
+    SCHEDULER_JOB_DEFAULTS = {
+        'coalesce': False,
+        'max_instances': 3
+    }
+
+    # 项目内置Scheduler API接口，禁用默认的API(无权限认证功能)
+    SCHEDULER_API_ENABLED = False
 
     # 日期时间对象转化为文本时的格式设置
     DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
