@@ -30,13 +30,13 @@ argParser.add_argument('start_date', type=str)
 argParser.add_argument('end_date', type=str)
 
 # 判断任务是否过期的允许误差，单位：秒，当前时间与计划时间差值小于此值仍会按计划执行
-argParser.add_argument('misfire_grace_time', type=int)
+argParser.add_argument('misfire_grace_time', type=int, default=1)
 
 # 当一个任务出现过多次过期时，下次执行时否合并过期的任务并只执行一次
-argParser.add_argument('coalesce', type=bool)
+argParser.add_argument('coalesce', type=bool, default=True)
 
-# 当一个任务出现过多次过期时，下次执行时否合并过期的任务并只执行一次
-argParser.add_argument('max_instances', type=int)
+# 相同任务最多可同时运行的实例数量，超过此设置的任务实例不会执行
+argParser.add_argument('max_instances', type=int, default=1)
 
 # 触发器类别，内置有 date、interval、cron 三种触发器
 argParser.add_argument('trigger', type=str)

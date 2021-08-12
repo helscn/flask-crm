@@ -7,6 +7,7 @@ from settings import Setting
 from auth import login_required
 from flask_restful import abort, Resource, reqparse
 from sqlalchemy import or_
+from datetime import datetime
 from uuid import uuid1
 from .req_parser import argParser, logParser
 from .func import job_to_dict
@@ -94,6 +95,12 @@ class ApiJobs(Resource):
                 data['args'] = set(data['args'])
             if not data['kwargs']:
                 data['kwargs'] = None
+            if not data['fields']:
+                data['fields'] = {}
+            if data['trigger'] in ('cron', 'interval'):
+                data['fields']['start_date'] = data['start_date'] or datetime.now()
+                data['fields']['end_date'] = data['end_date']
+
             scheduler.add_job(
                 id=id,
                 name=data['name'],
@@ -101,8 +108,6 @@ class ApiJobs(Resource):
                 args=data['args'],
                 kwargs=data['kwargs'],
                 trigger=data['trigger'],
-                start_date=data['start_date'],
-                end_date=data['end_date'],
                 misfire_grace_time=data['misfire_grace_time'],
                 coalesce=data['coalesce'],
                 max_instances=data['max_instances'],

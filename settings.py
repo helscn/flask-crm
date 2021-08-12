@@ -83,12 +83,6 @@ class Setting:
         }
     }
 
-    # APScheduler Job 默认设置
-    SCHEDULER_JOB_DEFAULTS = {
-        'coalesce': False,
-        'max_instances': 3
-    }
-
     # 项目内置Scheduler API接口，禁用默认的API(无权限认证功能)
     SCHEDULER_API_ENABLED = False
 

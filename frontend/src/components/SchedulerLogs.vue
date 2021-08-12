@@ -161,7 +161,7 @@ export default {
               ? "循环任务"
               : val == "cron"
               ? "定时任务"
-              : rval,
+              : val,
           sortable: true
         },
         {
