@@ -28,7 +28,7 @@ const routes = [
           },
           {
             path: "edit",
-            meta: { itle: "修改客户", icon: "edit" },
+            meta: { title: "修改客户", icon: "edit" },
             component: () => import("pages/customers/EditCustomer.vue")
           }
         ]
@@ -100,6 +100,8 @@ const routes = [
   },
   {
     path: "/login",
+    // 将 public 属性为 true 时表示该路由访问无需登录
+    meta: { title: "登录", public: true },
     component: () => import("pages/Login.vue")
   },
 

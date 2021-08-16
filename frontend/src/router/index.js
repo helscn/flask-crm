@@ -30,16 +30,15 @@ export default function(/* { store, ssrContext } */) {
   Router.beforeEach((to, from, next) => {
     if (from.path === to.path && to.path !== "/") {
       next(false);
-    } else if (Vue.$cookies.isKey("Token") || to.path == "/login") {
+    } else if (Vue.$cookies.isKey("Token") || to.meta.public == true) {
       next();
     } else {
-      // next("/login");
       next({
-        path:"/login",
-        query:{
-          next:encodeURIComponent(to.path)
+        path: "/login",
+        query: {
+          next: encodeURIComponent(to.path)
         }
-      })
+      });
     }
   });
   return Router;

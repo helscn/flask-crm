@@ -18,13 +18,13 @@
         <q-tab-panel name="schedulers" class="q-gutter-md">
           <q-btn-group rounded push>
             <q-btn
-              label="新建任务"
+              label="新建"
               icon="add_circle_outline"
               @click="$router.push('/schedulers/new')"
               color="primary"
             />
             <q-btn
-              label="删除任务"
+              label="删除"
               :disable="selected.length !== 1"
               rounded
               icon="delete_forever"
@@ -32,7 +32,7 @@
               color="primary"
             />
             <q-btn
-              label="暂停运行"
+              label="暂停"
               :disable="selected.length !== 1 || !selected[0].next_run_time"
               rounded
               icon="pause"
@@ -40,7 +40,7 @@
               color="primary"
             />
             <q-btn
-              label="恢复运行"
+              label="激活"
               :disable="selected.length !== 1 || !!selected[0].next_run_time"
               rounded
               icon="play_arrow"
@@ -48,7 +48,7 @@
               color="primary"
             />
             <q-btn
-              label="刷新任务"
+              label="刷新"
               rounded
               icon="refresh"
               @click="refreshJobs"
