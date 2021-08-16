@@ -4,6 +4,7 @@
 from .base_model import db, BaseModel
 from datetime import datetime
 
+
 class SchedulerLog(BaseModel):
     __tablename__ = 'apscheduler_logs'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -12,7 +13,6 @@ class SchedulerLog(BaseModel):
     name = db.Column(db.String(256), default='')
     func = db.Column(db.String(256), default='')
     trigger = db.Column(db.String(32), default='')
-    run_time =db.Column(db.DateTime)
     message = db.Column(db.String(256), default='')
     detail = db.Column(db.Text, default='')
 

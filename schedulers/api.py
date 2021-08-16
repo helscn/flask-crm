@@ -80,10 +80,6 @@ class ApiJobs(Resource):
     def post(self):
         try:
             data = argParser.parse_args()
-            if data['id']:
-                id = data['id']
-            else:
-                id = uuid1().hex
             if not (data['func'] and data['trigger']):
                 raise ValueError('Invalid request data.')
             if Setting.SCHEDULER_JOBS_PATH and (not data['func'].lower().startswith(Setting.SCHEDULER_JOBS_PATH)):
@@ -102,7 +98,7 @@ class ApiJobs(Resource):
                 data['fields']['end_date'] = data['end_date']
 
             scheduler.add_job(
-                id=id,
+                id=data['name'],
                 name=data['name'],
                 func=data['func'],
                 args=data['args'],

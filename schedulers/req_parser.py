@@ -7,7 +7,7 @@ from flask_restful import reqparse
 argParser = reqparse.RequestParser()
 
 # 任务ID，此为任务对象的唯一标识，可以省略
-argParser.add_argument('id', type=str)
+# argParser.add_argument('id', type=str)
 
 # 任务名称
 argParser.add_argument('name', type=str)

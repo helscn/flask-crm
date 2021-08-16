@@ -76,7 +76,7 @@
                 align="middle"
                 :label="currentLog.type"
               />
-              <span class="text-subtitle1 q-ml-md">{{ currentLog.func }}</span>
+              <span class="text-subtitle1 q-ml-md">{{ currentLog.name }}</span>
               <span class="q-ml-md text-subtitle2 text-grey">
                 @ {{ currentLog.date }}</span
               >
@@ -118,14 +118,6 @@ export default {
       },
       columns: [
         {
-          name: "id",
-          label: "ID",
-          align: "center",
-          field: row => row.id,
-          format: val => `${val}`,
-          sortable: true
-        },
-        {
           name: "date",
           label: "时间",
           align: "center",
@@ -138,6 +130,14 @@ export default {
           label: "类别",
           align: "left",
           field: row => row.type,
+          format: val => `${val}`,
+          sortable: true
+        },
+        {
+          name: "name",
+          label: "任务名称",
+          align: "left",
+          field: row => row.name,
           format: val => `${val}`,
           sortable: true
         },
@@ -165,14 +165,6 @@ export default {
           sortable: true
         },
         {
-          name: "run_time",
-          label: "计划执行时间",
-          align: "center",
-          field: row => row.run_time,
-          format: val => val || "(无)",
-          sortable: true
-        },
-        {
           name: "message",
           label: "日志内容",
           align: "left",
@@ -189,15 +181,7 @@ export default {
           sortable: true
         }
       ],
-      visibleColumns: [
-        "date",
-        "type",
-        "name",
-        "func",
-        "trigger",
-        "run_time",
-        "message"
-      ],
+      visibleColumns: ["date", "type", "name", "func", "trigger", "message"],
       currentLog: {},
       isShowDetail: false
     };
