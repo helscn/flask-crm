@@ -86,8 +86,12 @@ const routes = [
         children: [
           {
             path: "",
-            meta: { keepAlive: true },
             component: () => import("pages/schedulers/ShowSchedulers.vue")
+          },
+          {
+            path: "new",
+            meta: { title: "新建任务", icon: "add_circle" },
+            component: () => import("pages/schedulers/NewScheduler.vue")
           }
         ]
       },

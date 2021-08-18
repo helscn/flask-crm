@@ -156,7 +156,7 @@
 </template>
 
 <script>
-import SchedulerLogs from "components/SchedulerLogs.vue";
+import SchedulerLogs from "src/components/scheduler/SchedulerLogs.vue";
 
 export default {
   components: { SchedulerLogs },
