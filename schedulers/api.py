@@ -23,6 +23,7 @@ class ApiLogs(Resource):
             query = query.filter(or_(
                 SchedulerLog.name.ilike(filter),
                 SchedulerLog.func.ilike(filter),
+                SchedulerLog.type.ilike(filter),
                 SchedulerLog.trigger.ilike(filter),
                 SchedulerLog.message.ilike(filter),
                 SchedulerLog.detail.ilike(filter)
