@@ -38,7 +38,7 @@
           class="col"
         >
           <q-tooltip :delay="400">
-            循环任务的计划开始时间。
+            定时任务的计划开始时间。
           </q-tooltip>
           <template v-slot:prepend>
             <q-icon name="event" class="cursor-pointer">
@@ -79,7 +79,7 @@
           class="col"
         >
           <q-tooltip :delay="400">
-            循环任务的计划结束时间，如果不输入则无限期执行。
+            定时任务的计划结束时间，如果不输入则无限期执行。
           </q-tooltip>
           <template v-slot:prepend>
             <q-icon name="event" class="cursor-pointer">
@@ -108,88 +108,144 @@
       </div>
     </div>
     <div class="row justify-between">
-      <q-input
-        dense
-        v-model.number="weeks"
-        type="number"
-        label="星期数"
-        class="col q-mr-md"
-      >
+      <q-input dense v-model="year" label="年" class="col q-mr-md">
         <q-tooltip :delay="400">
-          计划任务每次运行的间隔星期数。
+          年份，取值为4位数字的年份，或使用表达式。
         </q-tooltip>
       </q-input>
-      <q-input
-        dense
-        v-model.number="days"
-        type="number"
-        label="天数"
-        class="col q-ml-md"
-      >
+      <q-input dense v-model="month" label="月" class="col q-ml-md">
         <q-tooltip :delay="400">
-          计划任务每次运行的间隔天数。
+          月份，取值1-12，或使用表达式。
         </q-tooltip>
       </q-input>
     </div>
     <div class="row justify-between">
-      <q-input
-        dense
-        v-model.number="hours"
-        type="number"
-        label="小时数"
-        class="col q-mr-md"
-      >
+      <q-input dense v-model="day" label="日" class="col q-mr-md">
         <q-tooltip :delay="400">
-          计划任务每次运行的间隔小时数。
+          每月的第几日，取值1-31，或使用表达式。
         </q-tooltip>
       </q-input>
-      <q-input
-        dense
-        v-model.number="minutes"
-        type="number"
-        label="分钟数"
-        class="col q-ml-md"
-      >
+      <q-input dense v-model="week" label="周" class="col q-ml-md">
         <q-tooltip :delay="400">
-          计划任务每次运行的间隔分钟数。
+          每年的周数，取值1-53，或使用表达式。
         </q-tooltip>
       </q-input>
     </div>
     <div class="row justify-between">
-      <q-input
-        dense
-        v-model.number="seconds"
-        type="number"
-        label="秒数"
-        class="col q-mr-md"
-      >
+      <q-input dense v-model="day_of_wek" label="星期" class="col q-mr-md">
         <q-tooltip :delay="400">
-          计划任务每次运行的间隔秒数。
+          每周的第几天或者星期几 (范围0-6 或者 mon,tue,wed,thu,fri,sat,sun)
         </q-tooltip>
       </q-input>
-      <div class="col"></div>
+      <q-input dense v-model="hour" label="小时" class="col q-ml-md">
+        <q-tooltip :delay="400">
+          每天的小时数，取值0-23，或使用表达式。
+        </q-tooltip>
+      </q-input>
     </div>
+    <div class="row justify-between">
+      <q-input dense v-model="minute" label="分钟" class="col q-mr-md">
+        <q-tooltip :delay="400">
+          每小时的分钟数，取值0-59，或使用表达式。
+        </q-tooltip>
+      </q-input>
+      <q-input dense v-model="second" label="秒" class="col q-ml-md">
+        <q-tooltip :delay="400">
+          每分钟的秒数，取值0-59，或使用表达式。
+        </q-tooltip>
+      </q-input>
+    </div>
+
     <div class="row justify-around q-py-md">
+      <q-btn
+        flat
+        color="primary"
+        label="表达式说明"
+        :icon="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
+        @click="expanded = !expanded"
+      />
       <q-btn color="primary" icon="save" label="保存" @click="save" />
       <q-btn color="primary" icon="cancel" label="取消" @click="cancel" />
     </div>
+    <q-slide-transition>
+      <div v-show="expanded" class="q-mb-md">
+        <q-separator />
+        <q-markup-table>
+          <thead>
+            <tr>
+              <th class="text-left">表达式</th>
+              <th class="text-left">适用字段</th>
+              <th class="text-left">任务执行说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th class="text-left">*</th>
+              <th class="text-left">所有字段</th>
+              <th class="text-left">每个值都执行</th>
+            </tr>
+            <tr>
+              <th class="text-left">*/a</th>
+              <th class="text-left">所有字段</th>
+              <th class="text-left">每隔a间隔执行，从最小值a开始</th>
+            </tr>
+            <tr>
+              <th class="text-left">a-b</th>
+              <th class="text-left">所有字段</th>
+              <th class="text-left">取值范围为a-b时执行</th>
+            </tr>
+            <tr>
+              <th class="text-left">a-b/c</th>
+              <th class="text-left">所有字段</th>
+              <th class="text-left">在a-b范围内每隔c间隔执行</th>
+            </tr>
+            <tr>
+              <th class="text-left">xth y</th>
+              <th class="text-left">天数字段</th>
+              <th class="text-left">每月第x个星期y执行</th>
+            </tr>
+            <tr>
+              <th class="text-left">last x</th>
+              <th class="text-left">天数字段</th>
+              <th class="text-left">每月最后一个星期x执行</th>
+            </tr>
+            <tr>
+              <th class="text-left">last</th>
+              <th class="text-left">天数字段</th>
+              <th class="text-left">每月的最后一天执行</th>
+            </tr>
+            <tr>
+              <th class="text-left">x,y,z</th>
+              <th class="text-left">所有字段</th>
+              <th class="text-left">
+                逗号分隔匹配多个表达式，表达式可以为数字或以上任意表达式
+              </th>
+            </tr>
+          </tbody>
+        </q-markup-table>
+      </div>
+    </q-slide-transition>
   </div>
 </template>
 
 <script>
 export default {
-  name: "NewIntervalJob",
+  name: "NewCronJob",
   data() {
     return {
       name: null,
       func: null,
       start_date: null,
       end_date: null,
-      weeks: null,
-      days: null,
-      hours: null,
-      minutes: null,
-      seconds: null
+      year: null,
+      month: null,
+      day: null,
+      week: null,
+      day_of_wek: null,
+      hour: null,
+      minute: null,
+      second: null,
+      expanded: false
     };
   },
   methods: {
@@ -201,7 +257,7 @@ export default {
         const data = {
           name: this.name,
           func: this.func,
-          trigger: "interval",
+          trigger: "cron",
           fields: {}
         };
         if (this.start_date) {
@@ -210,20 +266,29 @@ export default {
         if (this.end_date) {
           data.end_date = this.end_date;
         }
-        if (this.weeks) {
-          data.fields.weeks = this.weeks;
+        if (this.year) {
+          data.fields.year = this.year;
         }
-        if (this.days) {
-          data.fields.days = this.days;
+        if (this.month) {
+          data.fields.month = this.month;
         }
-        if (this.hours) {
-          data.fields.hours = this.hours;
+        if (this.day) {
+          data.fields.day = this.day;
         }
-        if (this.minutes) {
-          data.fields.minutes = this.minutes;
+        if (this.week) {
+          data.fields.week = this.week;
         }
-        if (this.seconds) {
-          data.fields.seconds = this.seconds;
+        if (this.day_of_week) {
+          data.fields.day = this.day_of_week;
+        }
+        if (this.hour) {
+          data.fields.hour = this.hour;
+        }
+        if (this.minute) {
+          data.fields.minute = this.minute;
+        }
+        if (this.second) {
+          data.fields.second = this.second;
         }
         this.$emit("save", data);
       }
@@ -250,13 +315,22 @@ export default {
         });
         return false;
       } else if (
-        !(this.weeks || this.days || this.hours || this.minutes || this.seconds)
+        !(
+          this.year ||
+          this.month ||
+          this.day ||
+          this.week ||
+          this.day_of_week ||
+          this.hour ||
+          this.minute ||
+          this.second
+        )
       ) {
         this.$q.notify({
           type: "warning",
           position: "center",
           icon: "warning",
-          message: "创建循环执行的计划任务至少需要输入一个时间间隔。",
+          message: "创建定时执行的计划任务至少需要输入一个时间字段。",
           timeout: 1000
         });
         return false;

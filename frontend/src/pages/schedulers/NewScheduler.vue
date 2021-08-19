@@ -23,6 +23,7 @@
           <NewIntervalJob @save="save" @cancel="cancel" />
         </q-tab-panel>
         <q-tab-panel name="cron" class="q-py-lg row justify-center">
+          <NewCronJob @save="save" @cancel="cancel" />
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
@@ -32,10 +33,11 @@
 <script>
 import NewDataJob from "components/scheduler/NewDateJob.vue";
 import NewIntervalJob from "components/scheduler/NewIntervalJob.vue";
+import NewCronJob from "components/scheduler/NewCronJob.vue";
 
 export default {
   name: "NewScheduler",
-  components: { NewDataJob, NewIntervalJob },
+  components: { NewDataJob, NewIntervalJob, NewCronJob },
   data() {
     return {
       tab: "date",

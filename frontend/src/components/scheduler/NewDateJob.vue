@@ -1,10 +1,11 @@
 <template>
   <div
-    class="col-xs-12 col-sm-8 col-md-5 col-xl-3 shadow-2 q-ma-xs q-pa-xs q-gutter-md"
+    class="col-xs-12 col-sm-8 col-md-5 col-xl-3 shadow-2 q-ma-xs q-pr-md q-gutter-md"
   >
     <q-input
-      v-model="name"
-      label="任务名称"
+      dense
+      v-model.trim="name"
+      label="任务名称*"
       :rules="[val => !!val || '必须输入任务名称']"
     >
       <q-tooltip :delay="400" anchor="top middle">
@@ -12,18 +13,19 @@
       </q-tooltip>
     </q-input>
     <q-input
-      v-model="func"
-      label="任务模块"
+      dense
+      v-model.trim="func"
+      label="任务模块*"
       :rules="[val => !!val || '必须输入要运行的任务模块']"
     >
       <q-tooltip :delay="400" anchor="top middle">
-        需要运行的计划任务引用，任务模块必须放在服务器 jobs 文件夹中，格式：
-        模块名:入口函数名
+        需要运行的计划任务引用，任务模块必须放在服务器 jobs 文件夹中
+        <div>格式: <i>模块名:入口函数名</i></div>
       </q-tooltip>
     </q-input>
     <div>
-      <div class="text-subtitle3">运行日期：</div>
-      <q-input filled v-model="run_date">
+      <div class="text-grey-7 text-subtitle3">运行日期：</div>
+      <q-input dense filled v-model="run_date" mask="####-##-## ##:##:##">
         <q-tooltip :delay="400" anchor="top middle">
           任务的计划运行时间，如果不输入则立即运行。
         </q-tooltip>
@@ -84,7 +86,6 @@ export default {
         if (this.run_date) {
           data.fields.run_date = this.run_date;
         }
-        console.log(data);
         this.$emit("save", data);
       }
     }
@@ -97,7 +98,7 @@ export default {
           position: "center",
           icon: "warning",
           message: "请输入计划任务名称及需要运行的任务模块！",
-          timeout: 300
+          timeout: 1000
         });
         return false;
       } else {

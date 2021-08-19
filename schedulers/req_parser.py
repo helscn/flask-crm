@@ -55,7 +55,7 @@ argParser.add_argument('trigger', type=str)
 #   - month
 #   - day
 #   - week
-#   - day_if_week
+#   - day_of_week
 #   - hour
 #   - minute
 #   - second
