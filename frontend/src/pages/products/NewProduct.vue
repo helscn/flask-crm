@@ -36,7 +36,7 @@ export default {
             timeout: 1000
           });
           this.$store.dispatch("products/fetchProducts");
-          this.$router.go(-1);
+          this.$router.push("/products");
         })
         .catch(error => {
           this.$q.notify({

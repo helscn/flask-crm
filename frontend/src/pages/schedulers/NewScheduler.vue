@@ -59,7 +59,7 @@ export default {
             message: "计划任务创建成功。",
             timeout: 1000
           });
-          this.$router.go(-1);
+          this.$router.push("/schedulers");
         })
         .catch(error => {
           this.$q.notify({
