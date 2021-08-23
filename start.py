@@ -28,12 +28,12 @@ if len(sys.argv) >= 2:
             app.run(sys.argv[2], int(sys.argv[3]))
         else:
             app.run('localhost', 5000)
-    else:
-        print('''
+
+elif __name__ == '__main__':
+    print('''
   Command:
       initdb : Init the application and install the database.
       dropdb : Delete all database data.
-      dev    : Start the simple web server , the default address is localhost:5000.
+      dev    : Start the simple web server , the default address is 0.0.0.0:5000.
         ''')
-elif __name__ == '__main__':
     app.run('0.0.0.0', 5000, use_reloader=False)
