@@ -7,6 +7,8 @@ from models import db, init_db
 from schedulers import scheduler
 
 application = app
+init_db()
+
 
 if len(sys.argv) >= 2:
     # 获取命令行命令
@@ -18,9 +20,6 @@ if len(sys.argv) >= 2:
             db.drop_all()
             print('All data has been deleted.')
 
-    elif command == 'initdb':
-        init_db()
-
     elif command.lower() == 'dev':
         if len(sys.argv) == 3:
             app.run('0.0.0.0', int(sys.argv[2]))
@@ -31,9 +30,12 @@ if len(sys.argv) >= 2:
 
 elif __name__ == '__main__':
     print('''
-  Command:
-      initdb : Init the application and install the database.
-      dropdb : Delete all database data.
-      dev    : Start the simple web server , the default address is 0.0.0.0:5000.
+    Command:
+        dropdb : Delete all database data.
+        dev    : Start the simple web server, you can specify the listening address by args:
+                 start.py dev 127.0.0.1 80
+
+    Current default listening address is 0.0.0.0:8000
+
         ''')
     app.run('0.0.0.0', 8000, use_reloader=False)

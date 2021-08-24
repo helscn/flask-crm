@@ -8,7 +8,7 @@ Vue.$cookies.config("2h");
 
 // 配置 Axios 默认请求参数：
 // 开发环境请求API接口地址
-axios.defaults.baseURL = "http://localhost:5000";
+axios.defaults.baseURL = "http://localhost:8000";
 
 // 设置API跨域访问，同时需要在后端服务器做跨域配置
 axios.defaults.withCredentials = true;

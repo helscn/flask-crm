@@ -23,15 +23,21 @@ from .scheduler_logs import SchedulerLog
 def init_db():
     """删除数据库中所有数据并初始化"""
     db.create_all()
-
-    admins = Role(id=1, name='管理员')
-    admins.save()
-
-    users = Role(id=2, name='普通用户')
-    users.save()
-
-    admin = User(id=1, username='admin', nickname='Administrator',
-                 password='123456', role_id=admins.id)
-    admin.save()
-
-    print("The database has been created.")
+    try:
+        if not Role.query.all():
+            admins = Role(id=1, name='管理员')
+            admins.save()
+            users = Role(id=2, name='普通用户')
+            users.save()
+            print("\n * The default roles has been created. ")
+        if not User.query.all():
+            admin = User(id=1, username='admin', nickname='Administrator',
+                         password='123456', role_id=admins.id)
+            admin.save()
+            print("""
+ * The default administrator account has been created. 
+   The user name is 'admin', and the default password is '123456'.
+   
+ """)
+    except:
+        print(' *** Failed to initialize database! ***')
