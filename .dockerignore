@@ -1,0 +1,10 @@
+**/__pycache__
+**/.vscode
+.git
+.env
+.gitignore
+.dockerignore
+Dockerfile
+test_data.db
+frontend/*
+!frontend/dist
