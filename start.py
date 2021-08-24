@@ -23,11 +23,11 @@ if len(sys.argv) >= 2:
 
     elif command.lower() == 'dev':
         if len(sys.argv) == 3:
-            app.run('localhost', int(sys.argv[2]))
+            app.run('0.0.0.0', int(sys.argv[2]))
         elif len(sys.argv) == 4:
             app.run(sys.argv[2], int(sys.argv[3]))
         else:
-            app.run('localhost', 5000)
+            app.run('0.0.0.0', 8000)
 
 elif __name__ == '__main__':
     print('''
@@ -36,4 +36,4 @@ elif __name__ == '__main__':
       dropdb : Delete all database data.
       dev    : Start the simple web server , the default address is 0.0.0.0:5000.
         ''')
-    app.run('0.0.0.0', 5000, use_reloader=False)
+    app.run('0.0.0.0', 8000, use_reloader=False)
