@@ -7,12 +7,14 @@ Vue.use(VueCookies);
 Vue.$cookies.config("2h");
 
 // 配置 Axios 默认请求参数：
-// 开发环境请求API接口地址
-axios.defaults.baseURL = "http://localhost:8000";
+if (process.env.NODE_ENV == "development") {
+  // 开发环境请求API接口地址
+  axios.defaults.baseURL = "http://localhost:8000";
 
-// 设置API跨域访问，同时需要在后端服务器做跨域配置
-axios.defaults.withCredentials = true;
-axios.defaults.crossDomain = true;
+  // 设置API跨域访问，同时需要在后端服务器做跨域配置
+  axios.defaults.withCredentials = true;
+  axios.defaults.crossDomain = true;
+}
 
 // 默认请求超时时间，单位ms
 axios.defaults.timeout = 5000;
