@@ -70,7 +70,7 @@ class User(BaseModel):
             data = s.loads(token)
         except:
             return None
-        return User.query.get(data['id'])
+        return User.get(data['id'])
 
     def to_dict(self):
         columns = list(
