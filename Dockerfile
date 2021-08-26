@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.9-slim-buster
 LABEL maintainer "helscn"
 
 ENV APP_DIR=/app
@@ -21,8 +21,8 @@ VOLUME $APP_DIR/schedulers/jobs
 # Expose http web server port
 EXPOSE $APP_PORT
 
-# Support auto-reload
-# HEALTHCHECK CMD curl -fs http://localhost:%APP_PORT || exit 1
+# Support health checking for auto-reload
+HEALTHCHECK --interval=1m --timeout=10s CMD python healthcheck.py
 
 # Start the web server with gunicorn
 CMD gunicorn --workers=$APP_WORKERS --threads=$APP_THREADS --timeout 60 start:app --bind 0.0.0.0:$APP_PORT --preload
