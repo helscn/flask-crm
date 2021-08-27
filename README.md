@@ -16,6 +16,19 @@
 - backend：后端 python 程序，程序运行入口为 start.py，直接运行时使用 Flask 开发模式运行，默认监听 8000 端口。
 - frontend：前端 vue 程序，使用 quasar dev 启用开发服务器，开发模式 API 调用本地 8000 端口，编译打包后 API 直接调用当前服务器地址。
 
+#### 项目开发
+
+- 前端项目开发建议使用 Quasar CLI 运行，需要提前安装好 Nodejs ，本项目使用的 10.0LTS 版本，安装前端依赖包及运行开发服务器步骤（示例使用的 yarn ，也可以使用 npm 进行安装）：
+
+  ```
+  cd frontend			# 进入前端项目文件夹
+  yarn global add @quasar/cli	# 安装 Quasar CLI 如果已经安装可忽略
+  yarn 				# 安装前端项目依赖包
+  quasar dev			# 进入前端开发服务器模式，可以实现自动热更新
+  quasar build			# 打包前端项目文件至 build 文件夹
+
+  ```
+
 #### 项目部署
 
 项目程序使用 [Docker](https://www.docker.com/) 进行部署，使用以下命令进行镜像打包：

@@ -1,10 +1,10 @@
 **/__pycache__
 **/.vscode
+**/.env
+**/test_data.*
 .git
-.env
 .gitignore
 .dockerignore
 Dockerfile
-test_data.db
 frontend/dist
 frontend/node_modules
