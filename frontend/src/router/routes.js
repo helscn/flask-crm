@@ -108,6 +108,11 @@ const routes = [
     meta: { title: "登录", public: true },
     component: () => import("pages/Login.vue")
   },
+  {
+    path: "/pdf",
+    meta: { public: true },
+    component: () => import("pages/PdfPreview.vue")
+  },
 
   // Always leave this as last one,
   // but you can also remove it
