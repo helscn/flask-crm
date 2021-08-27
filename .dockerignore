@@ -6,5 +6,5 @@
 .dockerignore
 Dockerfile
 test_data.db
-frontend/*
-!frontend/dist
+frontend/dist
+frontend/node_modules
