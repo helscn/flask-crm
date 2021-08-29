@@ -9,15 +9,17 @@ BASE_DIR = path.abspath(path.dirname(__file__))
 DIALECT = 'mysql'
 DRIVER = 'mysqldb'
 USERNAME = 'root'
-PASSWORD = 123456
+PASSWORD = '123456'
 HOST = '127.0.0.1'
 PORT = '3306'
 DATABASE = 'db_demo1'
 
+# 通过URI连接数据库，已经安装 mysqldb 支持库，如果需要使用其它数据库，可以修改 requirements.txt
 SQLALCHEMY_DATABASE_URI = '{dialect}+{driver}://{username}:{password}@{host}:{port}/{database}?charset=utf8'.format(
     dialect=DIALECT, driver=DRIVER, username=USERNAME, password=PASSWORD, host=HOST, port=PORT, database=DATABASE)
 
-SQLALCHEMY_DATABASE_URI = 'sqlite:///{}/test_data.db'.format(BASE_DIR)
+# 默认使用 Sqlite3 访问本地 database.db 数据库，可以注释该行使用其它数据库
+SQLALCHEMY_DATABASE_URI = 'sqlite:///{}/database.db'.format(BASE_DIR)
 
 
 class Setting:
@@ -46,7 +48,7 @@ class Setting:
     # Token 验证的失效时间
     TOKEN_EXPIRATION = 24*60*60
 
-    # 前端请求谁时，保存 Token 的位置，如 headers, cookies, args, values 等.
+    # 前端请求谁时，保存 Token 的位置，如 headers, cookies, args, values 等
     TOKEN_LOCATION = ['headers', 'cookies', 'args']
 
     # 前端请求认证时，保存 Token 的键值名称
@@ -54,6 +56,15 @@ class Setting:
 
     # 链接数据库
     SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI
+
+    # 数据库连接池的大小，Sqlite 数据库不适用
+    # SQLALCHEMY_POOL_SIZE = 5
+
+    # 数据库连接池的连接超时时间，Sqlite 数据库不适用
+    # SQLALCHEMY_POOL_TIMEOUT = 10
+
+    # 数据库连接池自动回收连接的秒数。MySQL 默认会自动移除闲置 8 小时或以上的连接
+    SQLALCHEMY_POOL_RECYCLE = 60
 
     # 跟踪数据库修改
     SQLALCHEMY_TRACK_MODIFICATIONS = False

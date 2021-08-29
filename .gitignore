@@ -1,6 +1,7 @@
 **/__pycache__
+**/.DS_Store
 **/.vscode
 **/.env
-**/test_data.*
-/frontend/node_modules
-/frontend/dist
+backend/database.db
+frontend/node_modules
+frontend/dist
