@@ -1,41 +1,36 @@
 <template>
   <q-page class="q-ma-xs q-mr-md q-pa-xs">
-    <ProductEditer :form-data="product" newno @save="save" @cancel="cancel" />
+    <CustomerEditer :data="customer" @save="save" @cancel="cancel" />
   </q-page>
 </template>
 
 <script>
-import ProductEditer from "components/ProductEditer.vue";
+import CustomerEditer from "components/CustomerEditer.vue";
 
 export default {
-  name: "CreateProduct",
-  components: { ProductEditer },
+  name: "CreateCustomer",
+  components: { CustomerEditer },
   data() {
     return {
-      product: null
+      customer: null
     };
   },
   methods: {
     cancel() {
       this.$router.go(-1);
     },
-    save(form) {
-      let config = {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
-      };
+    save(data) {
       this.$axios
-        .post("/api/products", form, config)
+        .post("/api/customers", data)
         .then(res => {
           this.$q.notify({
             type: "positive",
             position: "top",
             icon: "check_circle",
-            message: "产品保存成功。",
+            message: "客户信息保存成功。",
             timeout: 1000
           });
-          this.$store.dispatch("products/fetchProducts");
+          this.$store.dispatch("customers/fetchCustomers");
           this.$router.go(-1);
         })
         .catch(error => {
@@ -43,16 +38,11 @@ export default {
             type: "negative",
             position: "top",
             icon: "error",
-            message: "保存产品出错，请检查网络连接是否正常。",
+            message: "保存客户信息出错，请检查网络连接是否正常。",
             timeout: 1000
           });
         });
     }
-  },
-  created: function() {
-    this.$axios.get("/api/products/newno").then(res => {
-      this.product = { no: res.data.no };
-    });
   }
 };
 </script>
