@@ -27,7 +27,7 @@
             v-model="importance"
             size="2em"
             :max="5"
-            color="yellow"
+            color="orange"
           />
         </div>
       </div>
@@ -36,7 +36,13 @@
       </div>
 
       <div class="row justify-between q-gutter-md q-my-sm">
-        <q-input class="col" filled v-model.trim="address" label="地址" />
+        <q-input
+          class="col"
+          filled
+          v-model.trim="address"
+          label="地址"
+          autogrow
+        />
       </div>
       <div class="row justify-between q-gutter-md">
         <div class="col">
@@ -87,7 +93,7 @@ export default {
           this.address = val.address || this.address;
           this.website = val.website || this.website;
           this.comment = val.comment || this.comment;
-          this.valid = val.valid || this.valid;
+          this.valid = val.valid === undefined ? this.valid : !!val.valid;
         }
       },
       immediate: true

@@ -24,7 +24,7 @@
         :disable="selected.length === 0"
         rounded
         icon="delete_forever"
-        @click="removecustomers"
+        @click="removeSelectedCustomers"
         color="primary"
       />
     </q-btn-group>
@@ -104,6 +104,38 @@
             style="min-width: 150px"
           />
         </template>
+
+        <template v-slot:body-cell-action="props">
+          <q-td :props="props">
+            <q-btn
+              color="primary"
+              icon-right="edit"
+              no-caps
+              flat
+              @click="
+                $router.push({
+                  path: '/customers/edit',
+                  query: { id: props.row.id }
+                })
+              "
+            >
+              <q-tooltip>
+                编辑当前客户
+              </q-tooltip>
+            </q-btn>
+            <q-btn
+              color="negative"
+              icon-right="delete"
+              no-caps
+              flat
+              @click="removeCustomer(props.row.id)"
+            >
+              <q-tooltip>
+                删除当前客户
+              </q-tooltip></q-btn
+            >
+          </q-td>
+        </template>
       </q-table>
     </div>
 
@@ -122,7 +154,7 @@
             <div
               class="col-auto text-subtitle1 q-pt-none row no-wrap items-center"
             >
-              {{ currentCustomer.importance>0 ? '⭐'.repeat(currentCustomer.importance) : '🌚'}}
+              {{ "⭐".repeat(currentCustomer.importance) }}
             </div>
           </div>
         </q-card-section>
@@ -164,7 +196,7 @@ export default {
           label: "客户评级",
           align: "left",
           field: row => row.importance,
-          format: val => val>0 ? '⭐'.repeat(val) : '🌚',
+          format: val => "⭐".repeat(val),
           sortable: true
         },
         {
@@ -220,8 +252,14 @@ export default {
           label: "有效客户",
           align: "center",
           field: row => row.valid,
-          format: val => val==0 ? "❌" : (val==1 ? "✅" : "❓"),
+          format: val => (val ? "✅" : "❌"),
           sortable: true
+        },
+        {
+          name: "action",
+          label: "编辑",
+          align: "center",
+          field: "action"
         }
       ],
       visibleColumns: [
@@ -233,7 +271,8 @@ export default {
         "comment",
         "created_date",
         "modified_date",
-        "valid"
+        "valid",
+        "action"
       ],
       currentCustomer: {},
       isShowCard: false
@@ -250,20 +289,35 @@ export default {
       this.currentCustomer = row;
       this.isShowCard = true;
     },
-    removeCustomers() {
+    removeCustomer(id) {
+      this.$q
+        .dialog({
+          title: "确认",
+          message: "确认要删除当前选定的客户吗？注意该操作无法恢复！",
+          cancel: true,
+          persistent: true,
+          focus: "cancel"
+        })
+        .onOk(() => {
+          this.$axios.delete("/api/customers/" + id).then(res => {
+            this.$store.dispatch("customers/fetchCustomers");
+          });
+        });
+    },
+    removeSelectedCustomers() {
       if (this.selected.length === 0) {
         this.$q.notify({
           type: "warning",
           position: "top",
           icon: "warning",
           timeout: 2000,
-          message: "请先选择需要删除的产品项目。"
+          message: "请先选择需要删除的客户。"
         });
       } else {
         this.$q
           .dialog({
             title: "确认",
-            message: "确认要删除当前选定的产品吗？注意该操作无法恢复！",
+            message: "确认要删除当前选定的客户吗？注意该操作无法恢复！",
             cancel: true,
             persistent: true,
             focus: "cancel"
@@ -271,13 +325,13 @@ export default {
           .onOk(() => {
             let ids = this.selected.map(v => v.id);
             this.$axios
-              .delete("/api/products", {
+              .delete("/api/customers", {
                 data: {
                   id: ids
                 }
               })
               .then(res => {
-                this.$store.dispatch("products/fetchProducts");
+                this.$store.dispatch("customers/fetchCustomers");
               });
           });
       }
@@ -293,7 +347,7 @@ export default {
     })
   },
   created: function() {
-    this.customersFilter=this.currentFilter
+    this.customersFilter = this.currentFilter;
     this.$store.dispatch("customers/fetchCustomers").catch(err => {
       this.$q.notify({
         type: "negative",

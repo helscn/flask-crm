@@ -18,7 +18,7 @@ argParser.add_argument('country', type=str)
 argParser.add_argument('address', type=str)
 argParser.add_argument('website', type=str)
 argParser.add_argument('comment', type=str)
-argParser.add_argument('valid', type=int)
+argParser.add_argument('valid', type=bool)
 argParser.add_argument('contacts', type=list, location='json')
 
 

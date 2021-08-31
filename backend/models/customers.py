@@ -14,7 +14,7 @@ class Customer(BaseModel):
     address = db.Column(db.String(256), default='')
     website = db.Column(db.String(256), default='')
     comment = db.Column(db.Text, default='')
-    valid = db.Column(db.Integer, default=1)
+    valid = db.Column(db.Boolean, default=True)
     last_contact_date = db.Column(db.DateTime)
     created_date = db.Column(
         db.DateTime, default=datetime.now())
