@@ -158,8 +158,9 @@
             </div>
           </div>
         </q-card-section>
+        <q-separator />
         <q-card-section>
-          <div class="text-wrapper">{{ currentCustomer.comment }}</div>
+          <div v-html="currentCustomer.comment"></div>
         </q-card-section>
 
         <q-separator />
@@ -228,9 +229,9 @@ export default {
           label: "备注信息",
           align: "left",
           style: "width: 50px",
-          field: row => row.comment,
-          format: val => val || "(无)",
-          format: val => `${val}`,
+          field: row => row.comment.replace(/<[^>]*>/g, " "),
+          format: val =>
+            (val.length > 20 ? val.substr(0, 20) + " ..." : val) || "(无)",
           sortable: true
         },
         {
@@ -269,7 +270,6 @@ export default {
         "address",
         "website",
         "comment",
-        "created_date",
         "modified_date",
         "valid",
         "action"
@@ -285,6 +285,10 @@ export default {
     }
   },
   methods: {
+    getHtmlText(val) {
+      let text = val.replace(/<[^>]*>/g);
+      return text.length > 20 ? text.substr(0, 20) + " ..." : text;
+    },
     showCustomerCard(evt, row, index) {
       this.currentCustomer = row;
       this.isShowCard = true;
@@ -363,9 +367,6 @@ export default {
 <style>
 .my-card {
   max-width: 100%;
-  min-width: 400px;
-}
-.text-wrapper {
-  white-space: pre-wrap;
+  min-width: 600px;
 }
 </style>
