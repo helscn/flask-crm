@@ -331,7 +331,7 @@ export default {
             this.$axios
               .delete("/api/customers", {
                 data: {
-                  id: ids
+                  ids: ids
                 }
               })
               .then(res => {

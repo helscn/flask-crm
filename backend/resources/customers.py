@@ -40,7 +40,7 @@ class ApiCustomers(Resource):
             }
 
     def delete(self, id=None):
-        data = request.get_json()
+        data = argParser.parse_args()
         if id or data['id']:
             customer = Customer.get(id or data['id'])
             if customer:
