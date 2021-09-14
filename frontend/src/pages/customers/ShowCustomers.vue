@@ -43,101 +43,115 @@
       />
     </q-btn-group>
 
-    <div>
+    <q-card class="q-ma-lg">
       <q-tabs
-        v-model="customersFilter"
+        v-model="currentTab"
         align="left"
         inline-label
         class="bg-grey-4 text-primary shadow-2"
         :breakpoint="300"
       >
-        <q-tab name="all" label="所有客户" icon="business_center" />
-        <q-tab name="valid" label="有效客户" icon="visibility" />
-        <q-tab name="unvalid" label="无效客户" icon="visibility_off" />
+        <q-tab name="customers" label="我的客户" icon="people" />
+        <q-tab name="contacts" label="联系人" icon="contact_mail" />
       </q-tabs>
-      <q-table
-        ref="customersTable"
-        :loading="loading"
-        :data="data"
-        :columns="columns"
-        row-key="id"
-        selection="multiple"
-        :selected.sync="selected"
-        :pagination.sync="pagination"
-        :filter="filter"
-        :visible-columns="visibleColumns"
-        @row-dblclick="showCustomerCard"
-        table-header-class="bg-grey-2"
-      >
-        <template v-slot:top>
-          <q-input
-            color="black"
-            dense
-            debounce="300"
-            v-model="filter"
-            placeholder="搜索客户"
+      <q-separator />
+      <q-tab-panels v-model="currentTab" animated keep-alive>
+        <q-tab-panel name="customers">
+          <q-table
+            ref="customersTable"
+            :loading="loading"
+            :data="data"
+            :columns="columns"
+            row-key="id"
+            selection="multiple"
+            :selected.sync="selected"
+            :pagination.sync="pagination"
+            :filter="filter"
+            :visible-columns="visibleColumns"
+            @row-dblclick="showCustomerCard"
+            table-header-class="bg-grey-2"
           >
-            <template v-slot:prepend>
-              <q-icon name="search" />
-            </template>
-            <template v-if="filter" v-slot:append>
-              <q-icon
-                name="close"
-                @click="filter = ''"
-                class="cursor-pointer"
+            <template v-slot:top>
+              <q-input
+                color="black"
+                dense
+                debounce="300"
+                v-model="filter"
+                placeholder="搜索客户"
+              >
+                <template v-slot:prepend>
+                  <q-icon name="search" />
+                </template>
+                <template v-if="filter" v-slot:append>
+                  <q-icon
+                    name="close"
+                    @click="filter = ''"
+                    class="cursor-pointer"
+                  />
+                </template>
+              </q-input>
+              <q-space />
+              <q-select
+                dense
+                outlined
+                options-dense
+                v-model="customersFilter"
+                :options="customersFilterOptions"
+                map-options
+                emit-value
+              />
+              <q-select
+                v-model="visibleColumns"
+                multiple
+                outlined
+                dense
+                options-dense
+                display-value="列选择"
+                emit-value
+                map-options
+                :options="columns"
+                option-value="name"
+                options-cover
+                class="q-ml-md"
               />
             </template>
-          </q-input>
-          <q-space />
-          <q-select
-            v-model="visibleColumns"
-            multiple
-            outlined
-            dense
-            options-dense
-            display-value="列选择"
-            emit-value
-            map-options
-            :options="columns"
-            option-value="name"
-            options-cover
-            style="min-width: 150px"
-          />
-        </template>
 
-        <template v-slot:body-cell-action="props">
-          <q-td :props="props">
-            <q-btn
-              color="primary"
-              icon-right="edit"
-              no-caps
-              flat
-              @click="
-                $router.push({
-                  path: '/customers/edit',
-                  query: { id: props.row.id }
-                })
-              "
-            >
-              <q-tooltip>
-                编辑当前客户
-              </q-tooltip>
-            </q-btn>
-            <q-btn
-              color="negative"
-              icon-right="delete"
-              no-caps
-              flat
-              @click="removeCustomer(props.row.id)"
-            >
-              <q-tooltip>
-                删除当前客户
-              </q-tooltip></q-btn
-            >
-          </q-td>
-        </template>
-      </q-table>
-    </div>
+            <template v-slot:body-cell-action="props">
+              <q-td :props="props">
+                <q-btn
+                  color="primary"
+                  icon-right="edit"
+                  no-caps
+                  flat
+                  @click="
+                    $router.push({
+                      path: '/customers/edit',
+                      query: { id: props.row.id }
+                    })
+                  "
+                >
+                  <q-tooltip>
+                    编辑当前客户
+                  </q-tooltip>
+                </q-btn>
+                <q-btn
+                  color="negative"
+                  icon-right="delete"
+                  no-caps
+                  flat
+                  @click="removeCustomer(props.row.id)"
+                >
+                  <q-tooltip>
+                    删除当前客户
+                  </q-tooltip></q-btn
+                >
+              </q-td>
+            </template>
+          </q-table>
+        </q-tab-panel>
+        <q-tab-panel name="contacts"></q-tab-panel>
+      </q-tab-panels>
+    </q-card>
 
     <q-dialog v-model="isShowCard">
       <q-card class="my-card">
@@ -179,7 +193,22 @@ import { mapState, mapGetters } from "vuex";
 export default {
   data() {
     return {
+      currentTab: "customers",
       customersFilter: "valid",
+      customersFilterOptions: [
+        {
+          label: "所有客户",
+          value: "all"
+        },
+        {
+          label: "有效客户",
+          value: "valid"
+        },
+        {
+          label: "无效客户",
+          value: "unvalid"
+        }
+      ],
       filter: "",
       selected: [],
       pagination: { sortBy: null, descending: false, page: 1, rowsPerPage: 5 },
