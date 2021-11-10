@@ -24,6 +24,21 @@ argParser.add_argument('valid', type=int, default=2)
 argParser.add_argument('customer_id', type=int)
 
 
+class ApiCustomerContacts(Resource):
+    # decorators = [login_required]
+
+    def get(self, id):
+        customer = Customer.get(id)
+        if customer:
+            contacts = customer.contacts.all()
+            return {
+                'total': len(contacts),
+                'data': [v.to_dict() for v in contacts]
+            }
+        else:
+            abort(404, message='Customer not exist.')
+
+
 class ApiContacts(Resource):
     # decorators = [login_required]
 

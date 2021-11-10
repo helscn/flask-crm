@@ -8,7 +8,7 @@ from flask_restful import Api
 from .users import ApiUsers
 from .roles import ApiRoles
 from .customers import ApiCustomers
-from .contacts import ApiContacts
+from .contacts import ApiContacts, ApiCustomerContacts
 from .products import ApiProducts, ApiNewProductNo
 from .categories import ApiCategories
 from .suppliers import ApiSuppliers
@@ -30,6 +30,8 @@ api.add_resource(ApiCustomers, '/customers',
                  '/customers/<int:id>', endpoint='customers')
 api.add_resource(ApiContacts, '/customers/contacts',
                  '/customers/contacts/<int:id>', endpoint='contacts')
+api.add_resource(ApiCustomerContacts, '/customers/<int:id>/contacts',
+                 '/customer/<int:id>/contacts', endpoint='customer_contacts')
 
 api.add_resource(ApiNewProductNo, '/products/newno', endpoint='newno')
 api.add_resource(ApiProducts, '/products',

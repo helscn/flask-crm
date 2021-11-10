@@ -178,6 +178,11 @@
         </q-card-section>
 
         <q-separator />
+        <q-card-section>
+          <q-table> </q-table>
+        </q-card-section>
+
+        <q-separator />
 
         <q-card-actions align="right">
           <q-btn v-close-popup flat color="primary" label="关闭" />
