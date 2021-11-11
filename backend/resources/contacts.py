@@ -29,14 +29,36 @@ class ApiCustomerContacts(Resource):
 
     def get(self, id):
         customer = Customer.get(id)
-        if customer:
-            contacts = customer.contacts.all()
-            return {
-                'total': len(contacts),
-                'data': [v.to_dict() for v in contacts]
-            }
-        else:
+        if not customer:
             abort(404, message='Customer not exist.')
+        contacts = customer.contacts.all()
+        return {
+            'total': len(contacts),
+            'data': [v.to_dict() for v in contacts]
+        }
+
+    def post(self, id):
+        data = argParser.parse_args()
+        customer = Customer.get(id)
+        if not customer:
+            abort(404, message='Customer not exist.')
+
+        contacter = Contacter(
+            name=data['name'],
+            gender=data['gender'],
+            title=data['name'],
+            department=data['country'],
+            email=data['address'],
+            phone=data['website'],
+            address=data['comment'],
+            comment=data['valid'],
+            subscription=data['subscription'],
+            valid=data['valid'],
+            created_date=datetime.now(),
+            customer_id=customer.id
+        )
+        contacter.save()
+        return {'success': True}, 201
 
 
 class ApiContacts(Resource):
