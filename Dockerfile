@@ -6,8 +6,8 @@ WORKDIR /app
 # Copy frontend files and building project.
 COPY ./frontend /app/frontend
 RUN cd /app/frontend \
-    && yarn global add @quasar/cli --registry=https://registry.npm.taobao.org \
-    && yarn --registry=https://registry.npm.taobao.org \
+    && yarn global add @quasar/cli --registry=https://registry.npmmirror.com \
+    && yarn --registry=https://registry.npmmirror.com \
     && quasar build
 
 ###########################################
